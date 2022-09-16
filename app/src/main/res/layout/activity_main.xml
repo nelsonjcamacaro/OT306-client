@@ -24,6 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_menu"
-        />
+        style="@style/Widget.MaterialComponents.BottomNavigationView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
