@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ONGAndroid</string>
+
+    <!-- Testimonials List Strings-->
+    <!-- Title -->
+    <string name="testimonios">Testimonios</string>
+    <!-- Tools for preview -->
+    <string name="nombre_y_ap">Nombre y Apellido </string>
+    <string name="testimoniot">Testimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoniotestimoni</string>
+
 </resources>
