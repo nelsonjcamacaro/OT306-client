@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Margin Dimens -->
+    <dimen name="margin_values">15.44dp</dimen>
+    <dimen name="vertical_margin">15dp</dimen>
+    <dimen name="horizontal_margin">8dp</dimen>
+    <dimen name="padding_values">8dp</dimen>
+
+    <!-- Testimonial Dimens -->
+    <dimen name="testimonial_card_vertical_margin">8dp</dimen>
+    <dimen name="testimonial_card_horizontal_margin">15dp</dimen>
+    <dimen name="testimonial_rv_height">244dp</dimen>
+    <dimen name="testimonial_image_size">48.24dp</dimen>
+
+</resources>

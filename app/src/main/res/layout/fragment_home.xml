@@ -5,11 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.HomeFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <!-- Testimonials Layout -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">      
+
+            <!-- Title Text View -->
+            <TextView
+                android:id="@+id/testimonios_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/testimonios"
+                android:textAppearance="@style/testimonios"
+                app:layout_constraintBottom_toTopOf="@+id/testimonials_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Testimonials Recycler View -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/testimonials_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/testimonial_rv_height"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/testimonios_title"
+                tools:listitem="@layout/testimonial_item" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +59,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
         </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
@@ -44,7 +82,5 @@
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </FrameLayout>

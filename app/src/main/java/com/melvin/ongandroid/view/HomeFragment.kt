@@ -30,4 +30,44 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpTestimonialRecyclerView()
+
+        subscribeUi()
+
+    }
+
+    /*
+    Set initial configuration for Testimonial Recycler View
+     */
+    private fun setUpTestimonialRecyclerView() {
+        testimonialAdapter = TestimonialAdapter()
+        binding.testimonialsRecyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@HomeFragment.context)
+            adapter = testimonialAdapter
+        }
+    }
+
+    /*
+    Subscribe all adapters to observe viewModel LiveData
+     */
+    private fun subscribeUi() {
+
+        //TODO SubscribeBienvenidosAdapter
+
+        //TODO SubscribeNovedadesAdapter
+
+        subscribeTestimonialAdapter()
+    }
+
+    /*
+    Subscribe Testimonial adapter to observe viewModel LiveData
+     */
+    private fun subscribeTestimonialAdapter() {
+        // TODO
+    }
+
 }

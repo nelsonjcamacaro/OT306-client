@@ -13,6 +13,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val homeFragment = HomeFragment()
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainer, homeFragment)
+            commit()
+        }
+
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId){
                 R.id.navContact -> {Toast.makeText(this@MainActivity, "Contacto", Toast.LENGTH_SHORT).show()
