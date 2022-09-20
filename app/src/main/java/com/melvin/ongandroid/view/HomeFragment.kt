@@ -5,26 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.view.adapter.TestimonialAdapter
+import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
+import com.melvin.ongandroid.viewmodel.ViewModelFactory
 
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var testimonialAdapter: TestimonialAdapter
+    private val viewModel : TestimonialsViewModel by viewModels(
+        factoryProducer ={ ViewModelFactory() }
+    )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val adapter = HorizontalAdapter(listOf())
-        binding.rv01.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.rv01.adapter = adapter
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -32,6 +33,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val adapter = HorizontalAdapter(listOf())
+        binding.rv01.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rv01.adapter = adapter
 
         setUpTestimonialRecyclerView()
 
@@ -56,9 +61,6 @@ class HomeFragment : Fragment() {
      */
     private fun subscribeUi() {
 
-        //TODO SubscribeBienvenidosAdapter
-
-        //TODO SubscribeNovedadesAdapter
 
         subscribeTestimonialAdapter()
     }
@@ -67,7 +69,16 @@ class HomeFragment : Fragment() {
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
     private fun subscribeTestimonialAdapter() {
-        // TODO
-    }
 
+        viewModel.testimonialsList.observe(viewLifecycleOwner){ testimonial ->
+            if (testimonial != null){
+                testimonialAdapter.submitList(testimonial)
+
+            }
+            else{
+                //TODO : Show error general de la API
+            }
+
+        }
+    }
 }

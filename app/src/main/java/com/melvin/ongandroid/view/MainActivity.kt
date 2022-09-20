@@ -24,7 +24,9 @@ class MainActivity : AppCompatActivity() {
             when(item.itemId){
                 R.id.navContact -> {Toast.makeText(this@MainActivity, "Contacto", Toast.LENGTH_SHORT).show()
                     true}
-                R.id.navHome-> {Toast.makeText(this@MainActivity, "Home", Toast.LENGTH_SHORT).show()
+                R.id.navHome->{ supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fragmentContainer, homeFragment)
+                    commit()}
                     true}
                 R.id.navNews-> {Toast.makeText(this@MainActivity, "Novedades", Toast.LENGTH_SHORT).show()
                     true}
