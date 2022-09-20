@@ -16,8 +16,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">      
+            app:layout_constraintStart_toStartOf="parent">
 
             <!-- Title Text View -->
             <TextView
@@ -42,7 +41,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/testimonios_title"
                 tools:listitem="@layout/testimonial_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -50,37 +48,40 @@
 <!--    </androidx.constraintlayout.widget.ConstraintLayout> -->
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv01"
+            android:id="@+id/rvWelcome"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="45dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal"
+        tools:listitem="@layout/image_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
     </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
-            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:text="HOLA! BIENVENIDOS"
+            android:text="Novedades"
+            android:textAppearance="@style/testimonios"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toTopOf="@+id/rvNews"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv01" />
+            tools:ignore="HardcodedText" />
 
-        <TextView
-            android:id="@+id/tvDescripcion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Descripcion"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNews"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="60dp"
+            tools:itemCount="4"
+            android:orientation="horizontal"
+            tools:listitem="@layout/new_list"
+            app:layout_constraintTop_toBottomOf="@+id/rvWelcome" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,17 +11,17 @@ import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
 import com.melvin.ongandroid.viewmodel.ViewModelFactory
-
+import com.melvin.ongandroid.view.adapter.HorizontalAdapter
+import com.melvin.ongandroid.view.adapter.NewsAdapter
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var testimonialAdapter: TestimonialAdapter
+    private lateinit var newsAdapter: NewsAdapter
     private val viewModel : TestimonialsViewModel by viewModels(
-        factoryProducer ={ ViewModelFactory() }
-    )
-
-
+        factoryProducer ={ ViewModelFactory())
+        
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,11 +35,16 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = HorizontalAdapter(listOf())
-        binding.rv01.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.rv01.adapter = adapter
+        binding.rvWelcome.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvWelcome.adapter = adapter
+
+        
+        val adapternew = NewsAdapter(listOf())
+        binding.rvNews.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
+        binding.rvNews.adapter = adapternew
 
         setUpTestimonialRecyclerView()
-
+        
         subscribeUi()
 
     }
@@ -55,6 +60,7 @@ class HomeFragment : Fragment() {
             adapter = testimonialAdapter
         }
     }
+
 
     /*
     Subscribe all adapters to observe viewModel LiveData

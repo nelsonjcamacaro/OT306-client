@@ -1,4 +1,4 @@
-package com.melvin.ongandroid.view
+package com.melvin.ongandroid.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +19,8 @@ class HorizontalAdapter( private val activitiesList: List<Activity>): RecyclerVi
     }
 
     override fun getItemCount(): Int {
-        return activitiesList.size
+       // return activitiesList.size
+        return 5
     }
 
     inner class Activityviewholder(itemView: View): RecyclerView.ViewHolder(itemView){
