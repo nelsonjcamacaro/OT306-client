@@ -20,7 +20,7 @@ class HomeFragment : Fragment() {
     private lateinit var testimonialAdapter: TestimonialAdapter
     private lateinit var newsAdapter: NewsAdapter
     private val viewModel : TestimonialsViewModel by viewModels(
-        factoryProducer ={ ViewModelFactory())
+        factoryProducer ={ ViewModelFactory()})
         
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
