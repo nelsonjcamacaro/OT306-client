@@ -7,6 +7,8 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     // Hilt
     id 'dagger.hilt.android.plugin'
+    // firebase google services
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -48,6 +50,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.1.1'
 
     // Unit Test
     testImplementation 'junit:junit:4.13.2'
