@@ -19,8 +19,8 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var testimonialAdapter: TestimonialAdapter
     private lateinit var newsAdapter: NewsAdapter
-    private val viewModel : TestimonialsViewModel by viewModels(
-        factoryProducer ={ ViewModelFactory())
+    //private val viewModel : TestimonialsViewModel by viewModels(
+    //    factoryProducer ={ ViewModelFactory())
         
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +44,7 @@ class HomeFragment : Fragment() {
         binding.rvNews.adapter = adapternew
 
         setUpTestimonialRecyclerView()
-        
         subscribeUi()
-
     }
 
     /*
@@ -66,15 +64,13 @@ class HomeFragment : Fragment() {
     Subscribe all adapters to observe viewModel LiveData
      */
     private fun subscribeUi() {
-
-
-        subscribeTestimonialAdapter()
+    //    subscribeTestimonialAdapter()
     }
 
     /*
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
-    private fun subscribeTestimonialAdapter() {
+    /** private fun subscribeTestimonialAdapter() {
 
         viewModel.testimonialsList.observe(viewLifecycleOwner){ testimonial ->
             if (testimonial != null){
@@ -86,5 +82,5 @@ class HomeFragment : Fragment() {
             }
 
         }
-    }
+    } **/
 }
