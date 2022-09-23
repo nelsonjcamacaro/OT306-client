@@ -9,16 +9,18 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="@dimen/horizontal_rv_image_height"
         android:layout_marginTop="5dp"
         app:cardCornerRadius="6dp"
         app:cardElevation="6dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <org.imaginativeworld.whynotimagecarousel.ImageCarousel
-            android:id="@+id/carousel"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_news"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/activities_tool_img"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -29,18 +31,21 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Nombre de la novedad"
+        android:textAppearance="@style/text_style_activity_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
         tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/tvNewDescripss"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginHorizontal="@dimen/margin_values"
         android:layout_marginTop="10dp"
         android:text="Descripcion"
+        android:textAppearance="@style/text_style_activity_description"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNameNews"
         tools:ignore="HardcodedText" />
 

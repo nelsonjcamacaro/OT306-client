@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
+import com.melvin.ongandroid.view.fragment.ActivitiesFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val homeFragment = HomeFragment()
+        val activitiesFragment = ActivitiesFragment()
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainer, homeFragment)
@@ -30,8 +32,12 @@ class MainActivity : AppCompatActivity() {
                     true}
                 R.id.navNews-> {Toast.makeText(this@MainActivity, "Novedades", Toast.LENGTH_SHORT).show()
                     true}
-                R.id.navTestimonials->{Toast.makeText(this@MainActivity, "Testimonios", Toast.LENGTH_SHORT).show()
-                    true}
+                R.id.navTestimonials->{ supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fragmentContainer, activitiesFragment)
+                        commit()
+                    }
+                    true
+                }
                 R.id.navStaff->{Toast.makeText(this@MainActivity, "Nosotros", Toast.LENGTH_SHORT).show()
                     true}
                 else -> false
