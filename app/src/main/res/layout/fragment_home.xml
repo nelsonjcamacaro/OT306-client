@@ -6,83 +6,111 @@
     android:layout_height="match_parent"
     tools:context=".view.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Testimonials Layout -->
+        <!-- Home Layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_marginVertical="@dimen/margin_values">
 
-            <!-- Title Text View -->
+            <!-- Logo Image View -->
+            <ImageView
+                android:id="@+id/image_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_values"
+                android:src="@drawable/logo"
+                app:layout_constraintBottom_toTopOf="@+id/rvWelcome"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <!-- Welcome Horizontal Recycler View -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_logo"
+                tools:listitem="@layout/image_list" />
+
+            <!-- News Title -->
             <TextView
-                android:id="@+id/testimonios_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Novedades"
+                android:textAppearance="@style/testimonios"
+                app:layout_constraintBottom_toTopOf="@+id/rvNews"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="HardcodedText" />
+
+            <!-- News Recycler View -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNews"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="60dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/rvWelcome"
+                tools:itemCount="4"
+                tools:listitem="@layout/new_list" />
+
+            <!-- Testimonials Layout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_testimonial"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/testimonios"
-                android:textAppearance="@style/testimonios"
-                app:layout_constraintBottom_toTopOf="@+id/testimonials_recycler_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Testimonials Recycler View -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/testimonials_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/testimonial_rv_height"
-                android:padding="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/testimonial_item" />
+                app:layout_constraintTop_toBottomOf="@+id/rvNews">
+
+                <!-- Title Text View -->
+                <TextView
+                    android:id="@+id/testimonios_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/testimonios"
+                    android:textAppearance="@style/testimonios"
+                    app:layout_constraintBottom_toTopOf="@+id/testimonials_recycler_view"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Testimonials Recycler View -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/testimonials_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/testimonial_rv_height"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:listitem="@layout/testimonial_item" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                app:layout_constraintTop_toBottomOf="@+id/layout_testimonial"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/vertical_margin_large"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    </androidx.constraintlayout.widget.ConstraintLayout> -->
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvWelcome"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="45dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal"
-        tools:listitem="@layout/image_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-    </androidx.recyclerview.widget.RecyclerView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Novedades"
-            android:textAppearance="@style/testimonios"
-            android:layout_marginBottom="6dp"
-            app:layout_constraintBottom_toTopOf="@+id/rvNews"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="HardcodedText" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvNews"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="60dp"
-            tools:itemCount="4"
-            android:orientation="horizontal"
-            tools:listitem="@layout/new_list"
-            app:layout_constraintTop_toBottomOf="@+id/rvWelcome" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </FrameLayout>
