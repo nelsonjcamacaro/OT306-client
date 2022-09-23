@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
@@ -20,9 +21,11 @@ class HomeFragment : Fragment() {
     private lateinit var testimonialAdapter: TestimonialAdapter
     private lateinit var newsAdapter: NewsAdapter
 
+    /** firebaseAnalytis **/
+    private lateinit var firebaseAnalytic: FirebaseAnalytics
+
     private val viewModel : TestimonialsViewModel by viewModels(
         factoryProducer ={ ViewModelFactory()})
-
         
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +38,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firebaseAnalytic = FirebaseAnalytics.getInstance(requireContext())
 
         val adapter = HorizontalAdapter(listOf())
         binding.rvWelcome.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -59,6 +63,22 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(this@HomeFragment.context)
             adapter = testimonialAdapter
         }
+    }
+
+    /** firebase analytics **/
+    private fun logEvents() {
+        //last_news_see_more_pressed': Al presionar la flecha "Ver más" en listado de "Últimas novedades"
+        val bundle = Bundle()
+        bundle.putString("eventLog", "last_news_see_more_pressed")
+        firebaseAnalytic.logEvent("last_news_see_more_pressed", bundle)
+
+        //testimonies_see_more_pressed: Al presionar la flecha "Ver más" en listado de "Testimonios"
+        //slider_retrieve_success': En caso de que el GET del slider haya sido satisfactorio
+        //slider_retrieve_error': En caso de que el GET del slider falle
+        //last_news_retrieve_success': En caso de que el GET de noticias sea satisfactorio
+        //last_news_retrieve_error': En caso de que el GET de noticias falle
+        //testimonios_retrieve_success': En caso de que el GET de testimonios sea satisfactorio
+        //testimonies_retrieve_error': En caso de que el GET de tesimonios falle
     }
 
 
