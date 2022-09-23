@@ -2,15 +2,27 @@
 <resources>
 
     <!-- Margin Dimens -->
-    <dimen name="margin_values">15.44dp</dimen>
-    <dimen name="vertical_margin">15dp</dimen>
+    <dimen name="margin_values">16dp</dimen>
+    <dimen name="vertical_margin_small">8dp</dimen>
+    <dimen name="vertical_margin_medium">15dp</dimen>
+    <dimen name="vertical_margin_large">30dp</dimen>
     <dimen name="horizontal_margin">8dp</dimen>
     <dimen name="padding_values">8dp</dimen>
+
+    <!-- Horizontal Recycler View   -->
+    <dimen name="horizontal_rv_image_height">170dp</dimen>
 
     <!-- Testimonial Dimens -->
     <dimen name="testimonial_card_vertical_margin">8dp</dimen>
     <dimen name="testimonial_card_horizontal_margin">15dp</dimen>
     <dimen name="testimonial_rv_height">244dp</dimen>
     <dimen name="testimonial_image_size">48.24dp</dimen>
+
+    <!-- Activities Fragment Dimens -->
+    <dimen name="activities_vertical_margin">20dp</dimen>
+
+    <!-- Button Dimens -->
+    <dimen name="button_horizontal_padding_values">16dp</dimen>
+    <dimen name="button_vertical_padding_values">10dp</dimen>
 
 </resources>

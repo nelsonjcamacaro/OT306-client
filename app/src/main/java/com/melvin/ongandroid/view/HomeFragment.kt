@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
-import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
-import com.melvin.ongandroid.viewmodel.ViewModelFactory
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
+import com.melvin.ongandroid.viewmodel.ActivityViewModel
+import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
+import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
+import com.melvin.ongandroid.viewmodel.ViewModelFactory
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -24,8 +26,13 @@ class HomeFragment : Fragment() {
     /** firebaseAnalytis **/
     private lateinit var firebaseAnalytic: FirebaseAnalytics
 
+
     private val viewModel : TestimonialsViewModel by viewModels(
-        factoryProducer ={ ViewModelFactory()})
+        factoryProducer ={ ViewModelFactory() })
+
+    private val viewModels: ActivityViewModel by viewModels(
+        factoryProducer = { ActivityViewModelFactory() })
+
         
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +58,14 @@ class HomeFragment : Fragment() {
 
         setUpTestimonialRecyclerView()
         subscribeUi()
+        viewModels.slides.observe(viewLifecycleOwner){activitiesList ->
+            if(activitiesList != null){
+                adapter.activitiesList = activitiesList
+                adapter.notifyDataSetChanged()
+            }
+
+        }
+        viewModels.load()
     }
 
     /*

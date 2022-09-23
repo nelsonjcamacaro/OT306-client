@@ -10,5 +10,6 @@
 
     <!-- Components Colors-->
     <color name="testimonial_card_background">#FDFFA4</color>
+    <color name="red">#FF0000</color>
 
 </resources>
