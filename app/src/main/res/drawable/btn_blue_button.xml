@@ -11,6 +11,6 @@
         android:right="16dp"/>
     <size android:width="146dp"
         android:height="40dp"/>
-    <!--<solid android:color="#00000040"/> -->
+    <solid android:color="@color/buttonBlue"/>
 
 </shape>
