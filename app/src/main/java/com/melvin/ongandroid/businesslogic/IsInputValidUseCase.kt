@@ -1,11 +1,11 @@
-package com.melvin.ongandroid.utils
+package com.melvin.ongandroid.businesslogic
 
 import androidx.core.util.PatternsCompat
 import com.melvin.ongandroid.model.Contact
 
-object MessageValidation {
+class IsInputValidUseCase {
 
-    fun isValidInputData(contact: Contact?) : Boolean {
+    operator fun invoke(contact: Contact?) : Boolean {
         if (contact == null) return false
         return if (contact.name.isNullOrEmpty() || contact.email.isNullOrEmpty() || contact.message.isNullOrEmpty()) {
             false

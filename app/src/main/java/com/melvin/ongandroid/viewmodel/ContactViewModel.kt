@@ -4,9 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.melvin.ongandroid.model.Contact
-import com.melvin.ongandroid.utils.MessageValidation
+import com.melvin.ongandroid.businesslogic.IsInputValidUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ContactViewModel : ViewModel() {
+@HiltViewModel
+class ContactViewModel @Inject constructor(
+    private val isInputValidUseCase : IsInputValidUseCase
+) : ViewModel() {
 
     /*
      * Contact input information Live Data Instance
@@ -29,7 +34,7 @@ class ContactViewModel : ViewModel() {
             email = contact.value?.email,
             message = contact.value?.email
         )
-        _isValidInput.value = MessageValidation.isValidInputData(contact.value)
+        _isValidInput.value = isInputValidUseCase(contact.value)
     }
 
     /*
@@ -41,7 +46,7 @@ class ContactViewModel : ViewModel() {
             email = newEmail,
             message = contact.value?.email
         )
-        _isValidInput.value = MessageValidation.isValidInputData(contact.value)
+        _isValidInput.value = isInputValidUseCase(contact.value)
     }
 
     /*
@@ -53,7 +58,7 @@ class ContactViewModel : ViewModel() {
             email = contact.value?.email,
             message = newMessage
         )
-        _isValidInput.value = MessageValidation.isValidInputData(contact.value)
+        _isValidInput.value = isInputValidUseCase(contact.value)
     }
 
 }

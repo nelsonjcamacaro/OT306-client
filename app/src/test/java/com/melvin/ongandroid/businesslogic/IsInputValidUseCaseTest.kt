@@ -1,17 +1,17 @@
-package com.melvin.ongandroid.utils
-
+package com.melvin.ongandroid.businesslogic
 
 import com.google.common.truth.Truth.assertThat
 import com.melvin.ongandroid.model.Contact
+
 import org.junit.Test
 
-class MessageValidationTest {
+class IsInputValidUseCaseTest {
 
-    private val messageValidation = MessageValidation
+    private val isInputValidUseCase = IsInputValidUseCase()
 
     @Test
     fun `wrong email input should return false`() {
-        val result = messageValidation.isValidInputData(
+        val result = isInputValidUseCase(
             Contact("hola", "mail @email.com", "No se escribir mi mail")
         )
         assertThat(result).isFalse()
@@ -20,7 +20,7 @@ class MessageValidationTest {
     @Test
     fun `null email input should return false`() {
         val result =
-            messageValidation.isValidInputData(
+            isInputValidUseCase(
                 Contact("hola", null, "No escribi mi mail")
             )
         assertThat(result).isFalse()
@@ -29,7 +29,7 @@ class MessageValidationTest {
     @Test
     fun `empty message input should return false`() {
         val result =
-            messageValidation.isValidInputData(
+            isInputValidUseCase(
                 Contact("Nombre", "mail@email.com", "")
             )
         assertThat(result).isFalse()
@@ -38,7 +38,7 @@ class MessageValidationTest {
     @Test
     fun `null name input should return false`() {
         val result =
-            messageValidation.isValidInputData(
+            isInputValidUseCase(
                 Contact(null, "mail@email.com", "Se escribir mi mail pero no tengo nombre")
             )
         assertThat(result).isFalse()
@@ -47,7 +47,7 @@ class MessageValidationTest {
     @Test
     fun `valid input should return true`() {
         val result =
-            messageValidation.isValidInputData(
+            isInputValidUseCase(
                 Contact("Nombre", "mail@email.com", "Se escribir mi mail")
             )
         assertThat(result).isTrue()
