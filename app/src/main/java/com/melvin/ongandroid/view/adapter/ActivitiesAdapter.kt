@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.NewListBinding
-import com.melvin.ongandroid.model.Activity
+import com.melvin.ongandroid.model.InicioActivitys.Activity
 
 class ActivitiesAdapter :
     ListAdapter<Activity, ActivitiesAdapter.ActivitiesViewHolder>(DiffCallBack) {
@@ -43,7 +43,7 @@ class ActivitiesAdapter :
              */
             fun bind(activity: Activity) {
                 binding.apply {
-                    tvNameNews.text = activity.title ?: ""
+                    tvNameNews.text = activity.name ?: ""
                     tvNewDescripss.text = activity.description ?: ""
                     //TODO Uncomment and replace with this when Activity Data Class Is Complete
                     /*
