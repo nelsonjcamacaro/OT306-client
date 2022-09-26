@@ -19,6 +19,17 @@ class OngRemoteDataSource {
                 }
         }
 
+    suspend fun SendContactMessage(post: ContactMessageDto) = withContext(Dispatchers.IO){
+        try {
+            val response: Response<ContactMessageDto> = RetrofitService
+                .instance
+                .create(PostAPIService::class.java)
+                .sendContactMessageToAPI(post)
+
+        }catch (e:Exception){
+            ResultState.Error(Exception(e.message))
+        }
+    }
 }
 
 

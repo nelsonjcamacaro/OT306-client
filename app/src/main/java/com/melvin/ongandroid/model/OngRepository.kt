@@ -11,4 +11,12 @@ class OngRepository(private val remoteDataSource: OngRemoteDataSource) {
            ResultState.Error(e)
        }
    }
+
+    suspend fun SendContactMessage(post: ContactMessageDto) {
+        try {
+            remoteDataSource.SendContactMessage(post)
+        }catch (e:Exception){
+            ResultState.Error(e)
+        }
+    }
 }

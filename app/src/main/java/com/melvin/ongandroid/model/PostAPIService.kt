@@ -8,5 +8,5 @@ interface PostAPIService {
 
 
     @POST("api/contacts")
-    fun sendContactMessageToAPI (@Body contactMessage:ContactMessageDto):Response<ContactMessageDto>
+    suspend fun sendContactMessageToAPI (@Body contactMessage:ContactMessageDto):Response<ContactMessageDto>
 }
