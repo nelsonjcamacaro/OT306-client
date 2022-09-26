@@ -1,17 +1,14 @@
 package com.melvin.ongandroid.view.fragment
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.melvin.ongandroid.databinding.FragmentActivitiesBinding
 import com.melvin.ongandroid.model.InicioActivitys.Activity
 import com.melvin.ongandroid.view.adapter.ActivitiesAdapter
-
 
 class ActivitiesFragment : Fragment() {
     private var _binding: FragmentActivitiesBinding? = null
@@ -21,7 +18,7 @@ class ActivitiesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentActivitiesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -51,11 +48,12 @@ class ActivitiesFragment : Fragment() {
     */
     private fun subscribeUi() {
         //TODO replace this with Api Data
-        /*val previewList = listOf<Activity>(
-            Activity(name = "Actividad de prueba 1", description = "Descripción de la actividad de prueba 1 para ver como se ve corriendo en el emulador, un saludo aca desde Villa Maipu."),
-            Activity(name = "Actividad de prueba 2", description = "Descripción de la actividad de prueba 2 esta va a ser más corta, se me acaba rápido la imaginación.")
+
+        val previewList = listOf<Activity>(
+            Activity(name = "Actividad de prueba 1", description = "Descripción de la actividad de prueba 1 para ver como se ve corriendo en el emulador, un saludo aca desde Villa Maipu.", id = 1, image = "image from preview"),
+            Activity(name = "Actividad de prueba 2", description = "Descripción de la actividad de prueba 2 esta va a ser más corta, se me acaba rápido la imaginación.", id = 2, image = "image from preview")
         )
-        activitiesAdapter.submitList(previewList)*/
+        activitiesAdapter.submitList(previewList)
     }
 
 }

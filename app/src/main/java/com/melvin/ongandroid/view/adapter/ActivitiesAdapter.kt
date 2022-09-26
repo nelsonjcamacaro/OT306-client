@@ -66,9 +66,7 @@ class ActivitiesAdapter :
                 }
 
                 override fun areContentsTheSame(oldItem: Activity, newItem: Activity): Boolean {
-                    //TODO Uncomment and replace with this when Activity Data Class Is Complete
-                    //return oldItem.id == newItem.id
-                    return false
+                    return oldItem.id == newItem.id
                 }
 
             }
