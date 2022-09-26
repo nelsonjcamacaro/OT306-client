@@ -2,18 +2,19 @@ package com.melvin.ongandroid.view
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.melvin.ongandroid.R
-import com.melvin.ongandroid.databinding.FragmentActivitiesBinding
+import androidx.lifecycle.viewModelScope
 import com.melvin.ongandroid.databinding.FragmentContactBinding
 import com.melvin.ongandroid.model.ContactMessageDto
 import com.melvin.ongandroid.model.OngRemoteDataSource
@@ -21,15 +22,15 @@ import com.melvin.ongandroid.model.OngRepository
 import com.melvin.ongandroid.viewmodel.ContactViewModel
 import com.melvin.ongandroid.viewmodel.ContactViewModelFactory
 
+const val TAG = "ContactFragment"
 
 class ContactFragment : Fragment() {
 
-    private var _binding: FragmentContactBinding?= null
+    private var _binding: FragmentContactBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<ContactViewModel> {
         ContactViewModelFactory(OngRepository(OngRemoteDataSource()))
     }
-
 
 
     override fun onCreateView(
@@ -43,19 +44,24 @@ class ContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-          binding.sendMessageBtn.setOnClickListener {
-              sendMessageFromContact()
-          }
+        restoreUIWithUserInput()
 
-        viewModel.messageFromContact.observe(viewLifecycleOwner, Observer {response ->
-            if (response != null){
+        subscribeSendMessageBtn()
+
+        binding.sendMessageBtn.setOnClickListener {
+            sendMessageFromContact()
+            Log.d(TAG, "sendMessageBtn On Click Listener enabled")
+        }
+
+        viewModel.messageFromContact.observe(viewLifecycleOwner, Observer { response ->
+            if (response != null) {
                 executeAlertDialog()
                 Toast.makeText(context, "envio exitoso", Toast.LENGTH_SHORT).show()
 
                 Log.d("Main", response.message.toString())
                 Log.d("Main", response.email.toString())
                 Log.d("Main", response.nameAndLastName.toString())
-            }else{
+            } else {
                 Toast.makeText(context, "error en el envio", Toast.LENGTH_SHORT).show()
             }
 // le da visibilidad al progress bar
@@ -66,27 +72,86 @@ class ContactFragment : Fragment() {
 
         })
 
-
+        setupEditText()
 
     }
 
-// captura los textos del formulario para realizar el POST a la API
-    private fun sendMessageFromContact(){
+    private fun subscribeSendMessageBtn() {
+        viewModel.isValidInput.observe(viewLifecycleOwner) {
+            binding.sendMessageBtn.isEnabled = viewModel.isValidInput.value ?: false
+            Log.d(TAG, "isValidInput LiveData ${viewModel.isValidInput.value}")
+            Log.d(TAG, "sendMessageButton isEnabled ${binding.sendMessageBtn.isEnabled}")
+        }
+    }
+
+    // captura los textos del formulario para realizar el POST a la API
+    private fun sendMessageFromContact() {
         val name = binding.nameET.text.toString()
-        val email= binding.emailET.text.toString()
+        val email = binding.emailET.text.toString()
         val message = binding.messageET.text.toString()
-        viewModel.pushPost(ContactMessageDto(nameAndLastName = name, email = email, message = message))
+        viewModel.pushPost(
+            ContactMessageDto(
+                nameAndLastName = name,
+                email = email,
+                message = message
+            )
+        )
     }
 
-    private fun executeAlertDialog(){
+    private fun executeAlertDialog() {
         //asignando valores al modal dialog
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Envio exitoso")
         builder.setMessage("¡Tu solicitud ha sido enviada con exito!\nPronto nos contactaremos con vos")
-        builder.setPositiveButton("Aceptar",null)
+        builder.setPositiveButton("Aceptar", null)
         builder.show()
         binding.nameET.setText("")
         binding.emailET.setText("")
         binding.messageET.setText("")
     }
+
+    /*
+     * Setup on text change listener of de edit text
+     */
+    private fun setupEditText() {
+        binding.apply {
+            nameET.addTextChangedListener { text ->
+                text?.apply { viewModel.updateName(text.toString()) }
+            }
+            emailET.addTextChangedListener { text ->
+                text?.apply { viewModel.updateEmail(text.toString()) }
+            }
+            messageET.addTextChangedListener { text ->
+                text?.apply { viewModel.updateMessage(text.toString()) }
+            }
+        }
+    }
+
+    /*
+     * Restore user input if the view was destroyed
+     */
+    private fun restoreUIWithUserInput() {
+        if (viewModel.contact.value != null) {
+            binding.apply {
+                if (viewModel.contact.value!!.nameAndLastName != null) {
+                    nameET.setText(viewModel.contact.value!!.nameAndLastName!!.toString())
+                }
+                if (viewModel.contact.value!!.email != null) {
+                    emailET.setText(viewModel.contact.value!!.email!!.toString())
+                }
+                if (viewModel.contact.value!!.message != null) {
+                    messageET.setText(viewModel.contact.value!!.message!!.toString())
+                }
+            }
+        }
+    }
+
+    /*
+     * Restore user input at resume view
+     */
+    override fun onResume() {
+        restoreUIWithUserInput()
+        super.onResume()
+    }
+
 }

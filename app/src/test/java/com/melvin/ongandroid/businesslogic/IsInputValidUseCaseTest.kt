@@ -2,6 +2,7 @@ package com.melvin.ongandroid.businesslogic
 
 import com.google.common.truth.Truth.assertThat
 import com.melvin.ongandroid.model.Contact
+import com.melvin.ongandroid.model.ContactMessageDto
 
 import org.junit.Test
 
@@ -12,7 +13,7 @@ class IsInputValidUseCaseTest {
     @Test
     fun `wrong email input should return false`() {
         val result = isInputValidUseCase(
-            Contact("hola", "mail @email.com", "No se escribir mi mail")
+            ContactMessageDto(nameAndLastName= "hola", email = "mail @email.com", message = "No se escribir mi mail")
         )
         assertThat(result).isFalse()
     }
@@ -21,7 +22,7 @@ class IsInputValidUseCaseTest {
     fun `null email input should return false`() {
         val result =
             isInputValidUseCase(
-                Contact("hola", null, "No escribi mi mail")
+                ContactMessageDto(nameAndLastName = "hola",  message = "No escribi mi mail")
             )
         assertThat(result).isFalse()
     }
@@ -30,7 +31,7 @@ class IsInputValidUseCaseTest {
     fun `empty message input should return false`() {
         val result =
             isInputValidUseCase(
-                Contact("Nombre", "mail@email.com", "")
+                ContactMessageDto(nameAndLastName ="Nombre", email = "mail@email.com")
             )
         assertThat(result).isFalse()
     }
@@ -39,7 +40,7 @@ class IsInputValidUseCaseTest {
     fun `null name input should return false`() {
         val result =
             isInputValidUseCase(
-                Contact(null, "mail@email.com", "Se escribir mi mail pero no tengo nombre")
+                ContactMessageDto(email = "mail@email.com", message = "Se escribir mi mail pero no tengo nombre")
             )
         assertThat(result).isFalse()
     }
@@ -48,7 +49,7 @@ class IsInputValidUseCaseTest {
     fun `valid input should return true`() {
         val result =
             isInputValidUseCase(
-                Contact("Nombre", "mail@email.com", "Se escribir mi mail")
+                ContactMessageDto(nameAndLastName = "Nombre", email = "mail@email.com", message = "Se escribir mi mail")
             )
         assertThat(result).isTrue()
     }
