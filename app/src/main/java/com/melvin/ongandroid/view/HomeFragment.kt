@@ -121,8 +121,6 @@ class HomeFragment : Fragment() {
             Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
         } })
 
-        viewModel.viewModelScope.launch {
-            viewModel.loadTestimonials()
+        viewModel.loadTestimonials()
         }
-    }
 }

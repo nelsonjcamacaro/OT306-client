@@ -4,20 +4,24 @@ import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import retrofit2.awaitResponse
 
 
 class OngRemoteDataSource {
-    suspend fun getTestimonials(netWorkResponse: NetWorkResponse<List<Testimonial>>) = withContext(Dispatchers.IO){
-                try{
-                    val response:Response<TestimonialsResponse> = RetrofitService
-                        .instance
-                        .create(GetTestimonialsService::class.java)
-                        .getTestimonials()
-                    response.body()?: emptyList<Testimonial>()
-                } catch (e:Exception){
-                    ResultState.Error(Exception(e.message))
-                }
+    suspend fun getTestimonials() :List<Testimonial>?{
+
+        val service = RetrofitService
+            .instance
+            .create(GetTestimonialsService::class.java)
+            .getTestimonials()
+        return try {
+            val response: Response<List<Testimonial>> = service.awaitResponse()
+            response.body()
+        } catch (e: Exception) {
+            ResultState.Error(Exception(e.message))
+            null
         }
+    }
 
     suspend fun SendContactMessage(post: ContactMessageDto) = withContext(Dispatchers.IO){
         try {
