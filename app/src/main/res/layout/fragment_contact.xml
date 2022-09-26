@@ -19,6 +19,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/contactProgressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/contactTV"
         android:layout_width="0dp"
@@ -55,7 +65,7 @@
         android:id="@+id/emailET"
         android:layout_width="328dp"
         android:layout_height="40dp"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:background="@drawable/edit_text_border_style"
         android:layout_margin="16dp"
         android:hint="Email"
@@ -71,11 +81,14 @@
         android:id="@+id/messageET"
         android:layout_width="328dp"
         android:layout_height="188dp"
-        android:inputType="text"
+        android:inputType="textLongMessage"
+        android:lines="30"
+        android:minLines="5"
+        android:scrollHorizontally="false"
         android:background="@drawable/edit_text_border_style"
         android:layout_margin="16dp"
         android:hint="Mensaje"
-        android:paddingEnd="260dp"
+        android:paddingEnd="0dp"
         android:paddingBottom="158dp"
         android:textSize="13sp"
         android:textAlignment="textStart"
@@ -83,6 +96,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailET" />
+
+    <!--    <EditText
+        android:id="@+id/addr_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|left"
+        android:inputType="textEmailAddress|textMultiLine"
+        android:lines="20"
+        android:minLines="5"
+        android:scrollHorizontally="false"-->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sendMessageBtn"
@@ -102,6 +125,8 @@
         app:layout_constraintTop_toBottomOf="@+id/messageET"
         android:background="@drawable/btn_blue_button"
         android:elevation="30dp"/>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

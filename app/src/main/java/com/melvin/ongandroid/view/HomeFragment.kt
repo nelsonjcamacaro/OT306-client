@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -101,13 +102,13 @@ class HomeFragment : Fragment() {
     Subscribe all adapters to observe viewModel LiveData
      */
     private fun subscribeUi() {
-    //    subscribeTestimonialAdapter()
+        subscribeTestimonialAdapter()
     }
 
     /*
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
-    /** private fun subscribeTestimonialAdapter() {
+    private fun subscribeTestimonialAdapter() {
 
         viewModel.testimonialsList.observe(viewLifecycleOwner){ testimonial ->
             if (testimonial != null){
@@ -115,9 +116,9 @@ class HomeFragment : Fragment() {
 
             }
             else{
-                //TODO : Show error general de la API
+                Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
             }
 
         }
-    } **/
+    }
 }
