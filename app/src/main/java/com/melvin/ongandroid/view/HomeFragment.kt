@@ -66,10 +66,11 @@ class HomeFragment : Fragment() {
             if(activitiesList != null){
                 adapter.activitiesList = activitiesList
                 adapter.notifyDataSetChanged()
+            }else{
+                Toast.makeText(context,"Incio - Error general ",Toast.LENGTH_SHORT).show()
             }
 
         }
-        viewModels.load()
     }
 
     /*
