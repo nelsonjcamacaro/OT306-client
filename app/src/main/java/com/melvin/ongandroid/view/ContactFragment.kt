@@ -1,5 +1,6 @@
 package com.melvin.ongandroid.view
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -25,7 +26,6 @@ class ContactFragment : Fragment() {
 
     private var _binding: FragmentContactBinding?= null
     private val binding get() = _binding!!
-
     private val viewModel by viewModels<ContactViewModel> {
         ContactViewModelFactory(OngRepository(OngRemoteDataSource()))
     }
@@ -49,6 +49,7 @@ class ContactFragment : Fragment() {
 
         viewModel.messageFromContact.observe(viewLifecycleOwner, Observer {response ->
             if (response != null){
+                executeAlertDialog()
                 Toast.makeText(context, "envio exitoso", Toast.LENGTH_SHORT).show()
 
                 Log.d("Main", response.message.toString())
@@ -57,7 +58,7 @@ class ContactFragment : Fragment() {
             }else{
                 Toast.makeText(context, "error en el envio", Toast.LENGTH_SHORT).show()
             }
-
+// le da visibilidad al progress bar
             viewModel.isLoading.observe(viewLifecycleOwner, Observer {
                 binding.contactProgressBar.isVisible = it
             })
@@ -68,10 +69,24 @@ class ContactFragment : Fragment() {
 
 
     }
+
+// captura los textos del formulario para realizar el POST a la API
     private fun sendMessageFromContact(){
         val name = binding.nameET.text.toString()
         val email= binding.emailET.text.toString()
         val message = binding.messageET.text.toString()
         viewModel.pushPost(ContactMessageDto(nameAndLastName = name, email = email, message = message))
+    }
+
+    private fun executeAlertDialog(){
+        //asignando valores al modal dialog
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Envio exitoso")
+        builder.setMessage("¡Tu solicitud ha sido enviada con exito!\nPronto nos contactaremos con vos")
+        builder.setPositiveButton("Aceptar",null)
+        builder.show()
+        binding.nameET.setText("")
+        binding.emailET.setText("")
+        binding.messageET.setText("")
     }
 }
