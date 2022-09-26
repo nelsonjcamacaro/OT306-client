@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -13,34 +13,37 @@
         app:cardCornerRadius="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/members_photo"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="156dp"
+                android:layout_height="171dp"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/edit_text_border_style"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
+                android:id="@+id/nameMemberTV"
+                android:layout_width="185dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/members_photo" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:id="@+id/rolTV"
+                android:layout_width="185dp"
+                android:layout_height="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/nameMemberTV" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

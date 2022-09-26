@@ -17,6 +17,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="165dp"
+        android:layout_height="36dp"
+        android:text="¡Nosotros!"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:fontFamily="@font/poppins"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/membersRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/members_image_logo" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/membersRecyclerView"
         android:layout_marginTop="50dp"
