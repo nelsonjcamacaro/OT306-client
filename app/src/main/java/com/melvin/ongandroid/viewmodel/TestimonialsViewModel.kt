@@ -12,14 +12,14 @@ class TestimonialsViewModel(private val repository: OngRepository):ViewModel() {
 
     val testimonialsList = MutableLiveData<List<Testimonial>?>(null)
 
-   init {
+   /*init {
        viewModelScope.launch {
            loadTestimonials()
 
        }
-    }
+    }*/
 
-        private suspend fun loadTestimonials(){
+    suspend fun loadTestimonials(){
         repository.getTestimonialsList(object : NetWorkResponse<List<Testimonial>>{
                 override fun onResponse(value: List<Testimonial>?) {
                     testimonialsList.value=value

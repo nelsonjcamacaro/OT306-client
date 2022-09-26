@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
@@ -17,6 +19,7 @@ import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
 import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
 import com.melvin.ongandroid.viewmodel.ViewModelFactory
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -110,15 +113,16 @@ class HomeFragment : Fragment() {
      */
     private fun subscribeTestimonialAdapter() {
 
-        viewModel.testimonialsList.observe(viewLifecycleOwner){ testimonial ->
+        viewModel.testimonialsList.observe(viewLifecycleOwner, Observer { testimonial ->
             if (testimonial != null){
-                testimonialAdapter.submitList(testimonial)
+            testimonialAdapter.submitList(testimonial)
+        }
+        else{
+            Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
+        } })
 
-            }
-            else{
-                Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
-            }
-
+        viewModel.viewModelScope.launch {
+            viewModel.loadTestimonials()
         }
     }
 }
