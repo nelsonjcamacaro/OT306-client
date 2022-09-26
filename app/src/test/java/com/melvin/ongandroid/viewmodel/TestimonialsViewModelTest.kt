@@ -74,6 +74,24 @@ class TestimonialsViewModelTest {
         assert(testimonialsViewModel.testimonialsList.value!!.isEmpty())
     }
 
+    // TODO `Given anResponse error at getTestimonials from mock ONGRespository when View Model is initialized some ViewModel Variable should return the error`()
+
+    // TODO `Given Loading state at getTestimonials from mock ONGRespository when View Model is initialized some ViewModel Variable should return the state of network query`()
+
+    // TODO `Given a ultimasNovedades list from mock ONGRespository when View Model is initialized ultimasNovedades LiveData should return a testimonial list`()
+
+    // TODO `Given a null ultimasNovedades list from mock ONGRespository when View Model is initialized ultimasNovedades LiveData should return null`()
+
+    // TODO `Given an empty ultimasNovedades list from mock ONGRespository when View Model is initialized ultimasNovedades LiveData should return an empty list`()
+
+    // TODO `Given anResponse error at getUltimasNovedades from mock ONGRespository when View Model is initialized some ViewModel Variable should return the error`()
+
+    // TODO `Given Loading state at getUltimasNovedades from mock ONGRespository when View Model is initialized some ViewModel Variable should return the state of network query`()
+
+    // TODO `Given anResponse error at getTestimonials from mock ONGRespository when View Model is initialized some ViewModel Variable should return the error`()
+
+    // TODO `Given onResponse error at all queries from mock ONGRespository when View Model is initialized some ViewModel Variable should return the massive error`()
+
     companion object {
         val fakeTestimonialsList = buildList<Testimonial> {
             repeat(5) {

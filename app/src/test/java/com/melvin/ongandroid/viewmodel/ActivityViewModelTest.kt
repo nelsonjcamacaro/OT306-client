@@ -81,6 +81,10 @@ class ActivityViewModelTest {
         assert(activityViewModel.slides.value!!.isEmpty())
     }
 
+    // TODO `Given anResponse error at getActivities from mock ONGRespository when View Model is initialized some ViewModel Variable should return the error`()
+
+    // TODO `Given Loading state at getActivities from mock ONGRespository when View Model is initialized some ViewModel Variable should return the state of network query`()
+
     companion object {
         val fakeActivitiesList = listOf<Activity>(
             Activity(
