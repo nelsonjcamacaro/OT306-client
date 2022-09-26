@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contactLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ContactFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="32dp"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/contactProgressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/contactTV"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="230dp"
+        android:textAppearance="@style/testimonios"
+        android:text="@string/contactInvitation"
+        android:textColor="@color/black"
+        android:textFontWeight="500"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nameET"
+        android:layout_width="328dp"
+        android:layout_height="40dp"
+        android:inputType="text"
+        android:background="@drawable/edit_text_border_style"
+        android:layout_margin="16dp"
+        android:hint="Nombre y Apellido"
+        android:textSize="13sp"
+        android:textAlignment="textStart"
+        android:textColorHint="@color/hint_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactTV" />
+
+    <EditText
+        android:id="@+id/emailET"
+        android:layout_width="328dp"
+        android:layout_height="40dp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/edit_text_border_style"
+        android:layout_margin="16dp"
+        android:hint="Email"
+        android:paddingEnd="0dp"
+        android:textSize="13sp"
+        android:textAlignment="textStart"
+        android:textColorHint="@color/hint_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameET" />
+
+    <EditText
+        android:id="@+id/messageET"
+        android:layout_width="328dp"
+        android:layout_height="188dp"
+        android:inputType="textLongMessage"
+        android:lines="30"
+        android:minLines="5"
+        android:scrollHorizontally="false"
+        android:background="@drawable/edit_text_border_style"
+        android:layout_margin="16dp"
+        android:hint="Mensaje"
+        android:paddingEnd="0dp"
+        android:paddingBottom="158dp"
+        android:textSize="13sp"
+        android:textAlignment="textStart"
+        android:textColorHint="@color/hint_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailET" />
+
+    <!--    <EditText
+        android:id="@+id/addr_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|left"
+        android:inputType="textEmailAddress|textMultiLine"
+        android:lines="20"
+        android:minLines="5"
+        android:scrollHorizontally="false"-->
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sendMessageBtn"
+        android:layout_width="146dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:text="Enviar mensaje"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:fontFamily="@font/mulish_bold"
+        android:textAllCaps="false"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messageET"
+        android:background="@drawable/btn_blue_button"
+        android:elevation="30dp"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
