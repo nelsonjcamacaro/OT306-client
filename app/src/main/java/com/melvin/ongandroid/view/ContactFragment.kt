@@ -76,6 +76,10 @@ class ContactFragment : Fragment() {
 
     }
 
+    /*
+     * Subscribe send message button to is Valid Input in ViewModel
+     * for instant enabled and disabled button
+     */
     private fun subscribeSendMessageBtn() {
         viewModel.isValidInput.observe(viewLifecycleOwner) {
             binding.sendMessageBtn.isEnabled = viewModel.isValidInput.value ?: false
