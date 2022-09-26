@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -14,19 +15,25 @@ import com.melvin.ongandroid.view.adapter.HorizontalAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
+import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
+import com.melvin.ongandroid.viewmodel.ViewModelFactory
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var testimonialAdapter: TestimonialAdapter
     private lateinit var newsAdapter: NewsAdapter
+
     /** firebaseAnalytis **/
     private lateinit var firebaseAnalytic: FirebaseAnalytics
 
-    //private val viewModel : TestimonialsViewModel by viewModels(
-    //    factoryProducer ={ ViewModelFactory())
+
+    private val viewModel : TestimonialsViewModel by viewModels(
+        factoryProducer ={ ViewModelFactory() })
+
     private val viewModels: ActivityViewModel by viewModels(
         factoryProducer = { ActivityViewModelFactory() })
+
         
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,13 +102,13 @@ class HomeFragment : Fragment() {
     Subscribe all adapters to observe viewModel LiveData
      */
     private fun subscribeUi() {
-    //    subscribeTestimonialAdapter()
+        subscribeTestimonialAdapter()
     }
 
     /*
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
-    /** private fun subscribeTestimonialAdapter() {
+    private fun subscribeTestimonialAdapter() {
 
         viewModel.testimonialsList.observe(viewLifecycleOwner){ testimonial ->
             if (testimonial != null){
@@ -109,9 +116,9 @@ class HomeFragment : Fragment() {
 
             }
             else{
-                //TODO : Show error general de la API
+                Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
             }
 
         }
-    } **/
+    }
 }

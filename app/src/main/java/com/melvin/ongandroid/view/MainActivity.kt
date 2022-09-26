@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
 
         val homeFragment = HomeFragment()
         val activitiesFragment = ActivitiesFragment()
+        val contactFragment = ContactFragment()
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainer, homeFragment)
@@ -24,14 +25,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId){
-                R.id.navContact -> {Toast.makeText(this@MainActivity, "Contacto", Toast.LENGTH_SHORT).show()
+                R.id.navContact -> { supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fragmentContainer, contactFragment)
+                    commit()}
                     true}
+
                 R.id.navHome->{ supportFragmentManager.beginTransaction().apply {
                     replace(R.id.fragmentContainer, homeFragment)
                     commit()}
                     true}
+
                 R.id.navNews-> {Toast.makeText(this@MainActivity, "Novedades", Toast.LENGTH_SHORT).show()
                     true}
+
                 R.id.navTestimonials->{ supportFragmentManager.beginTransaction().apply {
                         replace(R.id.fragmentContainer, activitiesFragment)
                         commit()

@@ -26,7 +26,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/rvWelcome"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Welcome Horizontal Recycler View -->
             <androidx.recyclerview.widget.RecyclerView
@@ -103,11 +103,10 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Space
-                app:layout_constraintTop_toBottomOf="@+id/layout_testimonial"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/vertical_margin_large"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_testimonial" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

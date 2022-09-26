@@ -21,68 +21,66 @@
                 android:id="@+id/image_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/logo"
                 android:layout_marginVertical="@dimen/margin_values"
+                android:src="@drawable/logo"
                 app:layout_constraintBottom_toTopOf="@+id/text_activities_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Title Text View -->
             <TextView
                 android:id="@+id/text_activities_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/vertical_margin_small"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/title_activities"
                 android:textAppearance="@style/testimonios"
-                android:layout_marginBottom="@dimen/vertical_margin_small"
                 app:layout_constraintBottom_toTopOf="@+id/recycler_view_activities"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/image_logo"
-                tools:text="@string/title_activities"
-                />
+                tools:text="@string/title_activities" />
 
             <!-- Activities Horizontal Recycler View -->
+
+            <!-- Join Button -->
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_activities"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                tools:listitem="@layout/new_list"
                 app:layout_constraintBottom_toTopOf="@id/button_join"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_activities_title"
-                />
+                tools:listitem="@layout/new_list" />
 
-            <!-- Join Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_join"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="@dimen/margin_values"
-                android:layout_marginVertical="@dimen/vertical_margin_large"
                 android:layout_alignParentTop="true"
+                android:layout_marginVertical="@dimen/vertical_margin_large"
+                android:layout_marginStart="@dimen/margin_values"
+                android:background="@drawable/btn_red_button"
+                android:elevation="8dp"
                 android:paddingHorizontal="@dimen/button_horizontal_padding_values"
                 android:paddingVertical="@dimen/button_vertical_padding_values"
-                android:background="@drawable/btn_red_button"
                 android:text="@string/button_join"
                 android:textAppearance="@style/text_style_red_button"
-                android:elevation="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_view_activities"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/recycler_view_activities" />
 
             <Space
-                app:layout_constraintTop_toBottomOf="@+id/button_join"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/vertical_margin_large"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_join" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -48,6 +48,7 @@ class ActivitiesFragment : Fragment() {
     */
     private fun subscribeUi() {
         //TODO replace this with Api Data
+
         val previewList = listOf<Activity>(
             Activity(name = "Actividad de prueba 1", description = "Descripción de la actividad de prueba 1 para ver como se ve corriendo en el emulador, un saludo aca desde Villa Maipu.", id = 1, image = "image from preview"),
             Activity(name = "Actividad de prueba 2", description = "Descripción de la actividad de prueba 2 esta va a ser más corta, se me acaba rápido la imaginación.", id = 2, image = "image from preview")
