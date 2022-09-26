@@ -1,7 +1,6 @@
 package com.melvin.ongandroid.businesslogic
 
 import com.google.common.truth.Truth.assertThat
-import com.melvin.ongandroid.model.Contact
 import com.melvin.ongandroid.model.ContactMessageDto
 
 import org.junit.Test

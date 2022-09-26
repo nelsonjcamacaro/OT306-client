@@ -1,7 +1,6 @@
 package com.melvin.ongandroid.businesslogic
 
 import androidx.core.util.PatternsCompat
-import com.melvin.ongandroid.model.Contact
 import com.melvin.ongandroid.model.ContactMessageDto
 
 class IsInputValidUseCase {

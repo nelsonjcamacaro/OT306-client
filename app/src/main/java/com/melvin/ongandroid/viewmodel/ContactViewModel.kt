@@ -6,7 +6,10 @@ import com.melvin.ongandroid.model.ContactMessageDto
 import com.melvin.ongandroid.model.OngRepository
 import kotlinx.coroutines.launch
 
-class ContactViewModel (private val repository: OngRepository): ViewModel() {
+class ContactViewModel (
+    private val repository: OngRepository,
+    private val isInputValidUseCase: IsInputValidUseCase
+): ViewModel() {
     //live data usado para el envio de llamada POST
      var messageFromContact: MutableLiveData<ContactMessageDto> = MutableLiveData()
    //livedata usado para el progress bar
@@ -24,10 +27,6 @@ class ContactViewModel (private val repository: OngRepository): ViewModel() {
         }
     }
 
-
-    // TODO Move this to the constructor
-    private val isInputValidUseCase = IsInputValidUseCase()
-
     /*
      * Temporal contact input information
      */
@@ -37,7 +36,7 @@ class ContactViewModel (private val repository: OngRepository): ViewModel() {
     /*
      * Subscribe Ui Send Message Button to this Boolean
      */
-    private val _isValidInput = MutableLiveData<Boolean>(false)
+    private val _isValidInput = MutableLiveData(false)
     val isValidInput: LiveData<Boolean> get() = _isValidInput
 
     /*
@@ -78,8 +77,8 @@ class ContactViewModel (private val repository: OngRepository): ViewModel() {
 
 }
 
-class ContactViewModelFactory(private val repository: OngRepository) : ViewModelProvider.Factory {
+class ContactViewModelFactory(private val repository: OngRepository, private val inputValidUseCase: IsInputValidUseCase) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(OngRepository::class.java).newInstance(repository)
+        return modelClass.getConstructor(OngRepository::class.java, IsInputValidUseCase::class.java).newInstance(repository,inputValidUseCase)
     }
 }

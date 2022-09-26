@@ -15,6 +15,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import com.melvin.ongandroid.businesslogic.IsInputValidUseCase
 import com.melvin.ongandroid.databinding.FragmentContactBinding
 import com.melvin.ongandroid.model.ContactMessageDto
 import com.melvin.ongandroid.model.OngRemoteDataSource
@@ -29,7 +30,7 @@ class ContactFragment : Fragment() {
     private var _binding: FragmentContactBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<ContactViewModel> {
-        ContactViewModelFactory(OngRepository(OngRemoteDataSource()))
+        ContactViewModelFactory(OngRepository(OngRemoteDataSource()), IsInputValidUseCase())
     }
 
 
