@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
 import com.melvin.ongandroid.view.fragment.ActivitiesFragment
+import com.melvin.ongandroid.view.fragment.MembersFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         val activitiesFragment = ActivitiesFragment()
         val contactFragment = ContactFragment()
-
+        val membersFragment = MembersFragment()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainer, homeFragment)
             commit()
@@ -42,9 +43,11 @@ class MainActivity : AppCompatActivity() {
                         replace(R.id.fragmentContainer, activitiesFragment)
                         commit()
                     }
-                    true
-                }
-                R.id.navStaff->{Toast.makeText(this@MainActivity, "Nosotros", Toast.LENGTH_SHORT).show()
+                    true}
+                R.id.navStaff-> { supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fragmentContainer, membersFragment)
+                        commit()
+                    }
                     true}
                 else -> false
             }
