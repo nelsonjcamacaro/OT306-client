@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.melvin.ongandroid.databinding.MembersCardViewBinding
+import com.melvin.ongandroid.model.NosotrosActivities.MembersList
 
 class MembersAdapter(var membersList:List<MembersList>):RecyclerView.Adapter<MembersAdapter.MembersViewHolder>(){
 
@@ -23,10 +24,11 @@ class MembersAdapter(var membersList:List<MembersList>):RecyclerView.Adapter<Mem
     }
 
     inner class MembersViewHolder(private val binding: MembersCardViewBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(members: MembersList)
+        fun bind(members: MembersList){
         val url = members.image
             binding.nameMemberTV.text = members.name
             binding.rolTV.text = members.description
-        val into = Glide.with(image.context).load(url).into(image)
+        val into = Glide.with(binding.membersPhoto.context).load(url).into(binding.membersPhoto)
+        }
     }
 }
