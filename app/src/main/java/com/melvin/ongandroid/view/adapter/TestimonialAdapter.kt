@@ -1,6 +1,5 @@
 package com.melvin.ongandroid.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,8 +9,7 @@ import com.bumptech.glide.Glide
 import com.melvin.ongandroid.databinding.TestimonialItemBinding
 import com.melvin.ongandroid.model.Testimonial
 
-class TestimonialAdapter :
-    ListAdapter<Testimonial, TestimonialAdapter.TestimonialViewHolder>(DiffCallBack) {
+class TestimonialAdapter : ListAdapter<Testimonial, TestimonialAdapter.TestimonialViewHolder>(DiffCallBack) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,7 +29,6 @@ class TestimonialAdapter :
     override fun onBindViewHolder(holder: TestimonialViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current)
-
     }
 
     class TestimonialViewHolder(
@@ -67,5 +64,4 @@ class TestimonialAdapter :
 
         }
     }
-
 }

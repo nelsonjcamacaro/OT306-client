@@ -7,9 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.news.NewsRepository
+import com.melvin.ongandroid.model.news.NewsViewState
+import com.melvin.ongandroid.model.news.RetrofitClient
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
@@ -17,6 +22,8 @@ import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
 import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
 import com.melvin.ongandroid.viewmodel.ViewModelFactory
+import com.melvin.ongandroid.viewmodel.news.NewsViewModel
+import com.melvin.ongandroid.viewmodel.news.NewsViewModelFactory
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -27,19 +34,20 @@ class HomeFragment : Fragment() {
     /** firebaseAnalytis **/
     private lateinit var firebaseAnalytic: FirebaseAnalytics
 
+    private val newsViewModel by viewModels<NewsViewModel> {
+        NewsViewModelFactory(GetNewsUseCase(NewsRepository(RetrofitClient.webservice)))
+    }
 
-    private val viewModel : TestimonialsViewModel by viewModels(
-        factoryProducer ={ ViewModelFactory() })
+    private val viewModel: TestimonialsViewModel by viewModels(
+        factoryProducer = { ViewModelFactory() })
 
     private val viewModels: ActivityViewModel by viewModels(
         factoryProducer = { ActivityViewModelFactory() })
 
-        
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -47,26 +55,34 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         firebaseAnalytic = FirebaseAnalytics.getInstance(requireContext())
+        setupRvNews()
+        newsUpdateUI() // load news
+        subscribeUi()
 
         val adapter = HorizontalAdapter(listOf())
-        binding.rvWelcome.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvWelcome.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvWelcome.adapter = adapter
 
-        
-        val adapternew = NewsAdapter(listOf())
-        binding.rvNews.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
-        binding.rvNews.adapter = adapternew
-
         setUpTestimonialRecyclerView()
-        subscribeUi()
-        viewModels.slides.observe(viewLifecycleOwner){activitiesList ->
-            if(activitiesList != null){
+
+        viewModels.slides.observe(viewLifecycleOwner) { activitiesList ->
+            if (activitiesList != null) {
                 adapter.activitiesList = activitiesList
                 adapter.notifyDataSetChanged()
-            }else{
-                Toast.makeText(context,"Incio - Error general ",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Incio - Error general ", Toast.LENGTH_SHORT).show()
             }
 
+        }
+    }
+
+    // news adapter setup
+    private fun setupRvNews() {
+        newsAdapter = NewsAdapter()
+        binding.rvNews.apply {
+            adapter = newsAdapter
+            setHasFixedSize(true)
         }
     }
 
@@ -98,7 +114,6 @@ class HomeFragment : Fragment() {
         //testimonies_retrieve_error': En caso de que el GET de tesimonios falle
     }
 
-
     /*
     Subscribe all adapters to observe viewModel LiveData
      */
@@ -106,18 +121,40 @@ class HomeFragment : Fragment() {
         subscribeTestimonialAdapter()
     }
 
+    private fun newsUpdateUI() {
+        newsViewModel.newsData.observe(viewLifecycleOwner, Observer { viewState ->
+            updateUI(viewState)
+        })
+        newsViewModel.loadNews()
+    }
+
+    // news update data
+    private fun updateUI(viewState: NewsViewState) {
+        when (viewState) {
+            is NewsViewState.Loading -> {
+                // show progress bar
+            }
+            is NewsViewState.Content -> {
+                if (viewState.content.isEmpty()) {
+                    binding.rvNews.visibility = View.GONE
+                }
+                newsAdapter.setNewsData(viewState.content.subList(0, 4))
+            }
+            is NewsViewState.Error -> {
+                binding.rvNews.visibility = View.GONE
+            }
+        }
+    }
+
     /*
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
     private fun subscribeTestimonialAdapter() {
-
-        viewModel.testimonialsList.observe(viewLifecycleOwner){ testimonial ->
-            if (testimonial != null){
+        viewModel.testimonialsList.observe(viewLifecycleOwner) { testimonial ->
+            if (testimonial != null) {
                 testimonialAdapter.submitList(testimonial)
-
-            }
-            else{
-                Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "error al pedir los testimonios", Toast.LENGTH_SHORT).show()
             }
 
         }
