@@ -1,12 +1,10 @@
 package com.melvin.ongandroid.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.melvin.ongandroid.BuildConfig
-import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ImageListBinding
 import com.melvin.ongandroid.model.InicioActivitys.Activity
 
@@ -16,7 +14,6 @@ class HorizontalAdapter(var activitiesList: List<Activity>): RecyclerView.Adapte
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ImageListBinding.inflate(layoutInflater, parent, false)
         return Activityviewholder(binding)
-
     }
 
     override fun onBindViewHolder(holder: Activityviewholder, position: Int) {

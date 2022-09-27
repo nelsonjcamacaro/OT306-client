@@ -43,8 +43,8 @@ class ActivitiesAdapter :
              */
             fun bind(activity: Activity) {
                 binding.apply {
-                    tvNameNews.text = activity.name ?: ""
-                    tvNewDescripss.text = activity.description ?: ""
+                    //tvNameNews.text = activity.name ?: ""
+                    //tvNewDescripss.text = activity.description ?: ""
                     //TODO Uncomment and replace with this when Activity Data Class Is Complete
                     /*
                     imageNews.image?.let { imgUrl ->
@@ -53,7 +53,7 @@ class ActivitiesAdapter :
                             .into(imageNews)
                     }
                      */
-                    imageNews.setImageResource(R.drawable.activities_tool_img)
+                    //imageNews.setImageResource(R.drawable.activities_tool_img)
                 }
             }
 
