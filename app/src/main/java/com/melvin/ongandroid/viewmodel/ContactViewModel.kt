@@ -11,22 +11,23 @@ class ContactViewModel (
     private val isInputValidUseCase: IsInputValidUseCase
 ): ViewModel() {
     //live data usado para el envio de llamada POST
-     var messageFromContact: MutableLiveData<ContactMessageDto> = MutableLiveData()
-   //livedata usado para el progress bar
+    var messageFromContact: MutableLiveData<ContactMessageDto> = MutableLiveData()
+
+    //livedata usado para el progress bar
     var isLoading = MutableLiveData<Boolean>()
 
-    fun pushPost(post: ContactMessageDto){
+    fun pushPost(post: ContactMessageDto) {
         viewModelScope.launch {
             isLoading.value = true
             val response = repository.SendContactMessage(post)
             messageFromContact.value = post
 
-            if (response != null){
+            if (response != null) {
                 isLoading.value = false
             }
         }
     }
-
+    /*
     /*
      * Temporal contact input information
      */
@@ -54,6 +55,8 @@ class ContactViewModel (
     /*
      * Call this function on text change listener at email edit text
      */
+
+
     fun updateEmail(newEmail: String?) {
         _contact.value = ContactMessageDto(
             nameAndLastName = contact.value?.nameAndLastName,
@@ -75,6 +78,7 @@ class ContactViewModel (
         _isValidInput.value = isInputValidUseCase(contact.value)
     }
 
+}*/
 }
 
 class ContactViewModelFactory(private val repository: OngRepository, private val inputValidUseCase: IsInputValidUseCase) : ViewModelProvider.Factory {

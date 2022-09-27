@@ -14,6 +14,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
+import com.melvin.ongandroid.view.adapter.MembersAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
