@@ -45,9 +45,9 @@ class ContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        restoreUIWithUserInput()
+       // restoreUIWithUserInput()
 
-        subscribeSendMessageBtn()
+        //subscribeSendMessageBtn()
 
         binding.sendMessageBtn.setOnClickListener {
             sendMessageFromContact()
@@ -73,7 +73,7 @@ class ContactFragment : Fragment() {
 
         })
 
-        setupEditText()
+       // setupEditText()
 
     }
 
@@ -81,13 +81,15 @@ class ContactFragment : Fragment() {
      * Subscribe send message button to is Valid Input in ViewModel
      * for instant enabled and disabled button
      */
+
+    /*
     private fun subscribeSendMessageBtn() {
         viewModel.isValidInput.observe(viewLifecycleOwner) {
             binding.sendMessageBtn.isEnabled = viewModel.isValidInput.value ?: false
             Log.d(TAG, "isValidInput LiveData ${viewModel.isValidInput.value}")
             Log.d(TAG, "sendMessageButton isEnabled ${binding.sendMessageBtn.isEnabled}")
         }
-    }
+    }*/
 
     // captura los textos del formulario para realizar el POST a la API
     private fun sendMessageFromContact() {
@@ -118,6 +120,8 @@ class ContactFragment : Fragment() {
     /*
      * Setup on text change listener of de edit text
      */
+
+    /*
     private fun setupEditText() {
         binding.apply {
             nameET.addTextChangedListener { text ->
@@ -130,11 +134,13 @@ class ContactFragment : Fragment() {
                 text?.apply { viewModel.updateMessage(text.toString()) }
             }
         }
-    }
+    }*/
 
     /*
      * Restore user input if the view was destroyed
      */
+
+    /*
     private fun restoreUIWithUserInput() {
         if (viewModel.contact.value != null) {
             binding.apply {
@@ -148,15 +154,14 @@ class ContactFragment : Fragment() {
                     messageET.setText(viewModel.contact.value!!.message!!.toString())
                 }
             }
-        }
+        }*/
     }
 
     /*
      * Restore user input at resume view
      */
+/*
     override fun onResume() {
         restoreUIWithUserInput()
         super.onResume()
-    }
-
-}
+    }*/

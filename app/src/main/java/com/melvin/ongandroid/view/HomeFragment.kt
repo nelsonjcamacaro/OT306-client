@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
@@ -17,13 +18,16 @@ import com.melvin.ongandroid.model.news.NewsViewState
 import com.melvin.ongandroid.model.news.RetrofitClient
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
+import com.melvin.ongandroid.view.adapter.MembersAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
 import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
 import com.melvin.ongandroid.viewmodel.ViewModelFactory
+import kotlinx.coroutines.launch
 import com.melvin.ongandroid.viewmodel.news.NewsViewModel
 import com.melvin.ongandroid.viewmodel.news.NewsViewModelFactory
+
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -150,13 +154,17 @@ class HomeFragment : Fragment() {
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
     private fun subscribeTestimonialAdapter() {
-        viewModel.testimonialsList.observe(viewLifecycleOwner) { testimonial ->
-            if (testimonial != null) {
-                testimonialAdapter.submitList(testimonial)
-            } else {
-                Toast.makeText(context, "error al pedir los testimonios", Toast.LENGTH_SHORT).show()
-            }
 
+        viewModel.testimonialsList.observe(viewLifecycleOwner, Observer { testimonial ->
+            if (testimonial != null){
+            testimonialAdapter.submitList(testimonial)
+        }
+        else{
+            Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
+        } })
+
+        viewModel.viewModelScope.launch {
+            viewModel.loadTestimonials()
         }
     }
 }
