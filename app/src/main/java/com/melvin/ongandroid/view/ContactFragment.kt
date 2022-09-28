@@ -2,8 +2,6 @@ package com.melvin.ongandroid.view
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +12,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import com.melvin.ongandroid.businesslogic.IsInputValidUseCase
 import com.melvin.ongandroid.databinding.FragmentContactBinding
 import com.melvin.ongandroid.model.ContactMessageDto
@@ -37,7 +34,7 @@ class ContactFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentContactBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -45,9 +42,9 @@ class ContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       // restoreUIWithUserInput()
+        restoreUIWithUserInput()
 
-        //subscribeSendMessageBtn()
+        subscribeSendMessageBtn()
 
         binding.sendMessageBtn.setOnClickListener {
             sendMessageFromContact()
@@ -73,7 +70,7 @@ class ContactFragment : Fragment() {
 
         })
 
-       // setupEditText()
+        setupEditText()
 
     }
 
@@ -81,15 +78,13 @@ class ContactFragment : Fragment() {
      * Subscribe send message button to is Valid Input in ViewModel
      * for instant enabled and disabled button
      */
-
-    /*
     private fun subscribeSendMessageBtn() {
         viewModel.isValidInput.observe(viewLifecycleOwner) {
             binding.sendMessageBtn.isEnabled = viewModel.isValidInput.value ?: false
             Log.d(TAG, "isValidInput LiveData ${viewModel.isValidInput.value}")
             Log.d(TAG, "sendMessageButton isEnabled ${binding.sendMessageBtn.isEnabled}")
         }
-    }*/
+    }
 
     // captura los textos del formulario para realizar el POST a la API
     private fun sendMessageFromContact() {
@@ -120,8 +115,6 @@ class ContactFragment : Fragment() {
     /*
      * Setup on text change listener of de edit text
      */
-
-    /*
     private fun setupEditText() {
         binding.apply {
             nameET.addTextChangedListener { text ->
@@ -134,13 +127,11 @@ class ContactFragment : Fragment() {
                 text?.apply { viewModel.updateMessage(text.toString()) }
             }
         }
-    }*/
+    }
 
     /*
      * Restore user input if the view was destroyed
      */
-
-    /*
     private fun restoreUIWithUserInput() {
         if (viewModel.contact.value != null) {
             binding.apply {
@@ -154,14 +145,15 @@ class ContactFragment : Fragment() {
                     messageET.setText(viewModel.contact.value!!.message!!.toString())
                 }
             }
-        }*/
+        }
     }
 
     /*
      * Restore user input at resume view
      */
-/*
     override fun onResume() {
         restoreUIWithUserInput()
         super.onResume()
-    }*/
+    }
+
+}
