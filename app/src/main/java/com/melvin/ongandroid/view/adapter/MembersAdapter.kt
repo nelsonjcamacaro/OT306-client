@@ -3,10 +3,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.MembersCardViewBinding
-import com.melvin.ongandroid.model.NosotrosActivities.MembersList
+import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
+import com.melvin.ongandroid.model.nosotrosActivities.model.getFormattedDescription
 
-class MembersAdapter(var membersList:List<MembersList>):RecyclerView.Adapter<MembersAdapter.MembersViewHolder>(){
+class MembersAdapter(var members:List<MemberDto>):RecyclerView.Adapter<MembersAdapter.MembersViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
         val layoutInflater =LayoutInflater.from(parent.context)
@@ -15,19 +17,19 @@ class MembersAdapter(var membersList:List<MembersList>):RecyclerView.Adapter<Mem
     }
 
     override fun onBindViewHolder(holder: MembersViewHolder, position: Int) {
-        holder.bind(membersList[position])
+        holder.bind(members[position])
     }
 
     override fun getItemCount(): Int {
-        return membersList.size
+        return members.size
     }
 
     inner class MembersViewHolder(private val binding: MembersCardViewBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(members: MembersList){
-        val url = members.image
-            binding.nameMemberTV.text = members.name
-            binding.rolTV.text = members.description
-        val into = Glide.with(binding.membersPhoto.context).load(url).into(binding.membersPhoto)
+        fun bind(member: MemberDto){
+        val url = member.image
+            binding.nameMemberTV.text = member.name
+            binding.rolTV.text = member.getFormattedDescription()
+        Glide.with(binding.membersPhoto.context).load(url).into(binding.membersPhoto)
         }
     }
 }

@@ -1,34 +1,28 @@
 package com.melvin.ongandroid.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.melvin.ongandroid.model.InicioActivitys.RepositoryError
-import com.melvin.ongandroid.model.InicioActivitys.RepositoryResponse
-import com.melvin.ongandroid.model.InicioActivitys.ResponseListener
-import com.melvin.ongandroid.model.NosotrosActivities.Members
-import com.melvin.ongandroid.model.NosotrosActivities.MembersList
-import com.melvin.ongandroid.model.NosotrosActivities.MembersRepository
+import com.melvin.ongandroid.model.nosotrosActivities.MembersRepository
+import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.launch
 
-class MembersViewModel(private val repository: MembersRepository): ViewModel(){
-    val menbers = MutableLiveData<List<MembersList>>()
+class MembersViewModel(private val repository: MembersRepository) : ViewModel() {
+
+    private var _membersResponse = MutableLiveData<ResultState<Any>>()
+    val membersResponse: LiveData<ResultState<Any>> get() = _membersResponse
+
     init {
-        viewModelScope.launch {
-            load()
-        }
+        load()
     }
 
-    private suspend fun load(){
-        repository.getMembers(object : ResponseListener<Members>{
-            override fun onError(repositoryError: RepositoryError) {
-
+    private fun load() {
+        viewModelScope.launch {
+            repository.getMembersResponse().collect() { resultState ->
+                _membersResponse.value = resultState
             }
-
-            override fun onResponse(response: RepositoryResponse<Members>) {
-                menbers.value = response.data.members
-            }
-        })
+        }
     }
 
 }
