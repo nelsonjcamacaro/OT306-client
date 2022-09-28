@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentMembersBinding
 import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.utils.LoadingSpinner
@@ -17,7 +16,6 @@ import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.MembersAdapter
 import com.melvin.ongandroid.viewmodel.MembersViewModel
 import com.melvin.ongandroid.viewmodel.MembersViewModelFactory
-import com.melvin.ongandroid.viewmodel.ViewModelFactory
 
 const val TAG = "MembersFragment"
 
@@ -46,14 +44,17 @@ class MembersFragment : Fragment() {
         loadingSpinner = LoadingSpinner()
 
         val manager = MembersAdapter(listOf())
-        binding.membersRV.layoutManager = GridLayoutManager(context,2)
+        binding.membersRV.layoutManager = GridLayoutManager(context, 2)
         binding.membersRV.adapter = manager
 
         subscribeUi()
     }
 
+    /*
+     * Subscribe Ui to Result State to Members Result State Live Data
+     */
     private fun subscribeUi() {
-        membersViewModel.membersResponse.observe( viewLifecycleOwner, Observer { resultState ->
+        membersViewModel.membersResultState.observe(viewLifecycleOwner, Observer { resultState ->
             when (resultState) {
                 is ResultState.Loading -> {
                     Log.d(TAG, "Data is loading")
@@ -61,9 +62,10 @@ class MembersFragment : Fragment() {
                 }
                 is ResultState.Success -> {
                     Log.d(TAG, "Data successfully retrieved")
-                    Log.d(TAG, resultState.data.toString())
                     setLoadingSpinner(false)
-                    val membersAdapter = MembersAdapter(resultState.data as List<MemberDto>)
+                    val membersAdapter = (resultState.data as? List<MemberDto?>)?.let { members ->
+                        MembersAdapter(members)
+                    }
                     binding.membersRV.adapter = membersAdapter
                 }
                 is ResultState.Error -> {
@@ -74,6 +76,11 @@ class MembersFragment : Fragment() {
         })
     }
 
+    /*
+     * Call with isLoading = true if Result State is Loading. Function will start the animation.
+     * Call with isLoading = false if Result State isn´t Loading. Function will stop the animation
+     * and restore the image logo
+     */
     private fun setLoadingSpinner(isLoading: Boolean) {
         if (isLoading) {
             loadingSpinner.start(binding.membersImageLogo)
@@ -81,4 +88,5 @@ class MembersFragment : Fragment() {
             loadingSpinner.stop(binding.membersImageLogo)
         }
     }
+
 }

@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class MembersResponse(
     @SerializedName ("success")
-    val succes: Boolean = false,
+    val succes: Boolean? = false,
     @SerializedName ("data")
-    val members: List<MemberDto> = emptyList(),
+    val data: List<MemberDto?>? = emptyList(),
     @SerializedName ("message")
     val message : String? = ""
 )

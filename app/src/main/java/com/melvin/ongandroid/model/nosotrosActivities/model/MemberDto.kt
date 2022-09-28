@@ -5,19 +5,19 @@ import com.melvin.ongandroid.utils.AppConstants
 
 data class MemberDto(
     @SerializedName ("id")
-    val id: Int = -1,
+    val id: Int? = -1,
     @SerializedName ("name")
-    val name: String = "",
+    val name: String? = "",
     @SerializedName ("image")
-    val image: String = "",
+    val image: String? = "",
     @SerializedName ("description")
-    val description: String = "",
+    val description: String? = "",
     @SerializedName ("facebookUrl")
-    val facebookUrl: String = "",
+    val facebookUrl: String? = "",
     @SerializedName ("linkedinUrl")
-    val linkedinUrl: String = "",
+    val linkedinUrl: String? = "",
     @SerializedName ("created_at")
-    val created_at: String = "",
+    val created_at: String? = "",
     @SerializedName ("updated_at")
     val updated_at: String? = "",
     @SerializedName ("deleted_at")
@@ -26,4 +26,4 @@ data class MemberDto(
     val group_id: Any? = ""
 )
 
-fun MemberDto.getFormattedDescription() = this.description.replace(AppConstants.FORMAT_DESCRIPTION, "")
+fun MemberDto.getFormattedDescription() = this.description?.replace(AppConstants.FORMAT_DESCRIPTION, "") ?: ""

@@ -8,7 +8,7 @@ import com.melvin.ongandroid.databinding.MembersCardViewBinding
 import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.model.nosotrosActivities.model.getFormattedDescription
 
-class MembersAdapter(var members:List<MemberDto>):RecyclerView.Adapter<MembersAdapter.MembersViewHolder>(){
+class MembersAdapter(var members :List<MemberDto?>):RecyclerView.Adapter<MembersAdapter.MembersViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
         val layoutInflater =LayoutInflater.from(parent.context)
@@ -17,19 +17,25 @@ class MembersAdapter(var members:List<MemberDto>):RecyclerView.Adapter<MembersAd
     }
 
     override fun onBindViewHolder(holder: MembersViewHolder, position: Int) {
-        holder.bind(members[position])
+        members[position]?.let {
+            holder.bind(it)
+        }
     }
 
     override fun getItemCount(): Int {
         return members.size
     }
 
+    /*
+     * Bind every member item to its own Member Card View
+     */
     inner class MembersViewHolder(private val binding: MembersCardViewBinding):RecyclerView.ViewHolder(binding.root) {
         fun bind(member: MemberDto){
-        val url = member.image
-            binding.nameMemberTV.text = member.name
+            binding.nameMemberTV.text = member.name ?: ""
             binding.rolTV.text = member.getFormattedDescription()
-        Glide.with(binding.membersPhoto.context).load(url).into(binding.membersPhoto)
+            member.image?.let { url ->
+                Glide.with(binding.membersPhoto.context).load(url).into(binding.membersPhoto)
+            }
         }
     }
 }

@@ -10,17 +10,20 @@ import kotlinx.coroutines.launch
 
 class MembersViewModel(private val repository: MembersRepository) : ViewModel() {
 
-    private var _membersResponse = MutableLiveData<ResultState<Any>>()
-    val membersResponse: LiveData<ResultState<Any>> get() = _membersResponse
+    private var _membersResultState = MutableLiveData<ResultState<Any>>()
+    val membersResultState: LiveData<ResultState<Any>> get() = _membersResultState
 
     init {
-        load()
+        loadMembersResult()
     }
 
-    private fun load() {
+    /*
+     * Load result state from Members Repository
+     */
+    fun loadMembersResult() {
         viewModelScope.launch {
             repository.getMembersResponse().collect() { resultState ->
-                _membersResponse.value = resultState
+                _membersResultState.value = resultState
             }
         }
     }
