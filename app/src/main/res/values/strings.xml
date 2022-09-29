@@ -26,5 +26,6 @@
     <string name="contactInvitation">¡Contactate con nosotros!</string>
     <string name="nosotrosFragmentTitle">¡Nosotros!</string>
     <string name="loading">Loading...</string>
+    <string name="detalle">Detalle</string>
 
 </resources>

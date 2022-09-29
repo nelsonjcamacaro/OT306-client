@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.melvin.ongandroid.databinding.FragmentMembersBinding
 import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
@@ -20,7 +22,7 @@ import com.melvin.ongandroid.viewmodel.MembersViewModelFactory
 const val TAG = "MembersFragment"
 
 @Suppress("UNCHECKED_CAST")
-class MembersFragment : Fragment() {
+class MembersFragment : Fragment(), MembersAdapter.OnMembersClicked {
 
     private var _binding: FragmentMembersBinding? = null
     private val binding get() = _binding!!
@@ -43,7 +45,7 @@ class MembersFragment : Fragment() {
 
         loadingSpinner = LoadingSpinner()
 
-        val manager = MembersAdapter(listOf())
+        val manager = MembersAdapter(listOf(), this)
         binding.membersRV.layoutManager = GridLayoutManager(context, 2)
         binding.membersRV.adapter = manager
 
@@ -63,8 +65,8 @@ class MembersFragment : Fragment() {
                 is ResultState.Success -> {
                     Log.d(TAG, "Data successfully retrieved")
                     setLoadingSpinner(false)
-                    val membersAdapter = (resultState.data as? List<MemberDto?>)?.let { members ->
-                        MembersAdapter(members)
+                    val membersAdapter = (resultState.data as? List<MemberDto>)?.let { members ->
+                        MembersAdapter(members, this@MembersFragment)
                     }
                     binding.membersRV.adapter = membersAdapter
                 }
@@ -89,4 +91,10 @@ class MembersFragment : Fragment() {
         }
     }
 
+    // onClick listener members
+    override fun onMemberClickListener(member: MemberDto, position: Int) {
+        // navigate to detail member fragment
+        val action = MembersFragmentDirections.actionMembersFragmentToDetailFragment()
+        findNavController().navigate(action)
+    }
 }
