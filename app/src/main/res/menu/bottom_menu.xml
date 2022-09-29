@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navHome"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/title_home" />
     <item
@@ -9,15 +9,15 @@
         android:icon="@drawable/ic_staff"
         android:title="@string/title_us" />
     <item
-        android:id="@+id/navNews"
+        android:id="@+id/novedadesFragment"
         android:icon="@drawable/ic_news"
         android:title="@string/title_news" />
     <item
-        android:id="@+id/navContact"
+        android:id="@+id/contactFragment"
         android:icon="@drawable/ic_contact"
         android:title="@string/title_contact" />
     <item
-        android:id="@+id/navTestimonials"
+        android:id="@+id/activitiesFragment"
         android:icon="@drawable/ic_testimonials"
         android:title="@string/title_activities" />
 </menu>

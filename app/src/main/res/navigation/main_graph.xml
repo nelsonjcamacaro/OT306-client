@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.melvin.ongandroid.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/novedadesFragment"
+        android:name="com.melvin.ongandroid.view.fragment.NovedadesFragment"
+        android:label="fragment_novedades"
+        tools:layout="@layout/fragment_novedades" />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.melvin.ongandroid.view.ContactFragment"
+        android:label="fragment_contact"
+        tools:layout="@layout/fragment_contact" />
+    <fragment
+        android:id="@+id/activitiesFragment"
+        android:name="com.melvin.ongandroid.view.fragment.ActivitiesFragment"
+        android:label="fragment_activities"
+        tools:layout="@layout/fragment_activities" />
+</navigation>
