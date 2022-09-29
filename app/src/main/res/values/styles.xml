@@ -282,13 +282,16 @@
         <item name="boxBackgroundColor">@color/white</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="helperTextEnabled">false</item>
-        <item name="android:textAppearance">@style/InputTextFieldStyle.App.Login</item>
+        <item name="hintTextAppearance">@style/text_style_hint_login</item>
+        <item name="android:textColorHint">@color/hint_color</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.LoginComponent</item>
     </style>
 
     <!-- Input Text Layout Login Field Error -->
     <style name="InputTextLayoutStyle.App.LoginError" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundColor">@color/white</item>
+        <item name="hintTextAppearance">@style/text_style_hint_login</item>
+        <item name="android:textColorHint">@color/hint_color</item>
         <item name="errorEnabled">true</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeColor">@color/red</item>

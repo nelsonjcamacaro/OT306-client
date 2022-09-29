@@ -68,8 +68,7 @@
                 android:layout_marginVertical="@dimen/vertical_margin_small"
                 app:layout_constraintBottom_toTopOf="@+id/input_text_layout_email"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/InputTextLayoutStyle.App.Login"
-                tools:textColorHint="@color/hint_color">
+                style="@style/InputTextLayoutStyle.App.Login">
 
                 <!-- Name and SourName Input Edit Text -->
                 <com.google.android.material.textfield.TextInputEditText
@@ -91,8 +90,7 @@
                 android:hint="@string/hint_email"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_text_layout_name"
-                style="@style/InputTextLayoutStyle.App.Login"
-                tools:textColorHint="@color/hint_color">
+                style="@style/InputTextLayoutStyle.App.Login">
 
                 <!-- Email Input Edit Text -->
                 <com.google.android.material.textfield.TextInputEditText
@@ -114,8 +112,7 @@
                 android:hint="@string/hint_password"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_text_layout_email"
-                style="@style/InputTextLayoutStyle.App.Login"
-                tools:textColorHint="@color/hint_color">
+                style="@style/InputTextLayoutStyle.App.Login">
 
                 <!-- Password Input Edit Text -->
                 <com.google.android.material.textfield.TextInputEditText
@@ -135,8 +132,7 @@
                 android:hint="@string/hint_repeat_password"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_text_layout_password"
-                style="@style/InputTextLayoutStyle.App.Login"
-                tools:textColorHint="@color/hint_color">
+                style="@style/InputTextLayoutStyle.App.Login">
 
                 <!-- Repeat Password Input Edit Text -->
                 <com.google.android.material.textfield.TextInputEditText
