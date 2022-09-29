@@ -25,4 +25,8 @@
     <dimen name="button_horizontal_padding_values">16dp</dimen>
     <dimen name="button_vertical_padding_values">10dp</dimen>
 
+    <!-- Login Fragment Logo -->
+    <dimen name="big_logo_width">155dp</dimen>
+    <dimen name="big_logo_height">70dp</dimen>
+
 </resources>
