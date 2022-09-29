@@ -10,15 +10,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.news.NewsViewState
 import com.melvin.ongandroid.model.news.RetrofitClient
+import com.melvin.ongandroid.utils.AppConstants
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
-import com.melvin.ongandroid.view.adapter.MembersAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
@@ -28,14 +29,12 @@ import kotlinx.coroutines.launch
 import com.melvin.ongandroid.viewmodel.news.NewsViewModel
 import com.melvin.ongandroid.viewmodel.news.NewsViewModelFactory
 
-
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var testimonialAdapter: TestimonialAdapter
     private lateinit var newsAdapter: NewsAdapter
 
-    /** firebaseAnalytis **/
     private lateinit var firebaseAnalytic: FirebaseAnalytics
 
     private val newsViewModel by viewModels<NewsViewModel> {
@@ -146,8 +145,20 @@ class HomeFragment : Fragment() {
             }
             is NewsViewState.Error -> {
                 binding.rvNews.visibility = View.GONE
+                // show error message and reload data
+                errorSnackBar(AppConstants.SET_MESSAGE) {
+                    newsViewModel.loadNews()
+                }
             }
         }
+    }
+    // error message snackBar
+    private fun errorSnackBar(message: String, reloadData: () -> Unit) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_INDEFINITE)
+            .setAction(AppConstants.POSITIVE_BUTTON) {
+                reloadData()
+            }
+            .show()
     }
 
     /*
