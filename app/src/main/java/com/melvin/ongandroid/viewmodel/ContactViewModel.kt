@@ -27,7 +27,7 @@ class ContactViewModel (
             }
         }
     }
-    /*
+
     /*
      * Temporal contact input information
      */
@@ -55,8 +55,6 @@ class ContactViewModel (
     /*
      * Call this function on text change listener at email edit text
      */
-
-
     fun updateEmail(newEmail: String?) {
         _contact.value = ContactMessageDto(
             nameAndLastName = contact.value?.nameAndLastName,
@@ -78,7 +76,6 @@ class ContactViewModel (
         _isValidInput.value = isInputValidUseCase(contact.value)
     }
 
-}*/
 }
 
 class ContactViewModelFactory(private val repository: OngRepository, private val inputValidUseCase: IsInputValidUseCase) : ViewModelProvider.Factory {

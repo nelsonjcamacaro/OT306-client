@@ -18,9 +18,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/members_title"
         android:layout_width="165dp"
         android:layout_height="36dp"
-        android:text="¡Nosotros!"
+        android:text="@string/nosotrosFragmentTitle"
         android:textAlignment="center"
         android:gravity="center"
         android:fontFamily="@font/poppins_bold"
