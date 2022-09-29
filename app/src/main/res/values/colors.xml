@@ -13,5 +13,6 @@
     <color name="red">#FF0000</color>
     <color name="hint_color">#B0B0B0</color>
     <color name="buttonBlue">#0038FF</color>
+    <color name="light_grey">#F1F1F1</color>
 
 </resources>

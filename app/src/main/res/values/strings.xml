@@ -21,10 +21,25 @@
     <!-- Tools for preview -->
     <string name="preview_tool_activity_name">Nombre de la actividad </string>
     <string name="preview_tool_activity_description">Descripcion de la actividad, aquí escrobo una descripción de la actividad, que tenga palabras de diferentes longitudes, para poder ver bien como queda el texto en pantalla.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="contactInvitation">¡Contactate con nosotros!</string>
     <string name="nosotrosFragmentTitle">¡Nosotros!</string>
     <string name="loading">Loading...</string>
+
+    <!-- Login Activity   -->
+    <!-- Title -->
+    <string name="ong_name">SOMOS MAS</string>
+    <!-- Hints -->
+    <string name="hint_name">Nombre y Apellido</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_repeat_password">Repite la contraseña</string>
+    <!-- Button -->
+    <string name="button_register">Registrarme</string>
+    <string name="button_login">Login</string>
+    <string name="text_have_account">Ya tienes cuenta? Ingresá!</string>
+    <string name="text_dont_have_account">No tienes cuenta? Registrate!</string>
+    <!-- Requirements -->
+    <string name="obligatory_field">*Campo obligatorio</string>
 
 </resources>
