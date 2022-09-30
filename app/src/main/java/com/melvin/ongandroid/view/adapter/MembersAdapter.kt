@@ -1,24 +1,34 @@
 package com.melvin.ongandroid.view.adapter
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.MembersCardViewBinding
 import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.model.nosotrosActivities.model.getFormattedDescription
 
-class MembersAdapter(var members :List<MemberDto?>):RecyclerView.Adapter<MembersAdapter.MembersViewHolder>(){
+class MembersAdapter(
+    var members: List<MemberDto>,
+    private val onClickMember: OnMembersClicked
+) :
+    RecyclerView.Adapter<MembersAdapter.MembersViewHolder>() {
+
+    interface OnMembersClicked {
+        fun onMemberClickListener(member: MemberDto, position: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MembersViewHolder {
-        val layoutInflater =LayoutInflater.from(parent.context)
-        val binding = MembersCardViewBinding.inflate(layoutInflater,parent,false)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = MembersCardViewBinding.inflate(layoutInflater, parent, false)
         return MembersViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MembersViewHolder, position: Int) {
-        members[position]?.let {
-            holder.bind(it)
+        val member = members[position]
+        holder.bind(member)
+        holder.itemView.setOnClickListener {
+            onClickMember.onMemberClickListener(members[position],position)
         }
     }
 
@@ -29,8 +39,9 @@ class MembersAdapter(var members :List<MemberDto?>):RecyclerView.Adapter<Members
     /*
      * Bind every member item to its own Member Card View
      */
-    inner class MembersViewHolder(private val binding: MembersCardViewBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(member: MemberDto){
+    inner class MembersViewHolder(private val binding: MembersCardViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(member: MemberDto) {
             binding.nameMemberTV.text = member.name ?: ""
             binding.rolTV.text = member.getFormattedDescription()
             member.image?.let { url ->

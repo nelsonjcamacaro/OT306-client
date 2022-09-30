@@ -25,4 +25,22 @@
         android:name="com.melvin.ongandroid.view.fragment.ActivitiesFragment"
         android:label="fragment_activities"
         tools:layout="@layout/fragment_activities" />
+    <fragment
+        android:id="@+id/membersFragment"
+        android:name="com.melvin.ongandroid.view.fragment.MembersFragment"
+        android:label="fragment_members"
+        tools:layout="@layout/fragment_members" >
+        <action
+            android:id="@+id/action_membersFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.melvin.ongandroid.view.fragment.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <action
+            android:id="@+id/action_detailFragment_to_membersFragment"
+            app:destination="@id/membersFragment" />
+    </fragment>
 </navigation>
