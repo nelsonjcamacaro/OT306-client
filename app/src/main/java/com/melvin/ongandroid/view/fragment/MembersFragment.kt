@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.melvin.ongandroid.databinding.FragmentMembersBinding
 import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
+import com.melvin.ongandroid.utils.Extensions
 import com.melvin.ongandroid.utils.LoadingSpinner
 import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.MembersAdapter
@@ -61,16 +62,16 @@ class MembersFragment : Fragment() {
                     setLoadingSpinner(true)
                 }
                 is ResultState.Success -> {
-                    Log.d(TAG, "Data successfully retrieved")
-                    setLoadingSpinner(false)
-                    val membersAdapter = (resultState.data as? List<MemberDto?>)?.let { members ->
-                        MembersAdapter(members)
+                    if (resultState.data == null) {
+                        showErrorSnackBar()
+                    } else {
+                        val membersList = (resultState.data as? List<MemberDto?>) ?: emptyList()
+                        if (membersList.isNotEmpty()) setMembersAdapter(membersList) else showErrorSnackBar()
                     }
-                    binding.membersRV.adapter = membersAdapter
                 }
                 is ResultState.Error -> {
-                    Log.d(TAG, resultState.exception.toString())
-                    setLoadingSpinner(false)
+                    Log.e(TAG, resultState.exception.toString())
+                    showErrorSnackBar()
                 }
             }
         })
@@ -88,5 +89,29 @@ class MembersFragment : Fragment() {
             loadingSpinner.stop(binding.membersImageLogo)
         }
     }
+
+    /*
+     * Call it when the members list is retrieve successfully
+     * Set list to adapter for Members Recycler View
+     */
+    private fun setMembersAdapter(members: List<MemberDto?>){
+        Log.d(TAG, "Data successfully retrieved")
+        setLoadingSpinner(false)
+        binding.membersRV.adapter = MembersAdapter(members)
+    }
+
+    /*
+     * Call it when have an error result from membersViewModel.memberResultState
+     * or when the members list is empty.
+     * Function will stop the loading animation, inform to user the error and give him a button
+     * to retry the petition.
+     */
+    private fun showErrorSnackBar(){
+        setLoadingSpinner(false)
+        Extensions.errorSnackBar(binding.root) {
+            membersViewModel.loadMembersResult()
+        }
+    }
+
 
 }
