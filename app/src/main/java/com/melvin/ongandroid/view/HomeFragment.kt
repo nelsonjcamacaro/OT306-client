@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isInvisible
+import androidx.core.view.marginTop
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.melvin.ongandroid.R
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.model.Testimonial
@@ -21,6 +24,7 @@ import com.melvin.ongandroid.model.news.NewsViewState
 import com.melvin.ongandroid.model.news.RetrofitClient
 import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.utils.AppConstants
+import com.melvin.ongandroid.utils.LoadingSpinner
 import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
@@ -39,6 +43,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var testimonialAdapter: TestimonialAdapter
     private lateinit var newsAdapter: NewsAdapter
+    private lateinit var loadingSpinner: LoadingSpinner
 
     private lateinit var firebaseAnalytic: FirebaseAnalytics
 
@@ -63,6 +68,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         firebaseAnalytic = FirebaseAnalytics.getInstance(requireContext())
+        loadingSpinner = LoadingSpinner()
         setupRvNews()
         newsUpdateUI() // load news
         subscribeUi()
@@ -143,12 +149,14 @@ class HomeFragment : Fragment() {
         when (viewState) {
             is NewsViewState.Loading -> {
                 // show progress bar
+                setLoadingSpinner(true)
             }
             is NewsViewState.Content -> {
                 if (viewState.content.isEmpty()) {
                     binding.rvNews.visibility = View.GONE
                 }
                 newsAdapter.setNewsData(viewState.content.subList(0, 4))
+                setLoadingSpinner(false)
             }
             is NewsViewState.Error -> {
                 binding.rvNews.visibility = View.GONE
@@ -176,7 +184,7 @@ class HomeFragment : Fragment() {
             when (resultState) {
                 is ResultState.Loading -> {
                     Log.d(com.melvin.ongandroid.view.fragment.TAG, "Data is loading")
-                   // setLoadingSpinner(true)
+                    setLoadingSpinner(true)
                 }
                 is ResultState.Success -> {
                     if (resultState.data == null) {
@@ -198,7 +206,25 @@ class HomeFragment : Fragment() {
 
     private fun setTestimonialsAdapter(testimonial: List<Testimonial>){
         Log.d(com.melvin.ongandroid.view.fragment.TAG, "Data successfully retrieved")
-        //setLoadingSpinner(false)
+        setLoadingSpinner(false)
         binding.testimonialsRecyclerView.adapter = TestimonialAdapter(testimonial)
+    }
+
+    private fun setLoadingSpinner(isLoading: Boolean) {
+        if (isLoading) {
+            loadingSpinner.start(binding.imageLogo)
+            binding.rvNews.visibility = View.GONE
+            binding.novedadesTittle.visibility = View.GONE
+            binding.layoutTestimonial.visibility = View.GONE
+            binding.rvWelcome.visibility = View.GONE
+
+        } else {
+            loadingSpinner.stop(binding.imageLogo)
+            binding.rvNews.visibility = View.VISIBLE
+            binding.novedadesTittle.visibility = View.VISIBLE
+            binding.layoutTestimonial.visibility = View.VISIBLE
+            binding.rvWelcome.visibility = View.VISIBLE
+
+        }
     }
 }
