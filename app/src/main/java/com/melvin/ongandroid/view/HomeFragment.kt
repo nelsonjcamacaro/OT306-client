@@ -1,6 +1,7 @@
 package com.melvin.ongandroid.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +15,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.Testimonial
 import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.news.NewsViewState
 import com.melvin.ongandroid.model.news.RetrofitClient
+import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.utils.AppConstants
+import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
+import com.melvin.ongandroid.view.adapter.MembersAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
@@ -93,12 +98,14 @@ class HomeFragment : Fragment() {
     Set initial configuration for Testimonial Recycler View
      */
     private fun setUpTestimonialRecyclerView() {
-        testimonialAdapter = TestimonialAdapter()
+        testimonialAdapter = TestimonialAdapter(listOf())
         binding.testimonialsRecyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@HomeFragment.context)
+            layoutManager = LinearLayoutManager(context)
             adapter = testimonialAdapter
         }
+       /* binding.testimonialsRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.testimonialsRecyclerView.adapter = testimonialAdapter*/
     }
 
     /** firebase analytics **/
@@ -165,15 +172,33 @@ class HomeFragment : Fragment() {
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
     private fun subscribeTestimonialAdapter() {
+        viewModel.testimonialsList.observe(viewLifecycleOwner, Observer { resultState ->
+            when (resultState) {
+                is ResultState.Loading -> {
+                    Log.d(com.melvin.ongandroid.view.fragment.TAG, "Data is loading")
+                   // setLoadingSpinner(true)
+                }
+                is ResultState.Success -> {
+                    if (resultState.data == null) {
+                       // showErrorSnackBar()
+                    } else {
+                        val testimonialsList = (resultState.data as? List<Testimonial>) ?: emptyList()
+                        if (testimonialsList.isNotEmpty()) setTestimonialsAdapter(testimonialsList)
+                    }
+                }
+                is ResultState.Error -> {
+                    Log.e(com.melvin.ongandroid.view.fragment.TAG, resultState.exception.toString())
+                    //showErrorSnackBar()
+                }
+            }
 
-        viewModel.testimonialsList.observe(viewLifecycleOwner, Observer { testimonial ->
-            if (testimonial != null){
-            testimonialAdapter.submitList(testimonial)
-        }
-        else{
-            Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
-        } })
+        })
 
-        viewModel.loadTestimonials()
         }
+
+    private fun setTestimonialsAdapter(testimonial: List<Testimonial>){
+        Log.d(com.melvin.ongandroid.view.fragment.TAG, "Data successfully retrieved")
+        //setLoadingSpinner(false)
+        binding.testimonialsRecyclerView.adapter = TestimonialAdapter(testimonial)
+    }
 }

@@ -11,18 +11,25 @@ import retrofit2.awaitResponse
 const val TAG = "OngRemoteDataSource"
 
 class OngRemoteDataSource {
-    suspend fun getTestimonials() :List<Testimonial>?{
+    suspend fun getTestimonials() :ResultState<Any>{
 
         val service = RetrofitService
             .instance
             .create(GetTestimonialsService::class.java)
             .getTestimonials()
         return try {
-            val response: Response<List<Testimonial>> = service.awaitResponse()
-            response.body()
+
+            if (service.isSuccessful && service.body()?.testimonialsList !=null){
+                Log.d(TAG, "Fetch Testimonials Successfully -> ${service.message()}")
+                Log.d(TAG, "Testimonials List Size -> ${service.body()!!.testimonialsList?.size}")
+                ResultState.Success(service.body()!!.testimonialsList)
+            }else{
+                Log.e(TAG, "Server Error Message -> ${service.message()?: "Unknown error"}")
+                ResultState.Error(Exception(service.message()?: "Unknown error\""))
+            }
         } catch (e: Exception) {
-            ResultState.Error(Exception(e.message))
-            null
+            Log.e(TAG, e.toString())
+            return ResultState.Error(Exception("May be you don´t have a connection to internet"))
         }
     }
 

@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface GetTestimonialsService {
 
     @GET("/api/testimonials")
-    suspend fun getTestimonials(): Call<List<Testimonial>>
+    suspend fun getTestimonials(): Response<TestimonialsResponse>
 }
