@@ -1,12 +1,8 @@
 package com.melvin.ongandroid.utils
 
 import android.graphics.drawable.Animatable
-import android.graphics.drawable.Drawable
-import android.opengl.Visibility
 import android.view.View
-import android.view.View.VISIBLE
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintSet.VISIBLE
 import com.melvin.ongandroid.R
 
 /*
@@ -17,8 +13,8 @@ import com.melvin.ongandroid.R
 *  =======
 *  val spinner = LoadingSpinner()
 *  spinner.start(binding.imageLogo)
-*  binding.imageLogo.setOnClickListener {
-*      spinner.stop(it as ImageView, R.drawable.logo)
+*  binding.imageLogo.setOnClickListener { imageLogo ->
+*      spinner.stop(imageLogo)
 *  }
 */
 
@@ -31,15 +27,14 @@ class LoadingSpinner {
         animatedLogo?.start()
     }
 
-    fun stop(imageView: ImageView, restoreResourceId: Int? = null) {
+    fun stop(imageView: ImageView, restoreLogo: Boolean = true) {
         val animatedLogo = imageView.drawable as? Animatable
         animatedLogo?.stop()
-        if (restoreResourceId == null) {
-            imageView.visibility = View.GONE
+        if (restoreLogo) {
+            imageView.setImageResource(R.drawable.logo)
         } else {
-            imageView.setImageResource(restoreResourceId)
+            imageView.visibility = View.GONE
         }
-
     }
 
 }
