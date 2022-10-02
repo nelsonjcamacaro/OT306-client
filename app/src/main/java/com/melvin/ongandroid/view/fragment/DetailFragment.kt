@@ -17,8 +17,6 @@ import com.melvin.ongandroid.viewmodel.MembersViewModelFactory
 class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private lateinit var binding: FragmentDetailBinding
-    private val membersViewModel: MembersViewModel by viewModels(
-        factoryProducer = { MembersViewModelFactory() })
 
     private val args: DetailFragmentArgs by navArgs()
 
@@ -38,6 +36,9 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         }
     }
 
+    /*
+     * Bind Member Detail layout with Member Dto Data from navigation arguments
+     */
     private fun bindMemberDetail(member: MemberDto) {
         binding.apply {
             tvNameDetail.text = member.name
