@@ -78,16 +78,19 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="8dp"
         android:text="Facebook"
+        android:autoLink="web"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDrescripDetail" />
 
     <TextView
+        android:id="@+id/tvLinkedinDetails"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="8dp"
-        android:text="Linkedin"
+        android:text="LinkedIn"
+        android:autoLink="web"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvFaceDetail" />
