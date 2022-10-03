@@ -48,6 +48,6 @@
     <!-- Requirements -->
     <string name="obligatory_field">*Campo obligatorio</string>
     <string name="error_message_getting_data">Ha ocurrido un error obteniendo la información</string>
-
+    <string name="Error_message">Ha ocurrido un error. Intente nuevamente mas tarde</string>
 
 </resources>
