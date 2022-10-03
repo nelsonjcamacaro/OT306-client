@@ -154,12 +154,14 @@ class HomeFragment : Fragment() {
                 if (viewState.content.isEmpty()) {
                     binding.rvNews.visibility = View.GONE
                 }
+
                 val listSize = viewState.content.size
-                if ( listSize > 4) {
+                if ( listSize >= 4) {
                     newsAdapter.setNewsData(viewState.content.subList(0, 4))
                 } else {
                     newsAdapter.setNewsData(viewState.content.subList(0, listSize))
                 }
+                
                 setLoadingSpinner(false)
                 val bundle = Bundle()
                 bundle.putString("eventLog", "last_news_retrieve_success")

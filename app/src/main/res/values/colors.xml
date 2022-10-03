@@ -14,5 +14,7 @@
     <color name="hint_color">#B0B0B0</color>
     <color name="buttonBlue">#0038FF</color>
     <color name="light_grey">#F1F1F1</color>
+    <color name="disabled_gray">#807F7F</color>
+    <color name="ONGred">#FF0000</color>
 
 </resources>
