@@ -1,8 +1,11 @@
 package com.melvin.ongandroid.model.nosotrosActivities.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.melvin.ongandroid.utils.AppConstants
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class MemberDto(
     @SerializedName ("id")
     val id: Int? = -1,
@@ -23,7 +26,7 @@ data class MemberDto(
     @SerializedName ("deleted_at")
     val deleted_at: String? = "",
     @SerializedName ("group_id")
-    val group_id: Any? = ""
-)
+    val group_id: String? = ""
+) : Parcelable
 
 fun MemberDto.getFormattedDescription() = this.description?.replace(AppConstants.FORMAT_DESCRIPTION, "") ?: ""
