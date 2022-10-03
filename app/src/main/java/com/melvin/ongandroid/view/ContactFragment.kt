@@ -1,13 +1,16 @@
 package com.melvin.ongandroid.view
 
 import android.app.AlertDialog
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintSet.GONE
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -72,7 +75,8 @@ class ContactFragment : Fragment() {
                 Log.d("Main", response.email.toString())
                 Log.d("Main", response.nameAndLastName.toString())
             } else {
-                Toast.makeText(context, "error en el envio", Toast.LENGTH_SHORT).show()
+                binding.tvErrorMessage.visibility = View.VISIBLE
+
             }
 
 
@@ -128,12 +132,16 @@ class ContactFragment : Fragment() {
         binding.apply {
             nameET.addTextChangedListener { text ->
                 text?.apply { viewModel.updateName(text.toString()) }
+                tvErrorMessage.visibility = View.GONE
+
             }
             emailET.addTextChangedListener { text ->
                 text?.apply { viewModel.updateEmail(text.toString()) }
+                tvErrorMessage.visibility = View.GONE
             }
             messageET.addTextChangedListener { text ->
                 text?.apply { viewModel.updateMessage(text.toString()) }
+                tvErrorMessage.visibility = View.GONE
             }
         }
     }
