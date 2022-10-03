@@ -84,8 +84,14 @@ class HomeFragment : Fragment() {
             if (activitiesList != null) {
                 adapter.activitiesList = activitiesList
                 adapter.notifyDataSetChanged()
+                val bundle = Bundle()
+                bundle.putString("eventLog", "slider_retrieve_success")
+                firebaseAnalytic.logEvent("slider_retrieve_success", bundle)
             } else {
                 Toast.makeText(context, "Incio - Error general ", Toast.LENGTH_SHORT).show()
+                val bundle = Bundle()
+                bundle.putString("eventLog", "slider_retrieve_error")
+                firebaseAnalytic.logEvent("slider_retrieve_error", bundle)
             }
 
         }
@@ -114,20 +120,13 @@ class HomeFragment : Fragment() {
         binding.testimonialsRecyclerView.adapter = testimonialAdapter*/
     }
 
-    /** firebase analytics **/
+    // firebase analytics
     private fun logEvents() {
         //last_news_see_more_pressed': Al presionar la flecha "Ver más" en listado de "Últimas novedades"
+        //testimonies_see_more_pressed: Al presionar la flecha "Ver más" en listado de "Testimonios"
         val bundle = Bundle()
         bundle.putString("eventLog", "last_news_see_more_pressed")
         firebaseAnalytic.logEvent("last_news_see_more_pressed", bundle)
-
-        //testimonies_see_more_pressed: Al presionar la flecha "Ver más" en listado de "Testimonios"
-        //slider_retrieve_success': En caso de que el GET del slider haya sido satisfactorio
-        //slider_retrieve_error': En caso de que el GET del slider falle
-        //last_news_retrieve_success': En caso de que el GET de noticias sea satisfactorio
-        //last_news_retrieve_error': En caso de que el GET de noticias falle
-        //testimonios_retrieve_success': En caso de que el GET de testimonios sea satisfactorio
-        //testimonies_retrieve_error': En caso de que el GET de tesimonios falle
     }
 
     /*
@@ -155,8 +154,18 @@ class HomeFragment : Fragment() {
                 if (viewState.content.isEmpty()) {
                     binding.rvNews.visibility = View.GONE
                 }
-                newsAdapter.setNewsData(viewState.content.subList(0, 1))
+
+                val listSize = viewState.content.size
+                if ( listSize >= 4) {
+                    newsAdapter.setNewsData(viewState.content.subList(0, 4))
+                } else {
+                    newsAdapter.setNewsData(viewState.content.subList(0, listSize))
+                }
+                
                 setLoadingSpinner(false)
+                val bundle = Bundle()
+                bundle.putString("eventLog", "last_news_retrieve_success")
+                firebaseAnalytic.logEvent("last_news_retrieve_success", bundle)
             }
             is NewsViewState.Error -> {
                 binding.rvNews.visibility = View.GONE
@@ -164,6 +173,9 @@ class HomeFragment : Fragment() {
                 errorSnackBar(AppConstants.SET_MESSAGE) {
                     newsViewModel.loadNews()
                 }
+                val bundle = Bundle()
+                bundle.putString("eventLog", "last_news_retrieve_error")
+                firebaseAnalytic.logEvent("last_news_retrieve_error", bundle)
             }
         }
     }
@@ -193,10 +205,16 @@ class HomeFragment : Fragment() {
                         val testimonialsList = (resultState.data as? List<Testimonial>) ?: emptyList()
                         if (testimonialsList.isNotEmpty()) setTestimonialsAdapter(testimonialsList)
                     }
+                    val bundle = Bundle()
+                    bundle.putString("eventLog", "testimonios_retrieve_success")
+                    firebaseAnalytic.logEvent("testimonios_retrieve_success", bundle)
                 }
                 is ResultState.Error -> {
                     Log.e(com.melvin.ongandroid.view.fragment.TAG, resultState.exception.toString())
                     //showErrorSnackBar()
+                    val bundle = Bundle()
+                    bundle.putString("eventLog", "testimonies_retrieve_error")
+                    firebaseAnalytic.logEvent("testimonies_retrieve_error", bundle)
                 }
             }
 
