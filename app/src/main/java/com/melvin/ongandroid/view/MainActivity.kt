@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.ActivityMainBinding
+import com.melvin.ongandroid.view.fragment.LoginFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -15,6 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, LoginFragment()).commit()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
                 as NavHostFragment

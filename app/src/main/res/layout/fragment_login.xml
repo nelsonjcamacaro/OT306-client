@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loginFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -76,6 +77,7 @@
                 <!-- Email Input Edit Text -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_text_email"
+                    app:errorEnabled="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/text_style_login_input" />
@@ -91,6 +93,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/vertical_margin_small"
                 android:hint="@string/hint_password"
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/input_text_layout_email"
                 style="@style/InputTextLayoutStyle.App.Login">
@@ -106,20 +110,24 @@
 
 
             <!-- Login Button -->
+
+            <!-- Account Text View -->
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_values"
+                android:background="@drawable/selector_btn_enabled_property"
+                android:enabled="false"
+                android:padding="@dimen/margin_values"
                 android:text="@string/button_login"
                 android:textAlignment="center"
-                android:padding="@dimen/margin_values"
-                style="@style/ButtonStyle.App.LoginButton"
                 android:textAppearance="@style/text_style_red_button"
                 app:layout_constraintBottom_toBottomOf="@id/text_account"
-                app:layout_constraintTop_toBottomOf="@id/input_text_layout_password" />
+                app:layout_constraintTop_toBottomOf="@id/input_text_layout_password"
+                tools:layout_editor_absoluteX="0dp" />
 
-            <!-- Account Text View -->
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_account"
                 android:layout_width="match_parent"
