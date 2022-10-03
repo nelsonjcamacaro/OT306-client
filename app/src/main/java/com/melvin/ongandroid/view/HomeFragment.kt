@@ -155,7 +155,12 @@ class HomeFragment : Fragment() {
                 if (viewState.content.isEmpty()) {
                     binding.rvNews.visibility = View.GONE
                 }
-                newsAdapter.setNewsData(viewState.content.subList(0, 4))
+                val listSize = viewState.content.size
+                if ( listSize > 4) {
+                    newsAdapter.setNewsData(viewState.content.subList(0, 4))
+                } else {
+                    newsAdapter.setNewsData(viewState.content.subList(0, listSize))
+                }
                 setLoadingSpinner(false)
             }
             is NewsViewState.Error -> {

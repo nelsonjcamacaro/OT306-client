@@ -133,7 +133,7 @@ class MembersFragment : Fragment(), MembersAdapter.OnMembersClicked {
     // onClick listener members
     override fun onMemberClickListener(member: MemberDto, position: Int) {
         // navigate to detail member fragment
-        val action = MembersFragmentDirections.actionMembersFragmentToDetailFragment()
+        val action = MembersFragmentDirections.actionMembersFragmentToDetailFragment(member)
         findNavController().navigate(action)
         //En caso de que se seleccione un miembro
         val bundle = Bundle()
