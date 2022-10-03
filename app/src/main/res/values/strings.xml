@@ -25,7 +25,7 @@
     <string name="contactInvitation">¡Contactate con nosotros!</string>
     <string name="nosotrosFragmentTitle">¡Nosotros!</string>
 
-    
+
     <string name="nameNews">Nombre de la novedad</string>
     <string name="description">Descripcion de la novedad</string>
 
@@ -48,6 +48,8 @@
     <!-- Requirements -->
     <string name="obligatory_field">*Campo obligatorio</string>
     <string name="error_message_getting_data">Ha ocurrido un error obteniendo la información</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

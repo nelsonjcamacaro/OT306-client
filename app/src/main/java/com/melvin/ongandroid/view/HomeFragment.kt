@@ -155,7 +155,7 @@ class HomeFragment : Fragment() {
                 if (viewState.content.isEmpty()) {
                     binding.rvNews.visibility = View.GONE
                 }
-                newsAdapter.setNewsData(viewState.content.subList(0, 4))
+                newsAdapter.setNewsData(viewState.content.subList(0, 1))
                 setLoadingSpinner(false)
             }
             is NewsViewState.Error -> {
