@@ -14,7 +14,7 @@ class ActivityViewModel(private val repository: ActivityRepository): ViewModel()
         }
     }
 
-    suspend fun load(){
+        suspend fun load(){
         repository.getActivity(object : ResponseListener<Slides> {
             override fun onResponse(response : RepositoryResponse<Slides>) {
                 slides.value = response.data.slides

@@ -7,13 +7,15 @@
     <androidx.cardview.widget.CardView
         android:layout_width="200dp"
         android:layout_height="300dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="16dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
@@ -23,18 +25,17 @@
                 android:layout_marginTop="16dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/nameMemberTV"
                 android:layout_width="185dp"
                 android:layout_height="30dp"
-                android:fontFamily="@font/poppins"
-                android:textSize="16sp"
-                android:textColor="@color/black"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/members_photo" />
@@ -42,14 +43,16 @@
             <TextView
                 android:id="@+id/rolTV"
                 android:layout_width="185dp"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:fontFamily="@font/poppins"
-                android:textSize="16sp"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.533"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameMemberTV" />
+                app:layout_constraintTop_toBottomOf="@+id/nameMemberTV"
+                app:layout_constraintVertical_bias="0.20" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

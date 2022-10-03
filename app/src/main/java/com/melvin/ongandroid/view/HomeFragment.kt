@@ -1,25 +1,34 @@
 package com.melvin.ongandroid.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isInvisible
+import androidx.core.view.marginTop
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.melvin.ongandroid.R
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.Testimonial
 import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.news.NewsViewState
 import com.melvin.ongandroid.model.news.RetrofitClient
+import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.utils.AppConstants
+import com.melvin.ongandroid.utils.LoadingSpinner
+import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
+import com.melvin.ongandroid.view.adapter.MembersAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
@@ -34,6 +43,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var testimonialAdapter: TestimonialAdapter
     private lateinit var newsAdapter: NewsAdapter
+    private lateinit var loadingSpinner: LoadingSpinner
 
     private lateinit var firebaseAnalytic: FirebaseAnalytics
 
@@ -58,6 +68,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         firebaseAnalytic = FirebaseAnalytics.getInstance(requireContext())
+        loadingSpinner = LoadingSpinner()
         setupRvNews()
         newsUpdateUI() // load news
         subscribeUi()
@@ -93,12 +104,14 @@ class HomeFragment : Fragment() {
     Set initial configuration for Testimonial Recycler View
      */
     private fun setUpTestimonialRecyclerView() {
-        testimonialAdapter = TestimonialAdapter()
+        testimonialAdapter = TestimonialAdapter(listOf())
         binding.testimonialsRecyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@HomeFragment.context)
+            layoutManager = LinearLayoutManager(context)
             adapter = testimonialAdapter
         }
+       /* binding.testimonialsRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.testimonialsRecyclerView.adapter = testimonialAdapter*/
     }
 
     /** firebase analytics **/
@@ -136,12 +149,14 @@ class HomeFragment : Fragment() {
         when (viewState) {
             is NewsViewState.Loading -> {
                 // show progress bar
+                setLoadingSpinner(true)
             }
             is NewsViewState.Content -> {
                 if (viewState.content.isEmpty()) {
                     binding.rvNews.visibility = View.GONE
                 }
                 newsAdapter.setNewsData(viewState.content.subList(0, 4))
+                setLoadingSpinner(false)
             }
             is NewsViewState.Error -> {
                 binding.rvNews.visibility = View.GONE
@@ -165,17 +180,51 @@ class HomeFragment : Fragment() {
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
     private fun subscribeTestimonialAdapter() {
+        viewModel.testimonialsList.observe(viewLifecycleOwner, Observer { resultState ->
+            when (resultState) {
+                is ResultState.Loading -> {
+                    Log.d(com.melvin.ongandroid.view.fragment.TAG, "Data is loading")
+                    setLoadingSpinner(true)
+                }
+                is ResultState.Success -> {
+                    if (resultState.data == null) {
+                       // showErrorSnackBar()
+                    } else {
+                        val testimonialsList = (resultState.data as? List<Testimonial>) ?: emptyList()
+                        if (testimonialsList.isNotEmpty()) setTestimonialsAdapter(testimonialsList)
+                    }
+                }
+                is ResultState.Error -> {
+                    Log.e(com.melvin.ongandroid.view.fragment.TAG, resultState.exception.toString())
+                    //showErrorSnackBar()
+                }
+            }
 
-        viewModel.testimonialsList.observe(viewLifecycleOwner, Observer { testimonial ->
-            if (testimonial != null){
-            testimonialAdapter.submitList(testimonial)
+        })
+
         }
-        else{
-            Toast.makeText(context,"error al pedir los testimonios",Toast.LENGTH_SHORT).show()
-        } })
 
-        viewModel.viewModelScope.launch {
-            viewModel.loadTestimonials()
+    private fun setTestimonialsAdapter(testimonial: List<Testimonial>){
+        Log.d(com.melvin.ongandroid.view.fragment.TAG, "Data successfully retrieved")
+        setLoadingSpinner(false)
+        binding.testimonialsRecyclerView.adapter = TestimonialAdapter(testimonial)
+    }
+
+    private fun setLoadingSpinner(isLoading: Boolean) {
+        if (isLoading) {
+            loadingSpinner.start(binding.imageLogo)
+            binding.rvNews.visibility = View.GONE
+            binding.novedadesTittle.visibility = View.GONE
+            binding.layoutTestimonial.visibility = View.GONE
+            binding.rvWelcome.visibility = View.GONE
+
+        } else {
+            loadingSpinner.stop(binding.imageLogo)
+            binding.rvNews.visibility = View.VISIBLE
+            binding.novedadesTittle.visibility = View.VISIBLE
+            binding.layoutTestimonial.visibility = View.VISIBLE
+            binding.rvWelcome.visibility = View.VISIBLE
+
         }
     }
 }

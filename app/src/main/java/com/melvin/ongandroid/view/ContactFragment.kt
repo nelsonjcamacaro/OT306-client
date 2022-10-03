@@ -17,6 +17,7 @@ import com.melvin.ongandroid.databinding.FragmentContactBinding
 import com.melvin.ongandroid.model.ContactMessageDto
 import com.melvin.ongandroid.model.OngRemoteDataSource
 import com.melvin.ongandroid.model.OngRepository
+import com.melvin.ongandroid.utils.LoadingSpinner
 import com.melvin.ongandroid.viewmodel.ContactViewModel
 import com.melvin.ongandroid.viewmodel.ContactViewModelFactory
 
@@ -26,6 +27,7 @@ class ContactFragment : Fragment() {
 
     private var _binding: FragmentContactBinding? = null
     private val binding get() = _binding!!
+    private lateinit var loadingSpinner: LoadingSpinner
     private val viewModel by viewModels<ContactViewModel> {
         ContactViewModelFactory(OngRepository(OngRemoteDataSource()), IsInputValidUseCase())
     }
@@ -42,6 +44,7 @@ class ContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadingSpinner = LoadingSpinner()
         restoreUIWithUserInput()
 
         subscribeSendMessageBtn()
@@ -51,9 +54,18 @@ class ContactFragment : Fragment() {
             Log.d(TAG, "sendMessageBtn On Click Listener enabled")
         }
 
+        // le da visibilidad al progress bar
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.contactProgressBar.isVisible = it
+        })
+
         viewModel.messageFromContact.observe(viewLifecycleOwner, Observer { response ->
             if (response != null) {
+                //binding.contactProgressBar.visibility = View.VISIBLE
+                setLoadingSpinner(true)
                 executeAlertDialog()
+                //binding.contactProgressBar.visibility = View.GONE
+                setLoadingSpinner(false)
                 Toast.makeText(context, "envio exitoso", Toast.LENGTH_SHORT).show()
 
                 Log.d("Main", response.message.toString())
@@ -62,10 +74,7 @@ class ContactFragment : Fragment() {
             } else {
                 Toast.makeText(context, "error en el envio", Toast.LENGTH_SHORT).show()
             }
-// le da visibilidad al progress bar
-            viewModel.isLoading.observe(viewLifecycleOwner, Observer {
-                binding.contactProgressBar.isVisible = it
-            })
+
 
 
         })
@@ -154,6 +163,16 @@ class ContactFragment : Fragment() {
     override fun onResume() {
         restoreUIWithUserInput()
         super.onResume()
+    }
+
+    private fun setLoadingSpinner(isLoading: Boolean) {
+        if (isLoading) {
+            loadingSpinner.start(binding.imageLogo)
+
+        } else {
+            loadingSpinner.stop(binding.imageLogo)
+
+        }
     }
 
 }
