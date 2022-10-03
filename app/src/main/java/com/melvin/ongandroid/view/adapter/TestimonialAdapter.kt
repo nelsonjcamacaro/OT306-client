@@ -9,29 +9,23 @@ import com.bumptech.glide.Glide
 import com.melvin.ongandroid.databinding.TestimonialItemBinding
 import com.melvin.ongandroid.model.Testimonial
 
-class TestimonialAdapter : ListAdapter<Testimonial, TestimonialAdapter.TestimonialViewHolder>(DiffCallBack) {
+class TestimonialAdapter(var testimonial:List<Testimonial>) : ListAdapter<Testimonial, TestimonialAdapter.TestimonialViewHolder>(DiffCallBack) {
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): TestimonialViewHolder {
-        return TestimonialViewHolder(
-            TestimonialItemBinding.inflate(
-                LayoutInflater.from(
-                    parent.context
-                ),
-                parent,
-                false
-            )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TestimonialViewHolder {
+        return TestimonialViewHolder(TestimonialItemBinding.inflate(LayoutInflater.from(parent.context),parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: TestimonialViewHolder, position: Int) {
-        val current = getItem(position)
+        val current = testimonial[position]
         holder.bind(current)
     }
 
-    class TestimonialViewHolder(
+    override fun getItemCount(): Int {
+        return testimonial.size
+    }
+
+    inner class TestimonialViewHolder(
         private var binding: TestimonialItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -39,6 +33,7 @@ class TestimonialAdapter : ListAdapter<Testimonial, TestimonialAdapter.Testimoni
         Bind Testimonial UI Layout Item with Testimonial element
          */
         fun bind(testimonial: Testimonial) {
+
             binding.apply {
                 nombreYAp.text = testimonial.name ?: ""
                 testimoniot.text = testimonial.description ?: ""

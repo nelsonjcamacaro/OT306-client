@@ -109,12 +109,12 @@ class MembersFragment : Fragment(), MembersAdapter.OnMembersClicked {
     private fun setMembersAdapter(members: List<MemberDto>){
         Log.d(TAG, "Data successfully retrieved")
         setLoadingSpinner(false)
+
         binding.membersRV.adapter = MembersAdapter(members, this)
         //En caso que el GET de miembros sea satisfactorio
         val bundle = Bundle()
         bundle.putString("eventLog","members_retrieve_success")
         firebaseAnalytic.logEvent("members_retrieve_success", bundle)
-
     }
 
     /*

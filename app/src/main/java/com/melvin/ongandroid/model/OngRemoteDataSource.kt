@@ -6,22 +6,32 @@ import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import retrofit2.awaitResponse
 
 const val TAG = "OngRemoteDataSource"
 
 class OngRemoteDataSource {
-    suspend fun getTestimonials(netWorkResponse: NetWorkResponse<List<Testimonial>>) =
-        withContext(Dispatchers.IO) {
-            try {
-                val response: Response<TestimonialsResponse> = RetrofitService
-                    .instance
-                    .create(GetTestimonialsService::class.java)
-                    .getTestimonials()
-                response.body() ?: emptyList<Testimonial>()
-            } catch (e: Exception) {
-                ResultState.Error(Exception(e.message))
+    suspend fun getTestimonials() :ResultState<Any>{
+
+        val service = RetrofitService
+            .instance
+            .create(GetTestimonialsService::class.java)
+            .getTestimonials()
+        return try {
+
+            if (service.isSuccessful && service.body()?.testimonialsList !=null){
+                Log.d(TAG, "Fetch Testimonials Successfully -> ${service.message()}")
+                Log.d(TAG, "Testimonials List Size -> ${service.body()!!.testimonialsList?.size}")
+                ResultState.Success(service.body()!!.testimonialsList)
+            }else{
+                Log.e(TAG, "Server Error Message -> ${service.message()?: "Unknown error"}")
+                ResultState.Error(Exception(service.message()?: "Unknown error\""))
             }
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString())
+            return ResultState.Error(Exception("May be you don´t have a connection to internet"))
         }
+    }
 
     suspend fun SendContactMessage(post: ContactMessageDto) = withContext(Dispatchers.IO) {
         try {
