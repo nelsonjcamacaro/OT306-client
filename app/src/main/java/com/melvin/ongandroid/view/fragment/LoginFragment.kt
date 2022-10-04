@@ -20,7 +20,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.melvin.ongandroid.businesslogic.login.LoginUseCase
-import com.melvin.ongandroid.databinding.FragmentLoginBinding
 import com.melvin.ongandroid.model.login.LoginRepository
 import com.melvin.ongandroid.model.login.LoginViewState
 import com.melvin.ongandroid.model.login.SharedPreferences
@@ -44,6 +43,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,7 +53,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.buttonLogin.setOnClickListener {
             Toast.makeText(context,"boton habilitado",Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun setupSignUp(){
@@ -63,6 +62,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         setupLogin(requireContext())
         setupLoginObserver()
+        }
     }
 
     // login view state
@@ -140,6 +140,5 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
 
         })
-
     }
 }
