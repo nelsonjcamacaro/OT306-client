@@ -7,34 +7,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isInvisible
-import androidx.core.view.marginTop
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.melvin.ongandroid.R
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.model.Testimonial
 import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.news.NewsViewState
 import com.melvin.ongandroid.model.news.RetrofitClient
-import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.utils.AppConstants
 import com.melvin.ongandroid.utils.LoadingSpinner
 import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
-import com.melvin.ongandroid.view.adapter.MembersAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
 import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
 import com.melvin.ongandroid.viewmodel.ViewModelFactory
-import kotlinx.coroutines.launch
 import com.melvin.ongandroid.viewmodel.news.NewsViewModel
 import com.melvin.ongandroid.viewmodel.news.NewsViewModelFactory
 
@@ -93,7 +86,6 @@ class HomeFragment : Fragment() {
                 bundle.putString("eventLog", "slider_retrieve_error")
                 firebaseAnalytic.logEvent("slider_retrieve_error", bundle)
             }
-
         }
     }
 
