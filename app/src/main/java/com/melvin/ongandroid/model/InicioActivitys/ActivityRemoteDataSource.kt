@@ -1,20 +1,31 @@
 package com.melvin.ongandroid.model.InicioActivitys
 
 
+import android.util.Log
 import com.melvin.ongandroid.model.RetrofitService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-
-import retrofit2.Response
+import com.melvin.ongandroid.model.TAG
+import com.melvin.ongandroid.utils.ResultState
 
 class ActivityRemoteDataSource {
-    suspend fun getActivity(listener: ResponseListener<Slides>) {
-        withContext(Dispatchers.IO){
-            val service: Response<Slides> = RetrofitService.instance
+    suspend fun getActivity(): ResultState<Any> {
+            val service = RetrofitService
+                .instance
                 .create(ActivityService::class.java)
                 .getActivity()
-            service.body()?: emptyList<Slides>()
 
+        return try {
+            if (service.isSuccessful && service.body()?.slides !=null){
+                Log.d(TAG, "Fetch Testimonials Successfully -> ${service.message()}")
+                Log.d(TAG, "Testimonials List Size -> ${service.body()!!.slides?.size}")
+                ResultState.Success(service.body()!!.slides)
+            }else{
+                Log.e(TAG, "Server Error Message -> ${service.message()?: "Unknown error"}")
+                ResultState.Error(Exception(service.message()?: "Unknown error\""))
+            }
+        }
+        catch (e: Exception) {
+            Log.e(TAG, e.toString())
+            return ResultState.Error(Exception("May be you don´t have a connection to internet"))
         }
 
     }

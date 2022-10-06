@@ -1,29 +1,29 @@
 package com.melvin.ongandroid.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.melvin.ongandroid.model.InicioActivitys.*
+import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.launch
 
 class ActivityViewModel(private val repository: ActivityRepository): ViewModel() {
-    val slides = MutableLiveData<List<Activity>>(listOf())
+    private var _slides = MutableLiveData<ResultState<Any>>()
+    val slides: LiveData<ResultState<Any>> get() = _slides
+
     init {
         viewModelScope.launch {
             load()
         }
     }
 
-        suspend fun load(){
-        repository.getActivity(object : ResponseListener<Slides> {
-            override fun onResponse(response : RepositoryResponse<Slides>) {
-                slides.value = response.data.slides
-
+    private fun load() {
+        viewModelScope.launch {
+            repository.getActivity().collect() { resultState ->
+                _slides.value = resultState
             }
+        }
 
-            override fun onError(repositoryError: RepositoryError) {
-
-            }
-        })
     }
 }
