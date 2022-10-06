@@ -18,6 +18,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.InicioActivitys.Activity
+import com.melvin.ongandroid.model.InicioActivitys.Slides
 import com.melvin.ongandroid.model.Testimonial
 import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.news.NewsViewState
@@ -42,6 +44,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var testimonialAdapter: TestimonialAdapter
+    private lateinit var horizontalAdapter: HorizontalAdapter
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var loadingSpinner: LoadingSpinner
 
@@ -72,28 +75,43 @@ class HomeFragment : Fragment() {
         setupRvNews()
         newsUpdateUI() // load news
         subscribeUi()
-
-        val adapter = HorizontalAdapter(listOf())
-        binding.rvWelcome.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvWelcome.adapter = adapter
-
+        setupRvActivity()
+        suscribeActivityAdapter()
         setUpTestimonialRecyclerView()
 
-        viewModels.slides.observe(viewLifecycleOwner) { activitiesList ->
-            if (activitiesList != null) {
-                adapter.activitiesList = activitiesList
-                adapter.notifyDataSetChanged()
-                val bundle = Bundle()
-                bundle.putString("eventLog", "slider_retrieve_success")
-                firebaseAnalytic.logEvent("slider_retrieve_success", bundle)
-            } else {
-                Toast.makeText(context, "Incio - Error general ", Toast.LENGTH_SHORT).show()
-                val bundle = Bundle()
-                bundle.putString("eventLog", "slider_retrieve_error")
-                firebaseAnalytic.logEvent("slider_retrieve_error", bundle)
+    }
+    private fun setupActivityAdapter(activitiesList : List<Activity>){
+        binding.rvWelcome.adapter = HorizontalAdapter(activitiesList)
+
+    }
+    private fun suscribeActivityAdapter(){
+        viewModels.slides.observe(viewLifecycleOwner, Observer { resulState->
+            when(resulState){
+                is ResultState.Loading ->{
+
+                }
+                is ResultState.Success ->{
+                    if (resulState.data == null) {
+
+                    } else {
+                        val activityList = (resulState.data as? List<Activity>) ?: emptyList()
+                        if (activityList.isNotEmpty()) setupActivityAdapter(activityList)
+                    }
+                }
+                is ResultState.Error ->{
+
+                }
+
             }
 
+        })
+    }
+    private fun setupRvActivity(){
+        horizontalAdapter = HorizontalAdapter(listOf())
+        binding.rvWelcome.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = horizontalAdapter
         }
     }
 
