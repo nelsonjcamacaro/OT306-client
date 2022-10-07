@@ -16,7 +16,7 @@ class SignupFragment: Fragment() {
     }
 
     private fun setupLogin(){
-        binding.buttonRegister.setOnClickListener {
+        binding.tvingresa.setOnClickListener {
             val action = SignupFragmentDirections.actionSignupFragmentToLoginFragment()
             findNavController().navigate(action)
         }

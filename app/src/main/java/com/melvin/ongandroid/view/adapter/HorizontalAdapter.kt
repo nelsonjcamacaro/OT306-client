@@ -28,14 +28,16 @@ class HorizontalAdapter(var activitiesList: List<Activity>): RecyclerView.Adapte
     inner class Activityviewholder(private val binding: ImageListBinding): RecyclerView.ViewHolder(binding.root){
 
         fun bind(activity: Activity){
-            binding.tvWelcome.text = activity.name
-            binding.tvWelcomeDescrip.text = activity.description
-
-            Glide
-                .with(binding.root.context)
-                .load("${BuildConfig.API_URL}${activity.image}")
-                .into(binding.imageView)
-
+            binding.apply {
+                tvWelcome.text = activity.name
+                tvWelcomeDescrip.text = activity.description
+                activity.image.let { urlImage->
+                    Glide
+                        .with(binding.root.context)
+                        .load(urlImage)
+                        .into(binding.imageView)
+                }
+            }
 
         }
 

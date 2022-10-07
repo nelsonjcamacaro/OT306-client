@@ -34,8 +34,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val binding get() = _binding!!
     private lateinit var loginValidationForm: LoginValidationForm
     private val loginViewModel by viewModels<LoginViewModel> {
-    LoginViewModelFactory(LoginUseCase(LoginRepository(RetrofitClient.webservice)),
-     SharedPreferences(requireContext()))}
+        LoginViewModelFactory(LoginUseCase(LoginRepository(RetrofitClient.webservice)),
+            SharedPreferences(requireContext()))}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +60,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment()
             findNavController().navigate(action)
 
-        setupLogin(requireContext())
-        setupLoginObserver()
+            setupLogin(requireContext())
+            setupLoginObserver()
         }
     }
 

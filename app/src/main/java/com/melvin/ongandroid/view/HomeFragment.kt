@@ -7,34 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isInvisible
-import androidx.core.view.marginTop
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.melvin.ongandroid.R
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
+import com.melvin.ongandroid.model.InicioActivitys.Activity
+import com.melvin.ongandroid.model.InicioActivitys.Slides
 import com.melvin.ongandroid.model.Testimonial
 import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.news.NewsViewState
 import com.melvin.ongandroid.model.news.RetrofitClient
-import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.utils.AppConstants
 import com.melvin.ongandroid.utils.LoadingSpinner
 import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
 import com.melvin.ongandroid.view.adapter.HorizontalAdapter
-import com.melvin.ongandroid.view.adapter.MembersAdapter
 import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
 import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
 import com.melvin.ongandroid.viewmodel.ViewModelFactory
-import kotlinx.coroutines.launch
 import com.melvin.ongandroid.viewmodel.news.NewsViewModel
 import com.melvin.ongandroid.viewmodel.news.NewsViewModelFactory
 
@@ -42,6 +37,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var testimonialAdapter: TestimonialAdapter
+    private lateinit var horizontalAdapter: HorizontalAdapter
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var loadingSpinner: LoadingSpinner
 
@@ -72,27 +68,44 @@ class HomeFragment : Fragment() {
         setupRvNews()
         newsUpdateUI() // load news
         subscribeUi()
-
-        val adapter = HorizontalAdapter(listOf())
-        binding.rvWelcome.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvWelcome.adapter = adapter
-
+        setupRvActivity()
+        suscribeActivityAdapter()
         setUpTestimonialRecyclerView()
 
-        viewModels.slides.observe(viewLifecycleOwner) { activitiesList ->
-            if (activitiesList != null) {
-                adapter.activitiesList = activitiesList
-                adapter.notifyDataSetChanged()
-                val bundle = Bundle()
-                bundle.putString("eventLog", "slider_retrieve_success")
-                firebaseAnalytic.logEvent("slider_retrieve_success", bundle)
-            } else {
-                Toast.makeText(context, "Incio - Error general ", Toast.LENGTH_SHORT).show()
-                val bundle = Bundle()
-                bundle.putString("eventLog", "slider_retrieve_error")
-                firebaseAnalytic.logEvent("slider_retrieve_error", bundle)
+    }
+    private fun setupActivityAdapter(activitiesList : List<Activity>){
+        binding.rvWelcome.adapter = HorizontalAdapter(activitiesList)
+
+    }
+    private fun suscribeActivityAdapter(){
+        viewModels.slides.observe(viewLifecycleOwner, Observer { resulState->
+            when(resulState){
+                is ResultState.Loading ->{
+
+                }
+                is ResultState.Success ->{
+                    if (resulState.data == null) {
+
+                    } else {
+                        val activityList = (resulState.data as? List<Activity>) ?: emptyList()
+                        if (activityList.isNotEmpty()) setupActivityAdapter(activityList)
+                    }
+                }
+                is ResultState.Error ->{
+
+                }
+
             }
+
+
+        })
+    }
+    private fun setupRvActivity(){
+        horizontalAdapter = HorizontalAdapter(listOf())
+        binding.rvWelcome.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = horizontalAdapter
 
         }
     }
