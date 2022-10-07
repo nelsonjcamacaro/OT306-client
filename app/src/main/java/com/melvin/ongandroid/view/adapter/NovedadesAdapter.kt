@@ -8,7 +8,8 @@ import com.bumptech.glide.Glide
 import com.melvin.ongandroid.databinding.NovedadesItemBinding
 import com.melvin.ongandroid.model.news.NewsModel
 
-class NovedadesAdapter(var news: List<NewsModel>): RecyclerView.Adapter<NovedadesAdapter.NovedadesViewHolder>(){
+class NovedadesAdapter(var news: List<NewsModel>) :
+    RecyclerView.Adapter<NovedadesAdapter.NovedadesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NovedadesViewHolder {
 
@@ -27,11 +28,11 @@ class NovedadesAdapter(var news: List<NewsModel>): RecyclerView.Adapter<Novedade
         return news.size
     }
 
-    inner class NovedadesViewHolder(private val binding: NovedadesItemBinding): RecyclerView.ViewHolder(binding.root){
+    inner class NovedadesViewHolder(private val binding: NovedadesItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(news: NewsModel){
+        fun bind(news: NewsModel) {
             binding.tvNameNews.text = news.name
-            binding.tvDescripNews.text = Html.fromHtml(news.content)
+            binding.tvDescripNews.text = if (news.content.isNullOrEmpty()) "" else Html.fromHtml(news.content)
             news.image.let { urlImage ->
                 Glide.with(binding.root.context).load(urlImage).into(binding.iVNovedades)
             }
