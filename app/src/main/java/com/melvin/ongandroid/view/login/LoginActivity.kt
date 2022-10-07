@@ -12,6 +12,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    @Deprecated("Deprecated in Java", ReplaceWith("finishAffinity()"))
     override fun onBackPressed() {
         finishAffinity()
     }
