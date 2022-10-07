@@ -46,24 +46,4 @@
             android:name="member"
             app:argType="com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto" />
     </fragment>
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.melvin.ongandroid.view.fragment.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_signupFragment"
-            app:destination="@id/signupFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signupFragment"
-        android:name="com.melvin.ongandroid.view.fragment.SignupFragment"
-        android:label="SignupFragment" >
-        <action
-            android:id="@+id/action_signupFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
 </navigation>
