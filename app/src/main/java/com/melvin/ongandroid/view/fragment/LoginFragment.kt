@@ -1,6 +1,7 @@
 package com.melvin.ongandroid.view.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,6 +25,8 @@ import com.melvin.ongandroid.model.login.LoginRepository
 import com.melvin.ongandroid.model.login.LoginViewState
 import com.melvin.ongandroid.model.login.SharedPreferences
 import com.melvin.ongandroid.model.news.RetrofitClient
+import com.melvin.ongandroid.view.HomeFragment
+import com.melvin.ongandroid.view.MainActivity
 import com.melvin.ongandroid.viewmodel.login.LoginViewModel
 import com.melvin.ongandroid.viewmodel.login.LoginViewModelFactory
 
@@ -51,7 +54,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         loginValidationForm = LoginValidationForm()
         enableButton()
         binding.buttonLogin.setOnClickListener {
-            Toast.makeText(context,"boton habilitado",Toast.LENGTH_SHORT).show()
+            //Momentaneamente mientras se realiza la integracion de registro,
+        // con colocar email y contraseña en el login llevara directo al home
+            val intent = Intent(context,MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

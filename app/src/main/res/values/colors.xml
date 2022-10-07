@@ -15,6 +15,7 @@
     <color name="buttonBlue">#0038FF</color>
     <color name="light_grey">#F1F1F1</color>
     <color name="disabled_gray">#807F7F</color>
+    <color name="background_gray">#F5F5F5</color>
     <color name="ONGred">#FF0000</color>
 
 </resources>

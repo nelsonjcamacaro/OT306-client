@@ -16,8 +16,9 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
+        setTheme(R.style.splashTheme)
         timerSplash()
+        //startActivity(Intent(this, MainActivity::class.java))
     }
 
     // TICKET OT306-30
@@ -34,6 +35,7 @@ class SplashActivity : AppCompatActivity() {
                     cancel()
                 }
             }.start()
+
         }
     }
 
@@ -45,6 +47,7 @@ class SplashActivity : AppCompatActivity() {
     private fun goToLoginActivity(){
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     /*
@@ -55,5 +58,6 @@ class SplashActivity : AppCompatActivity() {
     private fun goToMainActivity(){
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
