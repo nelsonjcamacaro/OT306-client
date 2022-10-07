@@ -32,7 +32,7 @@ class NovedadesAdapter(var news: List<NewsModel>) :
 
         fun bind(news: NewsModel) {
             binding.tvNameNews.text = news.name
-            binding.tvDescripNews.text = if (news.content.isNullOrEmpty()) "" else Html.fromHtml(news.content)
+            binding.tvDescripNews.text = Html.fromHtml(news.content ?: "")
             news.image.let { urlImage ->
                 Glide.with(binding.root.context).load(urlImage).into(binding.iVNovedades)
             }
