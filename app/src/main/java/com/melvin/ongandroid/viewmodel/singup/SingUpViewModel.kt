@@ -1,6 +1,5 @@
 package com.melvin.ongandroid.viewmodel.singup
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,8 +10,6 @@ import com.melvin.ongandroid.model.news.RetrofitClient
 import com.melvin.ongandroid.model.singup.SingUpDto
 import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.launch
-
-const val TAG = "SingUpViewModel"
 
 class SingUpViewModel(
     private val singUpUseCase: SingUpUseCase
