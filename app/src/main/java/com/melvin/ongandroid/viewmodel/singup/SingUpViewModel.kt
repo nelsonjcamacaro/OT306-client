@@ -38,7 +38,6 @@ class SingUpViewModel(
             if (registerInput.value != null) {
                 singUpUseCase.execute(registerInput.value!!).collect { resultState ->
                     _registerResultState.value = resultState
-                    Log.d(TAG, registerResultState.value.toString())
                 }
             }
         }
