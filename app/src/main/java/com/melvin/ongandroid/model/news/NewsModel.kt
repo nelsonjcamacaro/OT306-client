@@ -6,7 +6,7 @@ data class NewsModel(
     @SerializedName("category_id")
     val category_id: Int = -1,
     @SerializedName("content")
-    val content: String = "",
+    val content: String? = "",
     @SerializedName("created_at")
     val created_at: String = "",
     @SerializedName("deleted_at")

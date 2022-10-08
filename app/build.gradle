@@ -23,7 +23,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField("String","API_URL","\"http://ongapi.alkemy.org/\"")
+        buildConfigField("String","API_URL","\"https://ongapi.alkemy.org/\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
