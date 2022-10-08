@@ -1,8 +1,10 @@
 package com.melvin.ongandroid.model.news
 
 import com.google.gson.GsonBuilder
+import com.melvin.ongandroid.model.OngResponse
 import com.melvin.ongandroid.model.login.LoginModel
 import com.melvin.ongandroid.model.login.LoginResponse
+import com.melvin.ongandroid.model.singup.SingUpDto
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -15,6 +17,9 @@ interface ApiService {
 
     @POST("api/login")
     suspend fun getLoginUser(@Body login: LoginModel): LoginResponse
+
+    @POST("api/register")
+    suspend fun registerUser (@Body singUpDto: SingUpDto): OngResponse
 }
 
 object RetrofitClient {

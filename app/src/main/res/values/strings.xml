@@ -57,5 +57,8 @@
     <string name="repeat_password">Repetir Contraseña</string>
     <string name="Signup">Ya tienes cuenta ? Ingresa!</string>
 
+    <!-- Dialog messages -->
+    <string name="register_successfully">User was successfully register</string>
+    <string name="dialog_acept">Aceptar</string>
 
 </resources>
