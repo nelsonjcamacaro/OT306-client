@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,12 +14,12 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
 import com.melvin.ongandroid.model.InicioActivitys.Activity
-import com.melvin.ongandroid.model.InicioActivitys.Slides
 import com.melvin.ongandroid.model.Testimonial
 import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.news.NewsViewState
 import com.melvin.ongandroid.model.news.RetrofitClient
 import com.melvin.ongandroid.utils.AppConstants
+import com.melvin.ongandroid.utils.Extensions.logEventInFirebase
 import com.melvin.ongandroid.utils.LoadingSpinner
 import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.TestimonialAdapter
@@ -138,9 +137,7 @@ class HomeFragment : Fragment() {
     private fun logEvents() {
         //last_news_see_more_pressed': Al presionar la flecha "Ver más" en listado de "Últimas novedades"
         //testimonies_see_more_pressed: Al presionar la flecha "Ver más" en listado de "Testimonios"
-        val bundle = Bundle()
-        bundle.putString("eventLog", "last_news_see_more_pressed")
-        firebaseAnalytic.logEvent("last_news_see_more_pressed", bundle)
+        logEventInFirebase(firebaseAnalytic, "last_news_see_more_pressed")
     }
 
     /*
@@ -177,9 +174,7 @@ class HomeFragment : Fragment() {
                 }
                 
                 setLoadingSpinner(false)
-                val bundle = Bundle()
-                bundle.putString("eventLog", "last_news_retrieve_success")
-                firebaseAnalytic.logEvent("last_news_retrieve_success", bundle)
+                logEventInFirebase(firebaseAnalytic, "last_news_retrieve_success")
             }
             is NewsViewState.Error -> {
                 binding.rvNews.visibility = View.GONE
@@ -187,9 +182,7 @@ class HomeFragment : Fragment() {
                 errorSnackBar(AppConstants.SET_MESSAGE) {
                     newsViewModel.loadNews()
                 }
-                val bundle = Bundle()
-                bundle.putString("eventLog", "last_news_retrieve_error")
-                firebaseAnalytic.logEvent("last_news_retrieve_error", bundle)
+                logEventInFirebase(firebaseAnalytic, "last_news_retrieve_error")
             }
         }
     }
@@ -219,16 +212,12 @@ class HomeFragment : Fragment() {
                         val testimonialsList = (resultState.data as? List<Testimonial>) ?: emptyList()
                         if (testimonialsList.isNotEmpty()) setTestimonialsAdapter(testimonialsList)
                     }
-                    val bundle = Bundle()
-                    bundle.putString("eventLog", "testimonios_retrieve_success")
-                    firebaseAnalytic.logEvent("testimonios_retrieve_success", bundle)
+                    logEventInFirebase(firebaseAnalytic,"testimonios_retrieve_success")
                 }
                 is ResultState.Error -> {
                     Log.e(com.melvin.ongandroid.view.fragment.TAG, resultState.exception.toString())
                     //showErrorSnackBar()
-                    val bundle = Bundle()
-                    bundle.putString("eventLog", "testimonies_retrieve_error")
-                    firebaseAnalytic.logEvent("testimonies_retrieve_error", bundle)
+                    logEventInFirebase(firebaseAnalytic,"testimonies_retrieve_error")
                 }
             }
 

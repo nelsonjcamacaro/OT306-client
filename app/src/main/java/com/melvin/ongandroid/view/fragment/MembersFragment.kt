@@ -14,6 +14,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.databinding.FragmentMembersBinding
 import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.utils.Extensions
+import com.melvin.ongandroid.utils.Extensions.logEventInFirebase
 import com.melvin.ongandroid.utils.LoadingSpinner
 import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.MembersAdapter
@@ -76,16 +77,10 @@ class MembersFragment : Fragment(), MembersAdapter.OnMembersClicked {
                 is ResultState.Error -> {
                     Log.e(TAG, resultState.exception.toString())
                     showErrorSnackBar()
+                    logEventInFirebase(firebaseAnalytic, "members_retrieve_error")
                 }
             }
         })
-    }
-
-    private fun logEventMenber(){
-        //En caso que el GET de miembros falle
-        val bundle = Bundle()
-        bundle.putString("eventLog","members_retrieve_error")
-        firebaseAnalytic.logEvent("members_retrieve_error", bundle)
     }
 
     /*
@@ -112,9 +107,7 @@ class MembersFragment : Fragment(), MembersAdapter.OnMembersClicked {
 
         binding.membersRV.adapter = MembersAdapter(members, this)
         //En caso que el GET de miembros sea satisfactorio
-        val bundle = Bundle()
-        bundle.putString("eventLog","members_retrieve_success")
-        firebaseAnalytic.logEvent("members_retrieve_success", bundle)
+        logEventInFirebase(firebaseAnalytic, "members_retrieve_success")
     }
 
     /*
@@ -136,9 +129,7 @@ class MembersFragment : Fragment(), MembersAdapter.OnMembersClicked {
         val action = MembersFragmentDirections.actionMembersFragmentToDetailFragment(member)
         findNavController().navigate(action)
         //En caso de que se seleccione un miembro
-        val bundle = Bundle()
-        bundle.putString("eventLog","member_pressed")
-        firebaseAnalytic.logEvent("member_pressed", bundle)
+        logEventInFirebase(firebaseAnalytic, "member_pressed")
     }
 
 }
