@@ -9,9 +9,12 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.FragmentSignupBinding
-import com.melvin.ongandroid.utils.AppConstants
+import com.melvin.ongandroid.utils.Extensions.logEventInFirebase
 import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.viewmodel.singup.SingUpViewModel
 import com.melvin.ongandroid.viewmodel.singup.SingUpViewModelFactory
@@ -20,6 +23,7 @@ class SignupFragment : Fragment() {
 
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
+    private lateinit var firebaseAnalytic: FirebaseAnalytics
 
     private val viewModel: SingUpViewModel by viewModels(
         factoryProducer = { SingUpViewModelFactory() })
@@ -35,6 +39,8 @@ class SignupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        firebaseAnalytic = Firebase.analytics
+
         setupClickListeners()
 
         setupOnTextChangeListener()
@@ -49,6 +55,7 @@ class SignupFragment : Fragment() {
             buttonRegister.setOnClickListener {
                 viewModel.registerUser()
                 checkRegisterResult()
+                logEventInFirebase(firebaseAnalytic, "register_pressed")
             }
         }
     }
@@ -80,8 +87,17 @@ class SignupFragment : Fragment() {
         viewModel.registerResultState.observe(this.viewLifecycleOwner) { resultState ->
             when (resultState) {
                 is ResultState.Loading -> {}
-                is ResultState.Success -> showSuccesDialog()
-                is ResultState.Error -> showErrorDialog()
+                is ResultState.Success -> {
+                    if(!viewModel.succesDialogShown.value!!) {
+                        showSuccesDialog()
+                        logEventInFirebase(firebaseAnalytic, "sign_up_success")
+                        viewModel.succesDialogShown.value = true
+                    }
+                }
+                is ResultState.Error -> {
+                    showErrorDialog()
+                    logEventInFirebase(firebaseAnalytic, "sign_up_error")
+                }
             }
         }
     }
@@ -108,8 +124,8 @@ class SignupFragment : Fragment() {
         builder.setMessage(getString(R.string.register_successfully))
             .setPositiveButton(getString(R.string.dialog_acept)) { _,_ ->
                 navigateLoginFragment()
-            }.setCancelable(true)
-        builder.create().show()
+            }.create()
+            .show()
     }
 
 }

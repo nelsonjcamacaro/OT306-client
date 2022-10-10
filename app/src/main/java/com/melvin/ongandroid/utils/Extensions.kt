@@ -1,9 +1,9 @@
 package com.melvin.ongandroid.utils
 
-import android.app.AlertDialog
-import android.content.Context
+import android.os.Bundle
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.R
 
 object Extensions {
@@ -20,6 +20,16 @@ object Extensions {
                 reloadData()
             }
             .show()
+    }
+
+    /*
+     *  Extension function to log event in Firebase Analytics.
+     *  Call this function from a Fragment Class with String of event to log.
+     */
+    fun logEventInFirebase(firebaseAnalytic: FirebaseAnalytics, event: String){
+        val bundle = Bundle()
+        bundle.putString("eventLog", event)
+        firebaseAnalytic.logEvent(event, bundle)
     }
 
 }
