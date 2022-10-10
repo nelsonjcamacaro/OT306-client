@@ -81,7 +81,7 @@ class HomeFragment : Fragment() {
         viewModels.slides.observe(viewLifecycleOwner, Observer { resulState->
             when(resulState){
                 is ResultState.Loading ->{
-
+                    setLoadingSpinner(true)
                 }
                 is ResultState.Success ->{
                     if (resulState.data == null) {
@@ -90,6 +90,7 @@ class HomeFragment : Fragment() {
                         val activityList = (resulState.data as? List<Activity>) ?: emptyList()
                         if (activityList.isNotEmpty()) setupActivityAdapter(activityList)
                     }
+                    setLoadingSpinner(false)
                 }
                 is ResultState.Error ->{
 
