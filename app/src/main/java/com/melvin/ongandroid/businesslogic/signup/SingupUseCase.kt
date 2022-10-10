@@ -1,14 +1,12 @@
 package com.melvin.ongandroid.businesslogic.signup
 
-import com.melvin.ongandroid.model.news.ApiService
+import com.melvin.ongandroid.model.login.LoginRepository
 import com.melvin.ongandroid.model.singup.SingUpDto
 import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-const val TAG = "SingUpUseCase"
-
-class SingUpUseCase (private val apiService: ApiService) {
+class SingUpUseCase(private val loginRepository: LoginRepository) {
 
     /*
      * Call this function passing SingUpDto object after validation
@@ -18,7 +16,7 @@ class SingUpUseCase (private val apiService: ApiService) {
     suspend fun execute(post: SingUpDto): Flow<ResultState<Any>> = flow {
         emit(ResultState.Loading())
         try {
-            val response = apiService.registerUser(post)
+            val response = loginRepository.registerUser(post)
             try {
                 if (response.success == true && response.data != null) {
                     emit(ResultState.Success(response.data))

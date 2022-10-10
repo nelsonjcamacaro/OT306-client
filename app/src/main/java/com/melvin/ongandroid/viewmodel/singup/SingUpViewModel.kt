@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.melvin.ongandroid.businesslogic.signup.SingUpUseCase
+import com.melvin.ongandroid.model.login.LoginRepository
 import com.melvin.ongandroid.model.news.RetrofitClient
 import com.melvin.ongandroid.model.singup.SingUpDto
 import com.melvin.ongandroid.utils.ResultState
@@ -23,6 +24,8 @@ class SingUpViewModel(
 
     private val _repeatPassword = MutableLiveData<String?>()
     val repeatPassword: LiveData<String?> get() = _repeatPassword
+
+    val succesDialogShown = MutableLiveData(false)
 
     /*
      * Send post request across singUpUseCase.
@@ -88,7 +91,8 @@ class SingUpViewModel(
 
 class SingUpViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val singUpUseCase = SingUpUseCase(RetrofitClient.webservice)
+        val loginRepository = LoginRepository(RetrofitClient.webservice)
+        val singUpUseCase = SingUpUseCase(loginRepository)
         return SingUpViewModel(singUpUseCase) as T
     }
 }
