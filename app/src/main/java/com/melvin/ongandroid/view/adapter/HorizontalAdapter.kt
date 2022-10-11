@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.melvin.ongandroid.BuildConfig
 import com.melvin.ongandroid.databinding.ImageListBinding
-import com.melvin.ongandroid.model.InicioActivitys.Activity
+import com.melvin.ongandroid.model.inicioActivitys.Activity
 
 class HorizontalAdapter(var activitiesList: List<Activity>): RecyclerView.Adapter<HorizontalAdapter.Activityviewholder>() {
 

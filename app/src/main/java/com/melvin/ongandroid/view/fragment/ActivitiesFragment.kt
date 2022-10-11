@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.databinding.FragmentActivitiesBinding
-import com.melvin.ongandroid.model.InicioActivitys.Activity
+import com.melvin.ongandroid.model.inicioActivitys.Activity
 import com.melvin.ongandroid.utils.AppConstants
 import com.melvin.ongandroid.view.adapter.ActivitiesAdapter
 

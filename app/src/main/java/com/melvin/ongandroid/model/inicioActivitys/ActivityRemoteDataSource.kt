@@ -1,4 +1,4 @@
-package com.melvin.ongandroid.model.InicioActivitys
+package com.melvin.ongandroid.model.inicioActivitys
 
 
 import android.util.Log

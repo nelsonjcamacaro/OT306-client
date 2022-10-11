@@ -1,9 +1,7 @@
-package com.melvin.ongandroid.model.InicioActivitys
+package com.melvin.ongandroid.model.inicioActivitys
 
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Query
 
 interface ActivityService {
     @GET("/api/slides")
