@@ -2,18 +2,21 @@ package com.melvin.ongandroid.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.MainDispatcherRule
+import com.melvin.TestUtils.Companion.FAKE_LIST_SIZE
+import com.melvin.TestUtils.Companion.FAKE_LOADING_DELAY
+import com.melvin.TestUtils.Companion.fakeErrorResultState
+import com.melvin.TestUtils.Companion.fakeLoadingResultState
 import com.melvin.ongandroid.model.*
+import com.melvin.ongandroid.utils.ResultState
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.*
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.*
 import org.junit.Assert.*
-import retrofit2.Response
+import java.util.Collections.emptyList
 
 @ExperimentalCoroutinesApi
 class TestimonialsViewModelTest {
@@ -32,84 +35,133 @@ class TestimonialsViewModelTest {
     @Before
     fun initMocksAndMainThread() {
         MockKAnnotations.init(this)
-        testimonialsViewModel = TestimonialsViewModel(repository)
     }
 
     @Test
-    fun `Given a testimonial list from mock ONGRespository when View Model is initialized testimoniasList LiveData should return a testimonial list`() = runTest {
-        /** Given
-        coEvery {
-           repository.getTestimonialsList(any())
-        } returns testimonialsViewModel.testimonialsList.postValue(fakeTestimonialsList)
+    fun `Given a flow that emit Loading and then Succes State with testimonial list from mock repository when ViewModel is initialize testimonialResultState should return first Loading and then Succes with testimonial list`() =
+        runTest {
+            // Given
+            coEvery {
+                repository.getTestimonialsList()
+            } returns flow {
+                emit(fakeLoadingResultState)
+                delay(FAKE_LOADING_DELAY)
+                emit(fakeSuccesTestimonialResultState)
+            }
 
-        // When Testimonial ViewModel  is initialized
+            // When
+            testimonialsViewModel = TestimonialsViewModel(repository)
 
-        // Then
-        assertEquals(testimonialsViewModel.testimonialsList.value, fakeTestimonialsList) **/
-    }
+            // Then
+            assertEquals(
+                fakeLoadingResultState,
+                testimonialsViewModel.testimonialsResultState.value
+            )
+
+            delay(FAKE_LOADING_DELAY)
+            // After fake loading delay
+            assertEquals(
+                fakeSuccesTestimonialResultState,
+                testimonialsViewModel.testimonialsResultState.value
+            )
+
+        }
 
     @Test
-    fun `Given a null testimonial list from mock ONGRespository when View Model is initialized testimoniasList LiveData should return null`() = runTest {
-        /** Given
-        coEvery {
-            repository.getTestimonialsList(any())
-        } returns testimonialsViewModel.testimonialsList.postValue(null)
+    fun `Given a flow that emit Succes Result State with a null testimonial list from mock OngRepository when View Model is initialized testimonialsResultState LiveData should return Result State Succes with null list`() =
+        runTest {
+            // Given
+            coEvery {
+                repository.getTestimonialsList()
+            } returns flow { emit(ResultState.Success(listOf(null))) }
 
-        // When Testimonial ViewModel  is initialized
+            // When
+            testimonialsViewModel = TestimonialsViewModel(repository)
 
-        // Then
-        assert(testimonialsViewModel.testimonialsList.value.isNullOrEmpty()) **/
-    }
+            // Then
+            assertEquals(
+                ResultState.Success(listOf(null)),
+                testimonialsViewModel.testimonialsResultState.value
+            )
+        }
 
     @Test
-    fun `Given an empty testimonial list from mock ONGRespository when View Model is initialized testimoniasList LiveData should return an empty list`() = runTest {
-        /** Given
-        coEvery {
-            repository.getTestimonialsList(any())
-        } returns testimonialsViewModel.testimonialsList.postValue(emptyList())
+    fun `Given a flow that emit Succes Result State with an empty testimonial list from mock OngRepository when View Model is initialized testimonialResultState LiveData should return a Result State Succes with an empty list`() =
+        runTest {
+            // Given
+            coEvery {
+                repository.getTestimonialsList()
+            } returns flow { emit(ResultState.Success(emptyList<Any>())) }
 
-        // When Testimonial ViewModel  is initialized
+            // When
+            testimonialsViewModel = TestimonialsViewModel(repository)
 
-        // Then
-        assert(testimonialsViewModel.testimonialsList.value!!.isEmpty())  **/
-    }
+            // Then
+            assertEquals(
+                ResultState.Success(emptyList<Any>()),
+                testimonialsViewModel.testimonialsResultState.value
+            )
+        }
 
-    // TODO `Given anResponse error at getTestimonials from mock ONGRespository when View Model is initialized some ViewModel Variable should return the error`()
+    @Test
+    fun `Given a flow that emit Loading and then Error with message from mock repository when ViewModel is initialize testimonialResultState should return first Loading and then Error with message`() =
+        runTest {
+            // Given
+            coEvery {
+                repository.getTestimonialsList()
+            } returns flow {
+                emit(fakeLoadingResultState)
+                delay(FAKE_LOADING_DELAY)
+                emit(fakeErrorResultState)
+            }
 
-    // TODO `Given Loading state at getTestimonials from mock ONGRespository when View Model is initialized some ViewModel Variable should return the state of network query`()
+            // When
+            testimonialsViewModel = TestimonialsViewModel(repository)
 
-    // TODO `Given a ultimasNovedades list from mock ONGRespository when View Model is initialized ultimasNovedades LiveData should return a testimonial list`()
+            // First
+            assertEquals(
+                fakeLoadingResultState,
+                testimonialsViewModel.testimonialsResultState.value
+            )
 
-    // TODO `Given a null ultimasNovedades list from mock ONGRespository when View Model is initialized ultimasNovedades LiveData should return null`()
+            delay(FAKE_LOADING_DELAY)
+            // After loading
+            assertEquals(
+                fakeErrorResultState,
+                testimonialsViewModel.testimonialsResultState.value
+            )
+        }
 
-    // TODO `Given an empty ultimasNovedades list from mock ONGRespository when View Model is initialized ultimasNovedades LiveData should return an empty list`()
+    @Test
+    fun `Given a flow that emit Loading Result State at getTestimonials from mock OngRepository when View Model is initialized testimonialsResultState Live Data should return Result State Loading`() =
+        runTest {
+            // Given
+            coEvery {
+                repository.getTestimonialsList()
+            } returns flow {
+                emit(fakeLoadingResultState)
+            }
 
-    // TODO `Given anResponse error at getUltimasNovedades from mock ONGRespository when View Model is initialized some ViewModel Variable should return the error`()
+            // When
+            testimonialsViewModel = TestimonialsViewModel(repository)
 
-    // TODO `Given Loading state at getUltimasNovedades from mock ONGRespository when View Model is initialized some ViewModel Variable should return the state of network query`()
-
-    // TODO `Given anResponse error at getTestimonials from mock ONGRespository when View Model is initialized some ViewModel Variable should return the error`()
-
-    // TODO `Given onResponse error at all queries from mock ONGRespository when View Model is initialized some ViewModel Variable should return the massive error`()
+            // First
+            assertEquals(
+                fakeLoadingResultState,
+                testimonialsViewModel.testimonialsResultState.value
+            )
+        }
 
     companion object {
-        val fakeTestimonialsList = buildList<Testimonial> {
-            repeat(5) {
+        private val fakeTestimonialsList = buildList<Testimonial> {
+            repeat(FAKE_LIST_SIZE) {
                 Testimonial(
-                    null,
-                    null,
-                    "testimony $it",
-                    null,
-                    null,
-                    "https://thispersondoesnotexist.com/image",
-                    "Name $it",
-                    null
+                    description = "testimony $it",
+                    name = "Name $it"
                 )
             }
         }
-        val fakeTestimonialsResponse = TestimonialsResponse(true, fakeTestimonialsList, "succes")
-        val fakeResponse: Response<TestimonialsResponse> = Response.success(
-            fakeTestimonialsResponse
-        )
+        val fakeSuccesTestimonialResultState: ResultState<Any> =
+            ResultState.Success(fakeTestimonialsList)
     }
 }
