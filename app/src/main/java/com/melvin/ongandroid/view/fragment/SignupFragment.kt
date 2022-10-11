@@ -1,5 +1,6 @@
 package com.melvin.ongandroid.view.fragment
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -21,6 +23,8 @@ import com.melvin.ongandroid.utils.Extensions.logEventInFirebase
 import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.viewmodel.singup.SingUpViewModel
 import com.melvin.ongandroid.viewmodel.singup.SingUpViewModelFactory
+import com.melvin.ongandroid.viewmodel.validation.ValidationViewModel
+import kotlinx.coroutines.flow.collect
 
 class SignupFragment : Fragment() {
 
@@ -28,6 +32,7 @@ class SignupFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var firebaseAnalytic: FirebaseAnalytics
 
+    private val validationViewModel by viewModels<ValidationViewModel>()
     private val viewModel: SingUpViewModel by viewModels(
         factoryProducer = { SingUpViewModelFactory() })
 
@@ -47,6 +52,17 @@ class SignupFragment : Fragment() {
         setupClickListeners()
 
         setupOnTextChangeListener()
+
+        setupButtonStatus()
+    }
+
+    // collect the state of flow and enable or disable button
+    private fun setupButtonStatus() {
+        lifecycleScope.launchWhenStarted {
+            validationViewModel.isSubmitButtonRegister.collect { value->
+                binding.buttonRegister.isEnabled = value
+            }
+        }
     }
 
     /*
@@ -68,17 +84,38 @@ class SignupFragment : Fragment() {
      */
     private fun setupOnTextChangeListener() {
         binding.apply {
+            if (binding.tInputName.text.isNullOrEmpty()) {
+                binding.tInputName.error =  "Obligatorio"
+            }
             tInputName.addTextChangedListener { text ->
-                text?.apply { viewModel.updateName(text.toString()) }
+                text?.apply {
+                    validationViewModel.setName(text.toString())
+                    viewModel.updateName(text.toString())
+                }
+            }
+            if (binding.tInputEmail.text.isNullOrEmpty()) {
+                binding.tInputEmail.error =  "Obligatorio"
             }
             tInputEmail.addTextChangedListener { text ->
-                text?.apply { viewModel.updateEmail(text.toString()) }
+                text?.apply {
+                    validationViewModel.setEmail(text.toString())
+                    viewModel.updateEmail(text.toString())
+                }
             }
             tInputPassword.addTextChangedListener { text ->
-                text?.apply { viewModel.updatePassword(text.toString()) }
+                text?.apply {
+                    validationViewModel.setPassword(text.toString())
+                    viewModel.updatePassword(text.toString())
+                }
+            }
+            if (binding.tInputRepeatPassword.text.isNullOrEmpty()) {
+                binding.tInputRepeatPassword.error =  "Passwords are not the same"
             }
             tInputRepeatPassword.addTextChangedListener { text ->
-                text?.apply { viewModel.updateRepeatPassword(text.toString()) }
+                text?.apply {
+                    validationViewModel.setRepeatPassword(text.toString())
+                    viewModel.updateRepeatPassword(text.toString())
+                }
             }
         }
     }
@@ -105,6 +142,7 @@ class SignupFragment : Fragment() {
         }
     }
     //ticket OT306-25
+    @SuppressLint("SuspiciousIndentation")
     private fun showErrorDialog(errorMessage: String) {
 
         val builder = AlertDialog.Builder(context)
