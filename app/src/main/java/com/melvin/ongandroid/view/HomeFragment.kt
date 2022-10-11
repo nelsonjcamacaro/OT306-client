@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentHomeBinding
-import com.melvin.ongandroid.model.InicioActivitys.Activity
+import com.melvin.ongandroid.model.inicioActivitys.Activity
 import com.melvin.ongandroid.model.Testimonial
 import com.melvin.ongandroid.model.news.NewsRepository
 import com.melvin.ongandroid.model.news.NewsViewState
@@ -28,7 +28,7 @@ import com.melvin.ongandroid.view.adapter.NewsAdapter
 import com.melvin.ongandroid.viewmodel.ActivityViewModel
 import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
 import com.melvin.ongandroid.viewmodel.TestimonialsViewModel
-import com.melvin.ongandroid.viewmodel.ViewModelFactory
+import com.melvin.ongandroid.viewmodel.TestimonialsViewModelFactory
 import com.melvin.ongandroid.viewmodel.news.NewsViewModel
 import com.melvin.ongandroid.viewmodel.news.NewsViewModelFactory
 
@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
     }
 
     private val viewModel: TestimonialsViewModel by viewModels(
-        factoryProducer = { ViewModelFactory() })
+        factoryProducer = { TestimonialsViewModelFactory() })
 
     private val viewModels: ActivityViewModel by viewModels(
         factoryProducer = { ActivityViewModelFactory() })
@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
 
     }
     private fun suscribeActivityAdapter(){
-        viewModels.slides.observe(viewLifecycleOwner, Observer { resulState->
+        viewModels.activitiesResultState.observe(viewLifecycleOwner, Observer { resulState->
             when(resulState){
                 is ResultState.Loading ->{
                     setLoadingSpinner(true)
@@ -195,7 +195,7 @@ class HomeFragment : Fragment() {
     Subscribe Testimonial adapter to observe viewModel LiveData
      */
     private fun subscribeTestimonialAdapter() {
-        viewModel.testimonialsList.observe(viewLifecycleOwner, Observer { resultState ->
+        viewModel.testimonialsResultState.observe(viewLifecycleOwner, Observer { resultState ->
             when (resultState) {
                 is ResultState.Loading -> {
                     Log.d(com.melvin.ongandroid.view.fragment.TAG, "Data is loading")

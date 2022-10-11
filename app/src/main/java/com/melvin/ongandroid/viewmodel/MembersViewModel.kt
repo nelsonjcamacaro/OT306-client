@@ -1,9 +1,7 @@
 package com.melvin.ongandroid.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.melvin.ongandroid.model.OngRemoteDataSource
 import com.melvin.ongandroid.model.nosotrosActivities.MembersRepository
 import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.launch
@@ -28,4 +26,12 @@ class MembersViewModel(private val repository: MembersRepository) : ViewModel() 
         }
     }
 
+}
+
+class MembersViewModelFactory: ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val ongRemoteDataSource = OngRemoteDataSource()
+        val repository = MembersRepository(ongRemoteDataSource)
+        return MembersViewModel(repository) as T
+    }
 }

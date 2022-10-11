@@ -1,29 +1,32 @@
 package com.melvin.ongandroid.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.melvin.ongandroid.model.InicioActivitys.*
+import androidx.lifecycle.*
+import com.melvin.ongandroid.model.inicioActivitys.*
 import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.launch
 
 class ActivityViewModel(private val repository: ActivityRepository): ViewModel() {
-    private var _slides = MutableLiveData<ResultState<Any>>()
-    val slides: LiveData<ResultState<Any>> get() = _slides
+    private var _activitiesResultState = MutableLiveData<ResultState<Any>>()
+    val activitiesResultState: LiveData<ResultState<Any>> get() = _activitiesResultState
 
     init {
-        viewModelScope.launch {
-            load()
-        }
+        load()
     }
 
     private fun load() {
         viewModelScope.launch {
             repository.getActivity().collect() { resultState ->
-                _slides.value = resultState
+                _activitiesResultState.value = resultState
             }
         }
+    }
+}
 
+class ActivityViewModelFactory: ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val remoteDataSource = ActivityRemoteDataSource()
+        val repository = ActivityRepository(remoteDataSource)
+        return ActivityViewModel(repository) as T
     }
 }
