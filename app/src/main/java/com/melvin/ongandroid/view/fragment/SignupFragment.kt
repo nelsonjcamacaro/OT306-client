@@ -2,6 +2,8 @@ package com.melvin.ongandroid.view.fragment
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -95,15 +98,40 @@ class SignupFragment : Fragment() {
                     }
                 }
                 is ResultState.Error -> {
-                    showErrorDialog()
+                    showErrorDialog(resultState.exception.message.toString())
                     logEventInFirebase(firebaseAnalytic, "sign_up_error")
                 }
             }
         }
     }
+    //ticket OT306-25
+    private fun showErrorDialog(errorMessage: String) {
 
-    private fun showErrorDialog() {
+        val builder = AlertDialog.Builder(context)
+                builder.setTitle("Error")
+                        .setMessage(errorMessage)
+                        .setPositiveButton("Volver al registro",null)
+                        .show()
+        binding.tInputEmail.error  = "ingrese un nuevo email"
+        binding.tInputName.error = "error en el registro"
+        binding.tInputRepeatPassword.error = "error en el registro"
+        binding.tInputPassword.error = "error en el registro"
 
+        binding.tInputEmail.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //nothing to do
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.tInputName.error = null
+                binding.tInputRepeatPassword.error = null
+                binding.tInputPassword.error = null
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                //nothing to do
+            }
+        } )
     }
 
     /*
