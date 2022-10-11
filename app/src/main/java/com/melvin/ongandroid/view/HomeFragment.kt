@@ -83,12 +83,8 @@ class HomeFragment : Fragment() {
                     setLoadingSpinner(true)
                 }
                 is ResultState.Success ->{
-                    if (resulState.data == null) {
-
-                    } else {
-                        val activityList = (resulState.data as? List<Activity>) ?: emptyList()
-                        if (activityList.isNotEmpty()) setupActivityAdapter(activityList)
-                    }
+                    val activityList = (resulState.data as? List<Activity>) ?: emptyList()
+                    if (activityList.isNotEmpty()) setupActivityAdapter(activityList)
                     setLoadingSpinner(false)
                 }
                 is ResultState.Error ->{
