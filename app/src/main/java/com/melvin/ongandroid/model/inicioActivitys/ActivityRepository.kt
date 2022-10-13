@@ -1,4 +1,4 @@
-package com.melvin.ongandroid.model.InicioActivitys
+package com.melvin.ongandroid.model.inicioActivitys
 
 import com.melvin.ongandroid.utils.ResultState
 import kotlinx.coroutines.flow.Flow

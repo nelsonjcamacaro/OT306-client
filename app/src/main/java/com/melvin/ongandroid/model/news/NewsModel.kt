@@ -10,9 +10,9 @@ data class NewsModel(
     @SerializedName("created_at")
     val created_at: String = "",
     @SerializedName("deleted_at")
-    val deleted_at: Any?,
+    val deleted_at: Any? = "",
     @SerializedName("group_id")
-    val group_id: Any?,
+    val group_id: Any? = "",
     @SerializedName("id")
     val id: Int = -1,
     @SerializedName("image")
@@ -22,7 +22,7 @@ data class NewsModel(
     @SerializedName("update_at")
     val updated_at: String = "",
     @SerializedName("user_id")
-    val user_id: Any?
+    val user_id: Any? = ""
 )
 
 data class NewsResponse(

@@ -5,10 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.melvin.ongandroid.R
 import com.melvin.ongandroid.databinding.NewListBinding
-import com.melvin.ongandroid.model.InicioActivitys.Activity
+import com.melvin.ongandroid.model.inicioActivitys.Activity
 
 class ActivitiesAdapter :
     ListAdapter<Activity, ActivitiesAdapter.ActivitiesViewHolder>(DiffCallBack) {
