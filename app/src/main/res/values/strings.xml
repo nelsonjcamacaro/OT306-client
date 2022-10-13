@@ -60,5 +60,7 @@
     <!-- Dialog messages -->
     <string name="register_successfully">User was successfully register</string>
     <string name="dialog_acept">Aceptar</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
 
 </resources>
