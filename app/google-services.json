@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "837727596368-d6qeunmfev7jqbq5e4dsjq0o1a5ar061.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.melvin.ongandroid",
+            "certificate_hash": "5689d90366182d1d111bb528d141072c8ac0a95c"
+          }
+        },
+        {
           "client_id": "837727596368-5aqhapqte0341hv5ocfg46nvr6vc5m8n.apps.googleusercontent.com",
           "client_type": 3
         }
