@@ -4,7 +4,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ValidationViewModel() : ViewModel() {
+open class ValidationViewModel() : ViewModel() {
 
     val nameData = MutableLiveData<String>()
     val emailData = MutableLiveData<String>()
@@ -39,10 +39,10 @@ class ValidationViewModel() : ViewModel() {
         }
     }
 
-    private fun validateForm(name: String?, email: String?, password: String?, repPassword: String?): Boolean {
+    fun validateForm(name: String?, email: String?, password: String?, repPassword: String?): Boolean {
         val isValidName = name != null && name.isNotBlank() && name.length > 3
         val isValidEmail = email != null && email.isNotBlank() && email.contains("@")
-        val passwordIsValid = password != null && password.isNotBlank() && password.length > 8
+        val passwordIsValid = password != null && password.isNotBlank() && password.length >= 8
         val isValidRepeatPassword = repPassword == password
         return isValidName && isValidEmail && passwordIsValid && isValidRepeatPassword
     }
