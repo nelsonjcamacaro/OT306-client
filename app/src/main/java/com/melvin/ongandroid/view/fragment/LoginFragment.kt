@@ -1,58 +1,53 @@
 package com.melvin.ongandroid.view.fragment
 
-import android.app.Activity.RESULT_OK
-import android.app.appsearch.AppSearchResult.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
-import androidx.core.provider.FontsContractCompat.FontRequestCallback.RESULT_OK
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.melvin.ongandroid.R
 import com.melvin.ongandroid.businesslogic.LoginValidationForm
-import com.melvin.ongandroid.databinding.FragmentContactBinding
 import com.melvin.ongandroid.databinding.FragmentLoginBinding
-import com.melvin.ongandroid.utils.LoadingSpinner
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.melvin.ongandroid.businesslogic.login.LoginUseCase
-import com.melvin.ongandroid.model.inicioActivitys.Activity
 import com.melvin.ongandroid.model.login.LoginRepository
 import com.melvin.ongandroid.model.login.LoginViewState
 import com.melvin.ongandroid.model.login.SharedPreferences
 import com.melvin.ongandroid.model.news.RetrofitClient
-import com.melvin.ongandroid.view.HomeFragment
 import com.melvin.ongandroid.view.MainActivity
 import com.melvin.ongandroid.viewmodel.login.LoginViewModel
 import com.melvin.ongandroid.viewmodel.login.LoginViewModelFactory
-
+import java.util.*
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    // instancia callback facebook
+    private val callbackManager = CallbackManager.Factory.create()
     private lateinit var loginValidationForm: LoginValidationForm
     private lateinit var auth: FirebaseAuth
+
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var googleSignInOptions: GoogleSignInOptions
     private val GOOGLE_SIGN_IN = 100
@@ -68,6 +63,26 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        // login manager configuration
+        LoginManager.getInstance().registerCallback(callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onCancel() {
+                    //LoginManager.getInstance().logOut()
+                }
+                override fun onError(error: FacebookException) {
+                    Toast.makeText(context,"error de  autenticacion",Toast.LENGTH_LONG).show()
+                }
+                override fun onSuccess(result: LoginResult) {
+                    startActivity(Intent(context, MainActivity::class.java))
+                }
+            })
+
+        // facebook login button
+        binding.buttonFacebook.setOnClickListener {
+            LoginManager.getInstance()
+                .logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        }
         return binding.root
     }
 
@@ -88,8 +103,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
         super.onActivityResult(requestCode, resultCode, data)
+
+        // Pass the activity result back to the Facebook SDK
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == GOOGLE_SIGN_IN){
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
