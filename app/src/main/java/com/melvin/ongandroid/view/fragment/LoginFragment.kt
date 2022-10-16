@@ -67,9 +67,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         // login manager configuration
         LoginManager.getInstance().registerCallback(callbackManager,
             object : FacebookCallback<LoginResult> {
-                override fun onCancel() {
-                    //LoginManager.getInstance().logOut()
-                }
+                override fun onCancel() {}
                 override fun onError(error: FacebookException) {
                     Toast.makeText(context,"error de  autenticacion",Toast.LENGTH_LONG).show()
                 }
@@ -159,17 +157,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun setupLoginObserver() {
         loginViewModel.loginViewState.observe(viewLifecycleOwner, Observer { viewState ->
             when (viewState) {
-                is LoginViewState.Loading -> {
-                    // login progress bar
-
-                }
+                is LoginViewState.Loading -> {}
                 is LoginViewState.Content -> {
                     successDialogLogin()
-
                 }
                 is LoginViewState.Error -> {
                     errorDialogLogin()
-
                 }
             }
         })
@@ -241,7 +234,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .show()
             binding.inputTextEmail.error = "Error"
             binding.inputTextPassword.error = "Error"
-
         }
     }
 
