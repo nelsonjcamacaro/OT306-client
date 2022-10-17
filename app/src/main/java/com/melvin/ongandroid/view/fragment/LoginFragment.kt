@@ -1,5 +1,7 @@
 package com.melvin.ongandroid.view.fragment
 
+import android.app.Activity.RESULT_OK
+import android.app.appsearch.AppSearchResult.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.registerForActivityResult
+import androidx.core.provider.FontsContractCompat.FontRequestCallback.RESULT_OK
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.melvin.ongandroid.R
@@ -21,8 +26,17 @@ import com.melvin.ongandroid.utils.LoadingSpinner
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.melvin.ongandroid.businesslogic.login.LoginUseCase
+import com.melvin.ongandroid.model.inicioActivitys.Activity
 import com.melvin.ongandroid.model.login.LoginRepository
 import com.melvin.ongandroid.model.login.LoginViewState
 import com.melvin.ongandroid.model.login.SharedPreferences
@@ -38,9 +52,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var loginValidationForm: LoginValidationForm
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var googleSignInOptions: GoogleSignInOptions
+    private val GOOGLE_SIGN_IN = 100
     private val loginViewModel by viewModels<LoginViewModel> {
-        LoginViewModelFactory(LoginUseCase(LoginRepository(RetrofitClient.webservice)),
-            SharedPreferences(requireContext()))}
+        LoginViewModelFactory(
+            LoginUseCase(LoginRepository(RetrofitClient.webservice)),
+            SharedPreferences(requireContext())
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,17 +75,57 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         setupSignUp()
         loginValidationForm = LoginValidationForm()
+        auth = FirebaseAuth.getInstance()
         enableButton()
         binding.buttonLogin.setOnClickListener {
-            //Momentaneamente mientras se realiza la integracion de registro,
-        // con colocar email y contraseña en el login llevara directo al home
-            val intent = Intent(context,MainActivity::class.java)
+            /*Momentaneamente mientras se realiza la integracion de registro,
+             con colocar email y contraseña en el login llevara directo al home*/
+            val intent = Intent(context, MainActivity::class.java)
             startActivity(intent)
+        }
+        binding.buttonGoogle.setOnClickListener {
+            loginWithGoogle()
         }
     }
 
-    private fun setupSignUp(){
-        binding.textAccount.setOnClickListener{
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_SIGN_IN){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account : GoogleSignInAccount? = task.getResult(ApiException::class.java)
+
+                if (account!= null){
+                    val credential = GoogleAuthProvider.getCredential(account.idToken,null)
+                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                        if (it.isSuccessful){
+                            val intent = Intent(context,MainActivity::class.java)
+                            startActivity(intent)
+                        }else {
+                            Toast.makeText(context,"error de  autenticacion",Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }catch (e:ApiException){
+                Toast.makeText(context,"error de  autenticacion",Toast.LENGTH_LONG).show()
+            }
+
+        }
+    }
+
+    private fun loginWithGoogle() {
+        googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = context?.let { GoogleSignIn.getClient(it, googleSignInOptions) }!!
+        startActivityForResult(googleSignInClient.signInIntent, GOOGLE_SIGN_IN)
+    }
+
+
+    private fun setupSignUp() {
+        binding.textAccount.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment()
             findNavController().navigate(action)
 
@@ -103,7 +164,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
 
-    fun enableButton(){
+    fun enableButton() {
         val email = binding.inputTextEmail
         val password = binding.inputTextPassword
         val button = binding.buttonLogin
@@ -117,14 +178,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                emailValidated =  loginValidationForm.emailValidation(email)
+                emailValidated = loginValidationForm.emailValidation(email)
                 passwordValidated = loginValidationForm.passwordValidation(password)
                 if (emailValidated && passwordValidated) button.isEnabled = true
             }
 
             override fun afterTextChanged(s: Editable?) {
                 passwordValidated = loginValidationForm.passwordValidation(password)
-                emailValidated =  loginValidationForm.emailValidation(email)
+                emailValidated = loginValidationForm.emailValidation(email)
                 if (!emailValidated || !passwordValidated) button.isEnabled = false
             }
 
@@ -137,20 +198,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 passwordValidated = loginValidationForm.passwordValidation(password)
-                emailValidated =  loginValidationForm.emailValidation(email)
+                emailValidated = loginValidationForm.emailValidation(email)
                 if (emailValidated && passwordValidated) button.isEnabled = true
             }
 
             override fun afterTextChanged(s: Editable?) {
                 passwordValidated = loginValidationForm.passwordValidation(password)
-                emailValidated =  loginValidationForm.emailValidation(email)
+                emailValidated = loginValidationForm.emailValidation(email)
                 if (!emailValidated || !passwordValidated) button.isEnabled = false
             }
 
         })
     }
 
-    private fun errorDialogLogin(){
+    private fun errorDialogLogin() {
         context?.let {
             MaterialAlertDialogBuilder(it)
                 .setTitle("Error")
@@ -162,7 +223,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         }
     }
-    private fun successDialogLogin(){
+
+    private fun successDialogLogin() {
         findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
     }
 }
