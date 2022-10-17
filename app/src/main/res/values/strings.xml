@@ -63,4 +63,8 @@
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
 
+    <string name="facebook_app_id">617773526560520</string>
+    <string name="fb_login_protocol_scheme">fb617773526560520</string>
+    <string name="facebook_client_token">bd0dbab6d26d0c7e32a0d35b8b8230d8</string>
+
 </resources>
