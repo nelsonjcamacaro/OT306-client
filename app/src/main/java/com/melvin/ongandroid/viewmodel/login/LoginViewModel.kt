@@ -8,6 +8,8 @@ import com.melvin.ongandroid.model.login.LoginResponse
 import com.melvin.ongandroid.model.login.LoginViewState
 import com.melvin.ongandroid.model.login.SharedPreferences
 import kotlinx.coroutines.launch
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase,
@@ -19,6 +21,33 @@ class LoginViewModel(
 
     private val _loginViewState = MutableLiveData<LoginViewState>()
     val loginViewState: LiveData<LoginViewState> get() = _loginViewState
+
+    private fun isValidPassword(password: String): Boolean {
+        val pattern: Pattern
+        val specialCharacters = "-@%\\[\\}+'!/#$^?:;,\\(\"\\)~`.*=&\\{>\\]<_"
+        val passwordRegex =
+            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[$specialCharacters])(?=\\S+$).{8,20}$"
+        pattern = Pattern.compile(passwordRegex)
+        val matcher: Matcher = pattern.matcher(password)
+        return matcher.matches()
+    }
+    private val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+
+    fun validateLogin(password: String, email: String): Boolean {
+        if (!(email.matches(emailPattern.toRegex())) || email.length < 4 || email.length > 25) {
+            return false
+        }
+        if ((password.length < 8 || password.length >15) ||
+            password.count { it.isDigit() } < 2 ||
+            !password[0].isLowerCase() ||
+            password.contains(password.lowercase()) ||
+            !isValidPassword(password)
+        ) {
+            return false
+        }
+        return true
+    }
+
 
     fun loginUser(email: String, password: String, context: Context) {
         viewModelScope.launch {
