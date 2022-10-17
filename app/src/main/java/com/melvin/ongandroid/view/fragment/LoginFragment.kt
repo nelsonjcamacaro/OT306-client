@@ -27,13 +27,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.ktx.Firebase
 import com.melvin.ongandroid.businesslogic.login.LoginUseCase
 import com.melvin.ongandroid.model.login.LoginRepository
 import com.melvin.ongandroid.model.login.LoginViewState
 import com.melvin.ongandroid.model.login.SharedPreferences
 import com.melvin.ongandroid.model.news.RetrofitClient
+import com.melvin.ongandroid.utils.Extensions
 import com.melvin.ongandroid.view.MainActivity
 import com.melvin.ongandroid.viewmodel.login.LoginViewModel
 import com.melvin.ongandroid.viewmodel.login.LoginViewModelFactory
@@ -48,6 +52,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var loginValidationForm: LoginValidationForm
     private lateinit var auth: FirebaseAuth
 
+    private lateinit var firebaseAnalytic: FirebaseAnalytics
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var googleSignInOptions: GoogleSignInOptions
     private val GOOGLE_SIGN_IN = 100
@@ -69,15 +74,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             object : FacebookCallback<LoginResult> {
                 override fun onCancel() {}
                 override fun onError(error: FacebookException) {
+                    Extensions.logEventInFirebase(firebaseAnalytic, "log_in_error")
                     Toast.makeText(context,"error de  autenticacion",Toast.LENGTH_LONG).show()
                 }
                 override fun onSuccess(result: LoginResult) {
+                    Extensions.logEventInFirebase(firebaseAnalytic, "log_in_success")
                     startActivity(Intent(context, MainActivity::class.java))
                 }
             })
 
         // facebook login button
         binding.buttonFacebook.setOnClickListener {
+            Extensions.logEventInFirebase(firebaseAnalytic, "facebook_pressed")
             LoginManager.getInstance()
                 .logInWithReadPermissions(this, Arrays.asList("public_profile"));
         }
@@ -86,17 +94,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firebaseAnalytic = Firebase.analytics
         setupSignUp()
         loginValidationForm = LoginValidationForm()
         auth = FirebaseAuth.getInstance()
         enableButton()
         binding.buttonLogin.setOnClickListener {
+            Extensions.logEventInFirebase(firebaseAnalytic, "log_in_pressed")
             /*Momentaneamente mientras se realiza la integracion de registro,
              con colocar email y contraseña en el login llevara directo al home*/
             val intent = Intent(context, MainActivity::class.java)
             startActivity(intent)
         }
         binding.buttonGoogle.setOnClickListener {
+            Extensions.logEventInFirebase(firebaseAnalytic, "gmail_pressed")
             loginWithGoogle()
         }
     }
@@ -118,14 +129,17 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     val credential = GoogleAuthProvider.getCredential(account.idToken,null)
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                         if (it.isSuccessful){
+                            Extensions.logEventInFirebase(firebaseAnalytic, "log_in_success")
                             val intent = Intent(context,MainActivity::class.java)
                             startActivity(intent)
                         }else {
+                            Extensions.logEventInFirebase(firebaseAnalytic, "log_in_error")
                             Toast.makeText(context,"error de  autenticacion",Toast.LENGTH_LONG).show()
                         }
                     }
                 }
             }catch (e:ApiException){
+                Extensions.logEventInFirebase(firebaseAnalytic, "log_in_error")
                 Toast.makeText(context,"error de  autenticacion",Toast.LENGTH_LONG).show()
             }
 
@@ -145,6 +159,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun setupSignUp() {
         binding.textAccount.setOnClickListener {
+            Extensions.logEventInFirebase(firebaseAnalytic, "sing_up_pressed")
             val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment()
             findNavController().navigate(action)
 
@@ -159,9 +174,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             when (viewState) {
                 is LoginViewState.Loading -> {}
                 is LoginViewState.Content -> {
+                    Extensions.logEventInFirebase(firebaseAnalytic, "log_in_succes")
                     successDialogLogin()
                 }
                 is LoginViewState.Error -> {
+                    Extensions.logEventInFirebase(firebaseAnalytic, "log_in_error")
                     errorDialogLogin()
                 }
             }
