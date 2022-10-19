@@ -6,7 +6,7 @@
     style="@style/testimonial_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/testimonial_card_horizontal_margin"
+    android:layout_marginHorizontal="@dimen/margin_values"
     android:layout_marginVertical="@dimen/testimonial_card_vertical_margin">
 
     <!-- Testimonial Layout -->
