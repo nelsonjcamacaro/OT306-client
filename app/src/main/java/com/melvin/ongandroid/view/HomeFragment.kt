@@ -87,13 +87,8 @@ class HomeFragment : Fragment() {
                     if (activityList.isNotEmpty()) setupActivityAdapter(activityList)
                     setLoadingSpinner(false)
                 }
-                is ResultState.Error ->{
-
-                }
-
+                is ResultState.Error ->{}
             }
-
-
         })
     }
     private fun setupRvActivity(){
@@ -102,7 +97,6 @@ class HomeFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = horizontalAdapter
-
         }
     }
 
@@ -125,8 +119,6 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = testimonialAdapter
         }
-       /* binding.testimonialsRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.testimonialsRecyclerView.adapter = testimonialAdapter*/
     }
 
     // firebase analytics
@@ -135,7 +127,6 @@ class HomeFragment : Fragment() {
         //testimonies_see_more_pressed: Al presionar la flecha "Ver más" en listado de "Testimonios"
         logEventInFirebase(firebaseAnalytic, "last_news_see_more_pressed")
     }
-
     /*
     Subscribe all adapters to observe viewModel LiveData
      */
