@@ -2,28 +2,40 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginVertical="@dimen/vertical_margin_small"
+    android:layout_marginHorizontal="@dimen/margin_values"
+    app:cardCornerRadius="@dimen/corner_card_radius">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/img_news"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/image_height_vertical_recycler"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/txt_news_name"/>
 
         <TextView
             android:id="@+id/txt_news_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            tools:text="Esto es un titulo" />
-    </LinearLayout>
+            android:paddingHorizontal="@dimen/padding_values"
+            android:paddingTop="@dimen/padding_values"
+            style="@style/text_style_activity_name"
+            tools:text="Esto es un titulo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_news"
+            app:layout_constraintBottom_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </com.google.android.material.card.MaterialCardView>

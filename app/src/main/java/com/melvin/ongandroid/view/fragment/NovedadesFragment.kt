@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.melvin.ongandroid.businesslogic.news.GetNewsUseCase
 import com.melvin.ongandroid.databinding.FragmentNovedadesBinding
 import com.melvin.ongandroid.model.news.NewsModel
@@ -76,7 +76,11 @@ class NovedadesFragment : Fragment() {
         setLoadingSpinner(false)
         novedadesAdapter = NovedadesAdapter(news)
         binding.rvNovedades.apply {
-            layoutManager = GridLayoutManager(context, 3)
+            layoutManager = LinearLayoutManager(
+                this@NovedadesFragment.context,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
             adapter = novedadesAdapter
         }
     }

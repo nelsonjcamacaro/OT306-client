@@ -6,16 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.melvin.ongandroid.databinding.ImageListBinding
 import com.melvin.ongandroid.model.inicioActivitys.Activity
+import com.melvin.ongandroid.utils.Extensions.formatDescription
 
-class HorizontalAdapter(var activitiesList: List<Activity>): RecyclerView.Adapter<HorizontalAdapter.Activityviewholder>() {
+class HorizontalAdapter(private var activitiesList: List<Activity>): RecyclerView.Adapter<HorizontalAdapter.ActivityViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Activityviewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ImageListBinding.inflate(layoutInflater, parent, false)
-        return Activityviewholder(binding)
+        return ActivityViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: Activityviewholder, position: Int) {
+    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         holder.bind(activitiesList[position])
 
     }
@@ -24,17 +25,18 @@ class HorizontalAdapter(var activitiesList: List<Activity>): RecyclerView.Adapte
         return activitiesList.size
     }
 
-    inner class Activityviewholder(private val binding: ImageListBinding): RecyclerView.ViewHolder(binding.root){
+    inner class ActivityViewHolder(private val binding: ImageListBinding): RecyclerView.ViewHolder(binding.root){
 
         fun bind(activity: Activity){
             binding.apply {
-                tvWelcome.text = activity.name
-                tvWelcomeDescrip.text = activity.description
-                activity.image.let { urlImage->
+                tvWelcome.text = activity.name ?: ""
+                tvWelcomeDescrip.text = activity.description.formatDescription()
+                activity.image?.let { urlImage->
                     Glide
-                        .with(binding.root.context)
+                        .with(root)
                         .load(urlImage)
-                        .into(binding.imageView)
+                        .centerCrop()
+                        .into(imageView)
                 }
             }
 
