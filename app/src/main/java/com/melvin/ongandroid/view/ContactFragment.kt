@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.melvin.ongandroid.businesslogic.IsInputValidUseCase
 import com.melvin.ongandroid.databinding.FragmentContactBinding
 import com.melvin.ongandroid.model.ContactMessageDto
@@ -53,9 +54,9 @@ class ContactFragment : Fragment() {
 
         viewModel.messageFromContact.observe(viewLifecycleOwner, Observer { response ->
             if (response != null) {
-                setLoadingSpinner(true)
-                executeAlertDialog()
-                setLoadingSpinner(false)
+                //setLoadingSpinner(true)
+                //executeAlertDialog()
+                //setLoadingSpinner(false)
             } else {
                 binding.tvErrorMessage.visibility = View.VISIBLE
             }
@@ -85,7 +86,10 @@ class ContactFragment : Fragment() {
                 message = message
             )
         )
+        executeAlertDialog()
+        findNavController().navigate(ContactFragmentDirections.actionContactFragmentToHomeFragment())
     }
+
 
     private fun executeAlertDialog() {
         //asignando valores al modal dialog

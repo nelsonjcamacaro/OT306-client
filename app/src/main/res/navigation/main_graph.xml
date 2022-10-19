@@ -19,7 +19,11 @@
         android:id="@+id/contactFragment"
         android:name="com.melvin.ongandroid.view.ContactFragment"
         android:label="fragment_contact"
-        tools:layout="@layout/fragment_contact" />
+        tools:layout="@layout/fragment_contact" >
+        <action
+            android:id="@+id/action_contactFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/activitiesFragment"
         android:name="com.melvin.ongandroid.view.fragment.ActivitiesFragment"
