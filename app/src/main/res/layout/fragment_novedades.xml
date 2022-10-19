@@ -5,46 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragment.NovedadesFragment">
+
+    <!-- Novedades Layout   -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_values">
 
+        <!-- Logo Image View -->
         <ImageView
             android:id="@+id/imageLogo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="170dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="170dp"
+            android:layout_marginVertical="@dimen/margin_values"
             android:src="@drawable/logo"
+            app:layout_constraintBottom_toTopOf="@+id/tvFragNews"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/content_description_ong_logo" />
 
+        <!-- Title Text View -->
         <TextView
             android:id="@+id/tvFragNews"
             style="@style/testimonios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="112dp"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="112dp"
+            android:layout_marginBottom="@dimen/vertical_margin_small"
+            android:gravity="center_horizontal|center_vertical"
             android:text="@string/title_news"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageLogo2"/>
+            app:layout_constraintTop_toBottomOf="@+id/imageLogo2"
+            app:layout_constraintBottom_toTopOf="@+id/rvNovedades"/>
 
+        <!-- Novedades Recycler View -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNovedades"
-            android:layout_width="match_parent"
-            android:layout_height="380dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
             tools:listitem="@layout/novedades_item"
+            android:layout_marginHorizontal="@dimen/margin_values"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvFragNews"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </FrameLayout>

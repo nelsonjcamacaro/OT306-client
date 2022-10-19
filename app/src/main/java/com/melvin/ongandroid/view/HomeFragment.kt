@@ -32,6 +32,7 @@ import com.melvin.ongandroid.viewmodel.TestimonialsViewModelFactory
 import com.melvin.ongandroid.viewmodel.news.NewsViewModel
 import com.melvin.ongandroid.viewmodel.news.NewsViewModelFactory
 
+@Suppress("UNCHECKED_CAST")
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -64,18 +65,23 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         firebaseAnalytic = FirebaseAnalytics.getInstance(requireContext())
         loadingSpinner = LoadingSpinner()
-        setupRvNews()
-        newsUpdateUI() // load news
+        setupRecyclerViews()
         subscribeUi()
-        setupRvActivity()
-        suscribeActivityAdapter()
-        setUpTestimonialRecyclerView()
-
     }
+
+    /*
+     * Setup all Recycler Views
+     */
+    private fun setupRecyclerViews() {
+        setupRvNews()
+        setupRvActivity()
+        setUpTestimonialRecyclerView()
+    }
+
     private fun setupActivityAdapter(activitiesList : List<Activity>){
         binding.rvWelcome.adapter = HorizontalAdapter(activitiesList)
-
     }
+
     private fun suscribeActivityAdapter(){
         viewModels.activitiesResultState.observe(viewLifecycleOwner, Observer { resulState->
             when(resulState){
@@ -91,6 +97,7 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
     private fun setupRvActivity(){
         horizontalAdapter = HorizontalAdapter(listOf())
         binding.rvWelcome.apply {
@@ -110,15 +117,14 @@ class HomeFragment : Fragment() {
     }
 
     /*
-    Set initial configuration for Testimonial Recycler View
+     * Set initial configuration for Testimonial Recycler View
      */
     private fun setUpTestimonialRecyclerView() {
-        testimonialAdapter = TestimonialAdapter(listOf())
         binding.testimonialsRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            adapter = testimonialAdapter
         }
+
     }
 
     // firebase analytics
@@ -126,12 +132,36 @@ class HomeFragment : Fragment() {
         //last_news_see_more_pressed': Al presionar la flecha "Ver más" en listado de "Últimas novedades"
         //testimonies_see_more_pressed: Al presionar la flecha "Ver más" en listado de "Testimonios"
         logEventInFirebase(firebaseAnalytic, "last_news_see_more_pressed")
+
     }
     /*
-    Subscribe all adapters to observe viewModel LiveData
+     * Subscribe all adapters to observe viewModel LiveData
      */
     private fun subscribeUi() {
         subscribeTestimonialAdapter()
+        newsUpdateUI() // load news
+        subscribeActivityAdapter()
+    }
+
+    private fun subscribeActivityAdapter(){
+        viewModels.activitiesResultState.observe(viewLifecycleOwner, Observer { resulState->
+            when(resulState){
+                is ResultState.Loading ->{
+                    setLoadingSpinner(true)
+                }
+                is ResultState.Success ->{
+                    val activityList = (resulState.data as? List<Activity>) ?: emptyList()
+                    if (activityList.isNotEmpty()) setupActivityAdapter(activityList)
+                    setLoadingSpinner(false)
+                }
+                is ResultState.Error ->{
+
+                }
+
+            }
+
+
+        })
     }
 
     private fun newsUpdateUI() {
@@ -183,7 +213,7 @@ class HomeFragment : Fragment() {
     }
 
     /*
-    Subscribe Testimonial adapter to observe viewModel LiveData
+     * Subscribe Testimonial adapter to observe viewModel LiveData
      */
     private fun subscribeTestimonialAdapter() {
         viewModel.testimonialsResultState.observe(viewLifecycleOwner, Observer { resultState ->
@@ -213,26 +243,23 @@ class HomeFragment : Fragment() {
         }
 
     private fun setTestimonialsAdapter(testimonial: List<Testimonial>){
-        Log.d(com.melvin.ongandroid.view.fragment.TAG, "Data successfully retrieved")
         setLoadingSpinner(false)
-        binding.testimonialsRecyclerView.adapter = TestimonialAdapter(testimonial)
+        testimonialAdapter = TestimonialAdapter()
+        testimonialAdapter.submitList(testimonial)
+        binding.testimonialsRecyclerView.adapter = testimonialAdapter
     }
 
     private fun setLoadingSpinner(isLoading: Boolean) {
         if (isLoading) {
             loadingSpinner.start(binding.imageLogo)
-            binding.rvNews.visibility = View.GONE
-            binding.novedadesTittle.visibility = View.GONE
+            binding.layoutNews.visibility = View.GONE
             binding.layoutTestimonial.visibility = View.GONE
             binding.rvWelcome.visibility = View.GONE
-
         } else {
             loadingSpinner.stop(binding.imageLogo)
-            binding.rvNews.visibility = View.VISIBLE
-            binding.novedadesTittle.visibility = View.VISIBLE
+            binding.layoutNews.visibility = View.VISIBLE
             binding.layoutTestimonial.visibility = View.VISIBLE
             binding.rvWelcome.visibility = View.VISIBLE
-
         }
     }
 }

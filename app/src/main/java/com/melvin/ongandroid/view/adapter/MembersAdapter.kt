@@ -9,7 +9,7 @@ import com.melvin.ongandroid.model.nosotrosActivities.model.MemberDto
 import com.melvin.ongandroid.model.nosotrosActivities.model.getFormattedDescription
 
 class MembersAdapter(
-    var members: List<MemberDto>,
+    private var members: List<MemberDto>,
     private val onClickMember: OnMembersClicked
 ) :
     RecyclerView.Adapter<MembersAdapter.MembersViewHolder>() {

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".view.HomeFragment">
 
-
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -29,57 +28,72 @@
                 app:layout_constraintBottom_toTopOf="@+id/rvWelcome"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/content_description_ong_logo"/>
 
             <!-- Welcome Horizontal Recycler View -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWelcome"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="45dp"
-                android:layout_marginEnd="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_values"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_logo"
                 tools:listitem="@layout/image_list" />
 
-            <!-- News Title -->
-            <TextView
-                android:id="@+id/novedades_tittle"
-                android:layout_width="wrap_content"
+            <!-- News Layout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_news"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:text="Novedades"
-                android:textAppearance="@style/testimonios"
-                app:layout_constraintBottom_toTopOf="@+id/rvNews"
+                android:layout_marginTop="@dimen/vertical_margin_medium"
+                app:layout_constraintBottom_toTopOf="@id/layout_testimonial"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="HardcodedText" />
+                app:layout_constraintTop_toBottomOf="@id/rvWelcome">
 
-            <!-- News Recycler View -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvNews"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="60dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rvWelcome"
-                tools:listitem="@layout/new_list" />
+                <!-- News Title -->
+                <TextView
+                    android:id="@+id/novedades_tittle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/vertical_margin_small"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="Novedades"
+                    android:textAppearance="@style/testimonios"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/rvNews"
+                    tools:ignore="HardcodedText" />
+
+                <!-- News Recycler View -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvNews"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vertical_margin_small"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/novedades_tittle"
+                    tools:listitem="@layout/new_list" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Testimonials Layout -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_testimonial"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vertical_margin_large"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rvNews">
+                app:layout_constraintTop_toBottomOf="@+id/layout_news">
 
                 <!-- Title Text View -->
                 <TextView
@@ -99,7 +113,6 @@
                     android:id="@+id/testimonials_recycler_view"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/testimonial_rv_height"
-                    android:padding="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -107,12 +120,6 @@
                     tools:listitem="@layout/testimonial_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="@dimen/vertical_margin_large"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_testimonial" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
