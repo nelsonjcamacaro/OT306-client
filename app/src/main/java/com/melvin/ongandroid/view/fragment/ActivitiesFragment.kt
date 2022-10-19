@@ -5,17 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.melvin.ongandroid.databinding.FragmentActivitiesBinding
 import com.melvin.ongandroid.model.inicioActivitys.Activity
 import com.melvin.ongandroid.utils.AppConstants
+import com.melvin.ongandroid.utils.LoadingSpinner
+import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.view.adapter.ActivitiesAdapter
+import com.melvin.ongandroid.viewmodel.ActivityViewModel
+import com.melvin.ongandroid.viewmodel.ActivityViewModelFactory
 
+@Suppress("UNCHECKED_CAST")
 class ActivitiesFragment : Fragment() {
     private var _binding: FragmentActivitiesBinding? = null
     private val binding get() = _binding!!
     private lateinit var activitiesAdapter: ActivitiesAdapter
+    private lateinit var loadingSpinner: LoadingSpinner
+
+    private val viewModel: ActivityViewModel by viewModels(
+        factoryProducer = { ActivityViewModelFactory() })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +38,7 @@ class ActivitiesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadingSpinner = LoadingSpinner()
         setUpActivitiesRecyclerView()
         subscribeUi()
 
@@ -39,10 +50,9 @@ class ActivitiesFragment : Fragment() {
     private fun setUpActivitiesRecyclerView() {
         activitiesAdapter = ActivitiesAdapter()
         binding.recyclerViewActivities.apply {
-            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(
                 this@ActivitiesFragment.context,
-                LinearLayoutManager.HORIZONTAL,
+                LinearLayoutManager.VERTICAL,
                 false
             )
             adapter = activitiesAdapter
@@ -53,30 +63,21 @@ class ActivitiesFragment : Fragment() {
    Subscribe Activities adapter to observe viewModel LiveData
     */
     private fun subscribeUi() {
-        //TODO replace this with Api Data
-
-        val previewList = listOf<Activity>(
-            Activity(
-                name = "Actividad de prueba 1",
-                description = "Descripción de la actividad de prueba 1 para ver como se ve corriendo en el emulador, un saludo aca desde Villa Maipu.",
-                id = 1,
-                image = "image from preview"
-            ),
-            Activity(
-                name = "Actividad de prueba 2",
-                description = "Descripción de la actividad de prueba 2 esta va a ser más corta, se me acaba rápido la imaginación.",
-                id = 2,
-                image = "image from preview"
-            )
-        )
-
-        if (previewList.isEmpty()) {
-            // show error message and reload data
-            errorSnackBar(AppConstants.SET_MESSAGE) {
-                // viewModel load data
+        viewModel.activitiesResultState.observe(this.viewLifecycleOwner) { resulState->
+            when(resulState){
+                is ResultState.Loading ->{
+                    setLoadingSpinner(true)
+                }
+                is ResultState.Success ->{
+                    val activityList = (resulState.data as? List<Activity>) ?: emptyList()
+                    if (activityList.isNotEmpty()) activitiesAdapter.submitList(activityList)
+                    setLoadingSpinner(false)
+                }
+                is ResultState.Error ->{
+                    errorSnackBar(AppConstants.SET_MESSAGE){}
+                }
             }
         }
-        activitiesAdapter.submitList(previewList)
     }
 
     // error message snackBar
@@ -88,4 +89,16 @@ class ActivitiesFragment : Fragment() {
             .show()
     }
 
+    /*
+     * Call with isLoading = true if Result State is Loading. Function will start the animation.
+     * Call with isLoading = false if Result State isn´t Loading. Function will stop the animation
+     * and restore the image logo
+     */
+    private fun setLoadingSpinner(isLoading: Boolean) {
+        if (isLoading) {
+            loadingSpinner.start(binding.imageLogo)
+        } else {
+            loadingSpinner.stop(binding.imageLogo)
+        }
+    }
 }

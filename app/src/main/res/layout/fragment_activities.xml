@@ -6,15 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".view.fragment.ActivitiesFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <!-- Activities Layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_values">
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_values">
 
             <!-- Logo Image View -->
             <ImageView
@@ -26,7 +22,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/text_activities_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/content_description_ong_logo"/>
 
             <!-- Title Text View -->
             <TextView
@@ -40,50 +37,23 @@
                 app:layout_constraintBottom_toTopOf="@+id/recycler_view_activities"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/image_logo"
+                app:layout_constraintTop_toBottomOf="@id/image_logo"
                 tools:text="@string/title_activities" />
 
-            <!-- Activities Horizontal Recycler View -->
-
-            <!-- Join Button -->
-
+            <!-- Activities Recycler View -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_activities"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/button_join"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/margin_values"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_activities_title"
                 tools:listitem="@layout/new_list" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button_join"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginVertical="@dimen/vertical_margin_large"
-                android:layout_marginStart="@dimen/margin_values"
-                android:background="@drawable/btn_red_button"
-                android:elevation="8dp"
-                android:paddingHorizontal="@dimen/button_horizontal_padding_values"
-                android:paddingVertical="@dimen/button_vertical_padding_values"
-                android:text="@string/button_join"
-                android:textAppearance="@style/text_style_red_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_view_activities" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="@dimen/vertical_margin_large"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_join" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
 
 </FrameLayout>

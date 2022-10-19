@@ -1,6 +1,7 @@
 package com.melvin.ongandroid.utils
 
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -31,5 +32,12 @@ object Extensions {
         bundle.putString("eventLog", event)
         firebaseAnalytic.logEvent(event, bundle)
     }
+
+    /*
+     * Extension function to format any content from Server
+     * Call this function from a String to get a formatted text content
+     */
+    fun String?.formatDescription() =
+        Html.fromHtml(this ?: "").replace(Regex("\\n"), " ")
 
 }

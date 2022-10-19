@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -24,7 +24,6 @@ import com.melvin.ongandroid.utils.ResultState
 import com.melvin.ongandroid.viewmodel.singup.SingUpViewModel
 import com.melvin.ongandroid.viewmodel.singup.SingUpViewModelFactory
 import com.melvin.ongandroid.viewmodel.validation.ValidationViewModel
-import kotlinx.coroutines.flow.collect
 
 class SignupFragment : Fragment() {
 
@@ -32,7 +31,7 @@ class SignupFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var firebaseAnalytic: FirebaseAnalytics
 
-    private val validationViewModel by viewModels<ValidationViewModel>()
+    private val validation by viewModels<ValidationViewModel>()
     private val viewModel: SingUpViewModel by viewModels(
         factoryProducer = { SingUpViewModelFactory() })
 
@@ -46,22 +45,34 @@ class SignupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         firebaseAnalytic = Firebase.analytics
-
         setupClickListeners()
-
         setupOnTextChangeListener()
-
         setupButtonStatus()
     }
 
-    // collect the state of flow and enable or disable button
+    // new validation view model
     private fun setupButtonStatus() {
-        lifecycleScope.launchWhenStarted {
-            validationViewModel.isSubmitButtonRegister.collect { value->
-                binding.buttonRegister.isEnabled = value
-            }
+        val name = binding.tilName
+        val email = binding.tilEmail
+        val password = binding.tliPassword
+        val repPassw = binding.tliRepeatPassword
+        val button = binding.buttonRegister
+
+        validation.isValidData.observe(viewLifecycleOwner, Observer { value->
+            button.isEnabled = value
+        })
+        name.editText?.doOnTextChanged { text, _, _, _ ->
+            validation.nameData.value = text?.toString()
+        }
+        email.editText?.doOnTextChanged { text, _, _, _ ->
+            validation.emailData.value = text?.toString()
+        }
+        password.editText?.doOnTextChanged { text, _, _, _ ->
+            validation.passwordData.value = text?.toString()
+        }
+        repPassw.editText?.doOnTextChanged { text, _, _, _ ->
+            validation.repeatPasswordData.value = text?.toString()
         }
     }
 
@@ -84,38 +95,17 @@ class SignupFragment : Fragment() {
      */
     private fun setupOnTextChangeListener() {
         binding.apply {
-            if (binding.tInputName.text.isNullOrEmpty()) {
-                binding.tInputName.error =  "Obligatorio"
-            }
             tInputName.addTextChangedListener { text ->
-                text?.apply {
-                    validationViewModel.setName(text.toString())
-                    viewModel.updateName(text.toString())
-                }
-            }
-            if (binding.tInputEmail.text.isNullOrEmpty()) {
-                binding.tInputEmail.error =  "Obligatorio"
+                text?.apply { viewModel.updateName(text.toString()) }
             }
             tInputEmail.addTextChangedListener { text ->
-                text?.apply {
-                    validationViewModel.setEmail(text.toString())
-                    viewModel.updateEmail(text.toString())
-                }
+                text?.apply { viewModel.updateEmail(text.toString()) }
             }
             tInputPassword.addTextChangedListener { text ->
-                text?.apply {
-                    validationViewModel.setPassword(text.toString())
-                    viewModel.updatePassword(text.toString())
-                }
-            }
-            if (binding.tInputRepeatPassword.text.isNullOrEmpty()) {
-                binding.tInputRepeatPassword.error =  "Passwords are not the same"
+                text?.apply { viewModel.updatePassword(text.toString()) }
             }
             tInputRepeatPassword.addTextChangedListener { text ->
-                text?.apply {
-                    validationViewModel.setRepeatPassword(text.toString())
-                    viewModel.updateRepeatPassword(text.toString())
-                }
+                text?.apply { viewModel.updateRepeatPassword(text.toString()) }
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.melvin.ongandroid.view.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     override fun getItemCount(): Int = newsList.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setNewsData(news: List<NewsModel>) {
         this.newsList = news
         notifyDataSetChanged()
@@ -31,10 +33,14 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     inner class NewsViewHolder(private val binding: NewListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(news: NewsModel) {
-            Glide.with(binding.root)
-                .load(news.image)
-                .into(binding.imgNews)
-            binding.txtNewsName.text = news.name
+            binding.apply {
+                news.image?.let { imgUrl ->
+                    Glide.with(root)
+                        .load(imgUrl)
+                        .into(imgNews)
+                }
+                txtNewsName.text = news.name ?: ""
+            }
         }
     }
 }
