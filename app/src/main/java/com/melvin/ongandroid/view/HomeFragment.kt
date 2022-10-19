@@ -82,6 +82,22 @@ class HomeFragment : Fragment() {
         binding.rvWelcome.adapter = HorizontalAdapter(activitiesList)
     }
 
+    private fun suscribeActivityAdapter(){
+        viewModels.activitiesResultState.observe(viewLifecycleOwner, Observer { resulState->
+            when(resulState){
+                is ResultState.Loading ->{
+                    setLoadingSpinner(true)
+                }
+                is ResultState.Success ->{
+                    val activityList = (resulState.data as? List<Activity>) ?: emptyList()
+                    if (activityList.isNotEmpty()) setupActivityAdapter(activityList)
+                    setLoadingSpinner(false)
+                }
+                is ResultState.Error ->{}
+            }
+        })
+    }
+
     private fun setupRvActivity(){
         horizontalAdapter = HorizontalAdapter(listOf())
         binding.rvWelcome.apply {
@@ -108,8 +124,16 @@ class HomeFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
+
     }
 
+    // firebase analytics
+    private fun logEvents() {
+        //last_news_see_more_pressed': Al presionar la flecha "Ver más" en listado de "Últimas novedades"
+        //testimonies_see_more_pressed: Al presionar la flecha "Ver más" en listado de "Testimonios"
+        logEventInFirebase(firebaseAnalytic, "last_news_see_more_pressed")
+
+    }
     /*
      * Subscribe all adapters to observe viewModel LiveData
      */

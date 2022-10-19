@@ -1,20 +1,16 @@
 package com.melvin.ongandroid.view
 
 import android.app.AlertDialog
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintSet.GONE
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.melvin.ongandroid.businesslogic.IsInputValidUseCase
 import com.melvin.ongandroid.databinding.FragmentContactBinding
 import com.melvin.ongandroid.model.ContactMessageDto
@@ -24,8 +20,6 @@ import com.melvin.ongandroid.utils.LoadingSpinner
 import com.melvin.ongandroid.viewmodel.ContactViewModel
 import com.melvin.ongandroid.viewmodel.ContactViewModelFactory
 
-const val TAG = "ContactFragment"
-
 class ContactFragment : Fragment() {
 
     private var _binding: FragmentContactBinding? = null
@@ -34,7 +28,6 @@ class ContactFragment : Fragment() {
     private val viewModel by viewModels<ContactViewModel> {
         ContactViewModelFactory(OngRepository(OngRemoteDataSource()), IsInputValidUseCase())
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,15 +39,12 @@ class ContactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadingSpinner = LoadingSpinner()
         restoreUIWithUserInput()
-
         subscribeSendMessageBtn()
 
         binding.sendMessageBtn.setOnClickListener {
             sendMessageFromContact()
-            Log.d(TAG, "sendMessageBtn On Click Listener enabled")
         }
 
         // le da visibilidad al progress bar
@@ -64,27 +54,14 @@ class ContactFragment : Fragment() {
 
         viewModel.messageFromContact.observe(viewLifecycleOwner, Observer { response ->
             if (response != null) {
-                //binding.contactProgressBar.visibility = View.VISIBLE
-                setLoadingSpinner(true)
-                executeAlertDialog()
-                //binding.contactProgressBar.visibility = View.GONE
-                setLoadingSpinner(false)
-                Toast.makeText(context, "envio exitoso", Toast.LENGTH_SHORT).show()
-
-                Log.d("Main", response.message.toString())
-                Log.d("Main", response.email.toString())
-                Log.d("Main", response.nameAndLastName.toString())
+                //setLoadingSpinner(true)
+                //executeAlertDialog()
+                //setLoadingSpinner(false)
             } else {
                 binding.tvErrorMessage.visibility = View.VISIBLE
-
             }
-
-
-
         })
-
         setupEditText()
-
     }
 
     /*
@@ -94,8 +71,6 @@ class ContactFragment : Fragment() {
     private fun subscribeSendMessageBtn() {
         viewModel.isValidInput.observe(viewLifecycleOwner) {
             binding.sendMessageBtn.isEnabled = viewModel.isValidInput.value ?: false
-            Log.d(TAG, "isValidInput LiveData ${viewModel.isValidInput.value}")
-            Log.d(TAG, "sendMessageButton isEnabled ${binding.sendMessageBtn.isEnabled}")
         }
     }
 
@@ -111,7 +86,10 @@ class ContactFragment : Fragment() {
                 message = message
             )
         )
+        executeAlertDialog()
+        findNavController().navigate(ContactFragmentDirections.actionContactFragmentToHomeFragment())
     }
+
 
     private fun executeAlertDialog() {
         //asignando valores al modal dialog
@@ -133,7 +111,6 @@ class ContactFragment : Fragment() {
             nameET.addTextChangedListener { text ->
                 text?.apply { viewModel.updateName(text.toString()) }
                 tvErrorMessage.visibility = View.GONE
-
             }
             emailET.addTextChangedListener { text ->
                 text?.apply { viewModel.updateEmail(text.toString()) }
@@ -176,11 +153,8 @@ class ContactFragment : Fragment() {
     private fun setLoadingSpinner(isLoading: Boolean) {
         if (isLoading) {
             loadingSpinner.start(binding.imageLogo)
-
         } else {
             loadingSpinner.stop(binding.imageLogo)
-
         }
     }
-
 }

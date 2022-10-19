@@ -33,13 +33,14 @@
         android:id="@+id/contactTV"
         android:layout_width="0dp"
         android:layout_height="36dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="230dp"
-        android:textAppearance="@style/testimonios"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="170dp"
+        android:gravity="center"
         android:text="@string/contactInvitation"
+        android:textAlignment="center"
+        android:textAppearance="@style/testimonios"
         android:textColor="@color/black"
         android:textFontWeight="500"
-        android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
@@ -50,13 +51,13 @@
         android:id="@+id/nameET"
         android:layout_width="328dp"
         android:layout_height="40dp"
-        android:inputType="text"
-        android:background="@drawable/edit_text_border_style"
         android:layout_margin="16dp"
+        android:background="@drawable/edit_text_border_style"
         android:hint="Nombre y Apellido"
-        android:textSize="13sp"
+        android:inputType="text"
         android:textAlignment="textStart"
         android:textColorHint="@color/hint_color"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contactTV" />
@@ -65,14 +66,14 @@
         android:id="@+id/emailET"
         android:layout_width="328dp"
         android:layout_height="40dp"
-        android:inputType="textEmailAddress"
-        android:background="@drawable/edit_text_border_style"
         android:layout_margin="16dp"
+        android:background="@drawable/edit_text_border_style"
         android:hint="Email"
+        android:inputType="textEmailAddress"
         android:paddingEnd="0dp"
-        android:textSize="13sp"
         android:textAlignment="textStart"
         android:textColorHint="@color/hint_color"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameET" />
@@ -81,31 +82,21 @@
         android:id="@+id/messageET"
         android:layout_width="328dp"
         android:layout_height="188dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/edit_text_border_style"
+        android:hint="Mensaje"
         android:inputType="textLongMessage"
         android:lines="30"
         android:minLines="5"
-        android:scrollHorizontally="false"
-        android:background="@drawable/edit_text_border_style"
-        android:layout_margin="16dp"
-        android:hint="Mensaje"
         android:paddingEnd="0dp"
         android:paddingBottom="158dp"
-        android:textSize="13sp"
+        android:scrollHorizontally="false"
         android:textAlignment="textStart"
         android:textColorHint="@color/hint_color"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailET" />
-
-    <!--    <EditText
-        android:id="@+id/addr_edittext"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top|left"
-        android:inputType="textEmailAddress|textMultiLine"
-        android:lines="20"
-        android:minLines="5"
-        android:scrollHorizontally="false"-->
 
     <TextView
         android:id="@+id/tvErrorMessage"
@@ -119,7 +110,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sendMessageBtn"
-        app:layout_constraintTop_toBottomOf="@+id/messageET"/>
+        app:layout_constraintTop_toBottomOf="@+id/messageET" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sendMessageBtn"
@@ -139,6 +130,5 @@
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/messageET" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
