@@ -25,13 +25,15 @@ class LoginValidationForm {
         val password= editText.text.toString()
 
         return if (password.isEmpty()){
-            editText.error = "la contraseña no puede ser vacia"
+            //editText.error = "la contraseña no puede ser vacia"
+            editText.setError("la contraseña no puede ser vacia",null)
             false
         }else if (!password.matches(".*[0-9].*".toRegex())){
-            editText.error = "la contraseña debe tener al menos un numero"
+            //editText.error = "la contraseña debe tener al menos un numero"
+            editText.setError("la contraseña debe tener al menos un numero",null)
             false
         }else if (!password.matches(".*[a-z].*".toRegex())){
-            editText.error = "la contraseña debe tener al menos una letra"
+            editText.setError("la contraseña debe tener al menos una letra",null)
             false
         }else{
             editText.error = null

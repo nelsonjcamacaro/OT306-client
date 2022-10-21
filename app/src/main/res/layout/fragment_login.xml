@@ -83,28 +83,29 @@
                     android:textAppearance="@style/text_style_login_input" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
             <!-- Password Text Input Layout -->
             <!-- Change style to "@style/InputTextLayoutStyle.App.LoginError" -->
             <!-- when have an input error -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_text_layout_password"
+                style="@style/InputTextLayoutStyle.App.Login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/vertical_margin_small"
                 android:hint="@string/hint_password"
-                app:errorEnabled="false"
                 app:passwordToggleEnabled="true"
-                app:errorIconDrawable="@null"
+                app:passwordToggleTint="@color/buttonBlue"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/input_text_layout_email"
-                style="@style/InputTextLayoutStyle.App.Login">
+                app:layout_constraintTop_toBottomOf="@id/input_text_layout_email">
 
                 <!-- Password Input Edit Text -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_text_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:textAppearance="@style/text_style_login_input" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -129,7 +130,7 @@
 
             <android.widget.Button
                 android:id="@+id/button_google"
-                android:layout_width="170dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
                 android:background="@drawable/shape_btn_google"
@@ -145,7 +146,7 @@
 
             <android.widget.Button
                 android:id="@+id/button_facebook"
-                android:layout_width="170dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
                 android:background="@drawable/shape_btn_facebook"
